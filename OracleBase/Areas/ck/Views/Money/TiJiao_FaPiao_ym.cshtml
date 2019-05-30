@@ -1,0 +1,131 @@
+﻿
+@{
+    ViewBag.Title = "SureBao";
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
+}
+@using OracleBase.Models;
+@model C_TB_HC_GOODSBILL
+<script src="~/Content/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+
+    function AddData() {
+        if ($("#form1").valid()) {
+            $.ajax({
+                //提交数据的类型 POST GET
+                type: "POST",
+                //提交的网址
+                url: $('#form1').attr('action'),
+                //提交的数据
+                data: $('#form1').serialize(),
+                //返回数据的格式
+                datatype: "json",//"xml", "html", "script", "json", "jsonp", "text".
+                //在请求之前调用的函数
+                beforeSend: function () {
+                    //$("#msg").html("logining");
+                },
+                //成功返回之后调用的函数
+                success: function (data) {
+                    alert(data);
+                    window.parent.location.reload(); //刷新父页面
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(index);
+                },
+                //调用执行后调用的函数
+                complete: function (XMLHttpRequest, textStatus) {
+
+                    //HideLoading();
+                },
+                //调用出错执行的函数
+                error: function () {
+                    //请求出错处理
+                }
+            });
+        }
+    }
+     function SureBao() {
+        if (confirm("确认操作") == true) {
+
+            $.ajax({
+                type: 'POST',
+                url: '/Money/TiJiao_FaPiao',
+                data:$('#form1').serialize(),
+                dataType: 'json',
+                success: function (data, textStatus) {
+                    alert(data.message);
+                    window.parent.location.reload(); //刷新父页面
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(index);
+                },
+                error: function (xmlHttpRequest, textStatus, errorThrown) {
+                }
+            });
+        }
+     }
+
+</script>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                @using (Html.BeginForm("", "Money", @FormMethod.Post, new { id = "form1", @class = "form-horizontal" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary()
+                    @Html.HiddenFor(n => n.ID)
+                    <input id="FMZhongLei" name="FMZhongLei" maxlength="30" type="hidden" class="form-control" value="@ViewBag.FMZhongLei">
+                    <input id="Type" name="Type" maxlength="30" type="hidden" class="form-control" value="@ViewBag.Type">
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">发票状态：</label>
+
+                        <div class="col-sm-4">
+                            <select class="form-control" name="INVOICETYPE" id="INVOICETYPE">
+                                <option value="1">正常票</option>
+                                <option value="2">红冲票（负数发票）</option>
+                                <option value="3">作废票（正常票被作废）</option>
+                            </select>
+                        </div>
+                        <label class="col-sm-2  control-label">单据类型：</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" name="CODE_NOTETYPE" id="CODE_NOTETYPE">
+                                <option value="1">国税</option>
+                                @*<option value="2">地税（负数发票）</option>*@
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">票据模板：</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" name="CODE_NOTETEMPLATE" id="CODE_NOTETEMPLATE">
+                                <option value="3">国税普票</option>
+                                <option value="4">国税专票</option>
+                                <option value="13">地税票</option>
+                            </select>
+                        </div>
+                        <label class="col-sm-2  control-label">发票描述：</label>
+                        <div class="col-sm-4">
+                            <input id="IVDISPLAY" name="IVDISPLAY" maxlength="30" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <label class="col-sm-2  control-label">备注：</label>
+                        <div class="col-sm-4">
+                            <input id="REMARK" name="REMARK" maxlength="30" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-2">
+
+                            <button class="btn btn-primary" type="button" onclick="SureBao()">确认</button>
+
+
+
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+

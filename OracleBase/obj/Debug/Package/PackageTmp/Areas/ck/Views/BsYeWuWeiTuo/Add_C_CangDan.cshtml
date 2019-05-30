@@ -1,0 +1,205 @@
+﻿
+@{
+    ViewBag.Title = "GOODSBILL";
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
+}
+@using OracleBase.Models
+@model BS_CANGDAN
+
+<script src="~/Content/My97DatePicker/WdatePicker.js"></script>
+<script>
+
+    function TiJiao() {
+        if ($("#form1").valid()) {
+            $.ajax({
+                //提交数据的类型 POST GET
+                type: "POST",
+                //提交的网址
+                url: $('#form1').attr('action'),
+                //提交的数据
+                data: $('#form1').serialize(),
+                //返回数据的格式
+                datatype: "json",//"xml", "html", "script", "json", "jsonp", "text".
+                //在请求之前调用的函数
+                beforeSend: function () {
+                    //$("#msg").html("logining");
+                },
+                //成功返回之后调用的函数
+                success: function (data) {
+                    layer.msg(data,{
+                        icon: 6,
+                        time: 1000 //1秒关闭（如果不配置，默认是3秒）
+                    },function(){
+                        var index = parent.layer.getFrameIndex(window.name);
+                        if (data == "成功") {
+                            parent.layer.close(index);
+                        }
+                    });
+
+
+                },
+                //调用执行后调用的函数
+                complete: function (XMLHttpRequest, textStatus) {
+
+                    //HideLoading();
+                },
+                //调用出错执行的函数
+                error: function () {
+                    //请求出错处理
+                }
+            });
+        }
+
+
+    }
+      $(function () {
+          var MaoZhongDanWei = '@Model.MaoZhongDanWei';
+          $("#MaoZhongDanWei").find("option[value=" + MaoZhongDanWei + "]").attr("selected", true);
+          var JingZhongDanWei = '@Model.JingZhongDanWei';
+          $("#JingZhongDanWei").find("option[value=" + JingZhongDanWei + "]").attr("selected", true);
+          var JianShuDanWei = '@Model.JianShuDanWei';
+          $("#JianShuDanWei").find("option[value=" + JianShuDanWei + "]").attr("selected", true);
+          var BoolHuiShou = '@Model.BoolHuiShou';
+          $("#BoolHuiShou").find("option[value=" + BoolHuiShou + "]").attr("selected", true);
+
+    });
+</script>
+<script type="text/javascript" src="Scripts/jquery-1.4.4.min.js"></script>
+@using (Html.BeginForm("Add_C_CangDan", "BsYeWuWeiTuo", @FormMethod.Post, new { id = "form1", @class = "form-horizontal" }))
+{
+    @Html.HiddenFor(n => Model.Guid)
+    @Html.HiddenFor(n => Model.CreatPeople)
+    @Html.HiddenFor(n => Model.CreatTime)
+    @Html.HiddenFor(n => Model.State)
+    @Html.HiddenFor(n => Model.GoodsBillId)
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">仓单号：</label>
+                        <div class="col-sm-4">
+                            <input id="CangDanHao" type="text" class="form-control" value="@Model.CangDanHao" maxlength="50" name="CangDanHao" readonly="readonly">
+                        </div>
+                        <label class="col-sm-2  control-label">抬头人：</label>
+                        <div class="col-sm-4">
+                            @Html.DropDownList("TaiTouRen", (SelectList)ViewData["CUSTOMER_List"], new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">唛头：</label>
+                        <div class="col-sm-4">
+                            <input id="MaiTou" type="text" class="form-control" value="@Model.MaiTou" maxlength="50" name="MaiTou">
+                        </div>
+                        <label class="col-sm-2  control-label">品名：</label>
+                        <div class="col-sm-4">
+                            @Html.DropDownList("PingMing", (SelectList)ViewData["GOODS_List"], new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">毛重：</label>
+                        <div class="col-sm-2">
+                            <input id="MaoZhong" type="text" class="form-control number" value="@Model.MaoZhong" maxlength="50" name="MaoZhong">
+                        </div>
+                        <div class="col-sm-2">
+                            <select id="MaoZhongDanWei" name="MaoZhongDanWei" class="form-control">
+                                <option value="MT">MT</option>
+                                <option value="WMT">WMT</option>
+                            </select>
+                        </div>
+                        <label class="col-sm-2  control-label">净重：</label>
+                        <div class="col-sm-2">
+                            <input id="JingZhong" type="text" class="form-control" value="@Model.JingZhong" maxlength="50" name="JingZhong">
+                        </div>
+                        <div class="col-sm-2">
+                            <select id="JingZhongDanWei" name="JingZhongDanWei" class="form-control">
+                                <option value="MT">MT</option>
+                                <option value="WMT">WMT</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">提单号：</label>
+                        <div class="col-sm-4">
+                            <input id="TiDanHao" type="text" class="form-control" value="@ViewBag.TiDanHao" maxlength="50" name="TiDanHao" readonly="readonly">
+                        </div>
+                        <label class="col-sm-2  control-label">件数：</label>
+                        <div class="col-sm-2">
+                            <input id="JianShu" type="text" class="form-control number" value="@Model.JianShu" maxlength="50" name="JianShu">
+                        </div>
+                        <div class="col-sm-2">
+                            <select id="JianShuDanWei" name="JianShuDanWei" class="form-control">
+                                <option value="INBAGS">IN BAGS</option>
+                                <option value="INBULK">IN BULK</option>
+                                <option value="BAGS">BAGS</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label text-danger">仓储日期：</label>
+                        <div class="col-sm-4">
+                            <input id="CangChuRiQi" name="CangChuRiQi" type="text" class="form-control" value="@Model.CangChuRiQi" maxlength="50" required="" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })">
+                        </div>
+                        <label class="col-sm-2  control-label text-danger">签发日期：</label>
+                        <div class="col-sm-4">
+                            <input id="QianFaRiQi" type="text" class="form-control" value="@Model.QianFaRiQi" maxlength="50" name="QianFaRiQi" required="" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">英文船名：</label>
+                        <div class="col-sm-4">
+                            <input id="YingWenChuanMing" type="text" class="form-control" value="@ViewBag.YingWenChuanMing" maxlength="50" name="YingWenChuanMing" readonly="readonly">
+                        </div>
+                        <label class="col-sm-2  control-label">创建日期：</label>
+                        <div class="col-sm-4">
+                            <input id="CreatTime" type="text" class="form-control" value="@Model.CreatTime" maxlength="50" name="CreatTime" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">创建人：</label>
+                        <div class="col-sm-4">
+                            <input id="CreatPeople" type="text" class="form-control" value="@Model.CreatPeople" maxlength="50" name="CreatPeople" readonly="readonly">
+                        </div>
+                        <label class="col-sm-2  control-label">回收人：</label>
+                        <div class="col-sm-4">
+                            <input id="HuiShouRen" type="text" class="form-control" value="@Model.HuiShouRen" maxlength="50" name="HuiShouRen"  readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">回收日期：</label>
+                        <div class="col-sm-4">
+                            <input id="HuiShouRiQi" type="text" class="form-control" value="@Model.HuiShouRiQi" maxlength="50" name="HuiShouRiQi" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" readonly="readonly">
+                        </div>
+                        <label class="col-sm-2  control-label">回收标志：</label>
+                        <div class="col-sm-4">
+                            <select id="BoolHuiShou" name="BoolHuiShou" class="form-control" disabled="disabled">
+                                <option value="是">是</option>
+                                <option value="否">否</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">仓单备注：</label>
+                        <div class="col-sm-10">
+                            <input id="CangDanBeiZhu" type="text" class="form-control" value="@Model.CangDanBeiZhu" maxlength="50" name="CangDanBeiZhu">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">备注：</label>
+                        <div class="col-sm-10">
+                            @Html.TextAreaFor(model => model.BeiZhu, new { @class = "form-control", @width = "70%", @style = "height:140px;" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-3" style="padding-top: 50px; padding-left: 200px;">
+                            <button class="btn btn-primary" type="button" onclick="TiJiao()">保存</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

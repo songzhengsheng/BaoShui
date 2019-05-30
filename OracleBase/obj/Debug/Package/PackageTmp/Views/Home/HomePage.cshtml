@@ -1,0 +1,248 @@
+﻿@{
+
+    Layout = null;
+}
+<!doctype html>
+<html>
+<title>仓库平面图</title>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+
+    <script src="~/Content/layer/layer.js"></script>
+    <script type="text/javascript" src="~/Content/drag/js/context/context.js"></script>
+
+    <script src="~/Content/drag/js/drag.js"></script>
+    <link rel="stylesheet" type="text/css" href="~/Content/drag/js/context/context.standalone.css">
+    <style type="text/css">
+        html, body {
+            margin: 0;
+            padding: 0;
+            font: 14px/1.5em simsun;
+            overflow: hidden;
+        }
+
+        #canvas {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            z-index: 9;
+            border: 2px dashed #ccc;
+            padding: 10px;
+            background: #fff;
+        }
+
+        .transparent {
+            filter: alpha(opacity=50);
+            -moz-opacity: 0.5;
+            -khtml-opacity: 0.5;
+            opacity: 0.5;
+        }
+
+        .box {
+            width: 200px;
+            height: 100px;
+            cursor: move;
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            z-index: 99;
+        }
+
+            .box .bg {
+                width: 100%;
+                height: 100%;
+                background-color: orange;
+            }
+
+            .box .coor {
+                width: 10px;
+                height: 10px;
+                overflow: hidden;
+                cursor: se-resize;
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                background-color: red;
+            }
+
+            .box .content {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                z-index: 99;
+                text-align: center;
+                font: bold 14px/1.5em simsun;
+            }
+
+        #debug {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            z-index: 88;
+            border: 1px solid #ccc;
+            width: 100px;
+            height: 100px;
+            background: #fff;
+        }
+
+        #toolbar {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            z-index: 88;
+        }
+    </style>
+</head>
+<body class="list">
+
+
+    <div id="canvas">
+        <img style="width:1600px;height:1046px;" src="~/Upload/@ViewBag.PicPach" />
+
+    </div>
+
+    <script>
+        $(function () {
+            //初始化计数器
+            var num = 0;
+            //区块锁定标识
+            var lock = false;
+            //加载layer拓展
+            layer.config({
+                extend: 'extend/layer.ext.js'
+            });
+            //右键菜单参数
+            context.init({
+                fadeSpeed: 100,
+                filter: function ($obj) { },
+                above: 'auto',
+                preventDoubleContext: true,
+                compress: false
+            });
+
+            function createBox(data) {
+                var dataId = data.id || '';
+                var value = data.text || '';
+                var color = data.color || '';
+                var height = data.height || 0;
+                var width = data.width || 0;
+                var pageX = data.pageX || 0;
+                var pageY = data.pageY || 0;
+
+                //更新计数器并记录当前计数
+                var curNum = num++;
+                //创建区域块
+                var pos = $("#canvas").position();
+                var box = $('<div class="box" rel="' + curNum + '" dataId="' + dataId + '"><pre class="content">' + value + '</pre><div class="bg transparent" style="background-color:' + color + '"></div><div class="coor transparent"></div></div>').css({
+                    width: width,
+                    height: height,
+                    top: pageY > 0 ? pageY : (pos.top > 0 ? 0 : pos.top * -1 + 50),
+                    left: pageX > 0 ? pageX : (pos.left > 0 ? 0 : pos.left * -1 + 30)
+                }).appendTo("#canvas");
+
+                //计算文本位置
+                box.find('.content').css({
+                    marginLeft: box.find('.content').width() / 2 * -1,
+                    marginTop: box.find('.content').height() / 2 * -1
+                });
+                //创建右键菜单
+                context.attach('.box[rel=' + curNum + ']', [
+           
+                    {
+                        text: '库存信息', action: function (e) {
+                            var box = $('.box[rel=' + curNum + ']');
+                            var id = box.attr("dataId");
+                            layer.open({
+                                type: 2,
+                                title: "库存信息",
+                                shadeClose: true,
+                                shade: 0.8,
+                                area: ['90%', '90%'],
+                                content: "/ck/TallyBll/KuCun_Xq?id=" + id,
+                                btn: ['确认', '取消']    //按钮1和按钮2的回调分别是yes和cancel，而从按钮3开始，则回调为btn3: function(){}，以此类推
+
+
+                            });
+
+                        }
+                    }
+             
+
+                ]);
+            }
+
+            //锁定区域
+            lock = true;
+
+            //创建拖拽方法
+            $("#canvas").mousedown(function (e) {
+                var canvas = $(this);
+                e.preventDefault();
+                var pos = $(this).position();
+                this.posix = { 'x': e.pageX - pos.left, 'y': e.pageY - pos.top };
+                $.extend(document, {
+                    'move': true, 'move_target': this, 'call_down': function (e, posix) {
+                        canvas.css({
+                            'cursor': 'move',
+                            'top': e.pageY - posix.y,
+                            'left': e.pageX - posix.x
+                        });
+                    }, 'call_up': function () {
+                        canvas.css('cursor', 'default');
+                    }
+                });
+            }).on('mousedown', '.box', function (e) {
+                if (lock) return;
+                var pos = $(this).position();
+                this.posix = { 'x': e.pageX - pos.left, 'y': e.pageY - pos.top };
+                $.extend(document, { 'move': true, 'move_target': this });
+                e.stopPropagation();
+            }).on('mousedown', '.box .coor', function (e) {
+                var $box = $(this).parent();
+                var posix = {
+                    'w': $box.width(),
+                    'h': $box.height(),
+                    'x': e.pageX,
+                    'y': e.pageY
+                };
+                $.extend(document, {
+                    'move': true, 'call_down': function (e) {
+                        $box.css({
+                            'width': Math.max(30, e.pageX - posix.x + posix.w),
+                            'height': Math.max(30, e.pageY - posix.y + posix.h)
+                        });
+                    }
+                });
+                e.stopPropagation();
+            });
+            //测试加载
+
+            $.ajax({
+                type: "Get",
+                traditional: true,
+                url: "/Section/GetBoothList",
+                success: function (data) {
+                    //var loadData = [{ id: 1001, text: "仓库1", color: "rgb(255, 0, 0)", height: 70, width: 77, pageX: 627, pageY: 364 },
+                    //    { id: 1002, text: "C17\n16.18", color: "rgb(255, 255, 0)", height: 70, width: 77, pageX: 709, pageY: 364 },
+                    //    { id: 1003, text: "C18\n16.08", color: "rgb(128, 0, 128)", height: 70, width: 77, pageX: 790, pageY: 364 },
+                    //    { id: 1004, text: "C19\n16.08", color: "rgb(0, 128, 0)", height: 70, width: 77, pageX: 870, pageY: 364 },
+                    //    { id: 1005, text: "C20\n16.5", color: "rgb(0, 0, 255)", height: 70, width: 77, pageX: 627, pageY: 439 },
+                    //    { id: 1006, text: "C21\n16.18", color: "rgb(255, 165, 0)", height: 70, width: 77, pageX: 709, pageY: 439 },
+                    //    { id: 1007, text: "C22\n16.08", color: "rgb(255, 165, 0)", height: 70, width: 77, pageX: 870, pageY: 439 },
+                    //    { id: 1008, text: "C23\n16.08", color: "rgb(255, 165, 0)", height: 70, width: 77, pageX: 789, pageY: 439 }];
+                    data = eval('(' + data + ')');
+                    var loadData = data;
+                    $.each(loadData, function (i, row) {
+
+                        createBox(row);
+                    });
+                }
+            });
+
+
+        });
+    </script>
+
+</body>
+</html>

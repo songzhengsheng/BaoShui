@@ -1,0 +1,124 @@
+﻿@using OracleBase.Models
+
+@{
+    ViewBag.Title = "账户管理";
+    Layout = "~/Views/Shared/_LayoutBase.cshtml";
+}
+<script src="~/Content/layer/layer.js"></script>
+<script type="text/javascript">
+    function Add(id) {
+        layer.open({
+            type: 2,
+            title: '编辑',
+            shadeClose: true,
+            shade: 0.6,
+            area: ['70%', '90%'],
+            content: "/Sys/AddUser?id=" + id,
+            end: function () {
+                location.reload();
+            },
+            btn: ['关闭']
+        });
+    }
+    function Del(id) {
+        if (confirm("确认删除") == true) {
+            var postData = {
+                id:id
+            };
+            $.ajax({
+                type: 'POST',
+                url: '/Sys/DelUser',
+                data: postData,
+                dataType: 'json',
+                success: function (data, textStatus) {
+                    alert(data);
+                    location.replace(location);
+                },
+                error: function (xmlHttpRequest, textStatus, errorThrown) {
+                }
+            });
+        }
+
+    }
+
+    function jihuo(id,state) {
+        if (confirm("确认") == true) {
+            var postData = {
+                id: id,
+                state: state
+            };
+            $.ajax({
+                type: 'POST',
+                url: '/Sys/JiHuo',
+                data: postData,
+                dataType: 'json',
+                success: function (data, textStatus) {
+                    alert(data);
+                    location.replace(location);
+                },
+                error: function (xmlHttpRequest, textStatus, errorThrown) {
+                }
+            });
+        }
+
+    }
+
+</script>
+
+
+<div class="col-sm-12">
+
+    <div class="example-wrap">
+        <div id="toolbar" class="btn-group">
+            <button id="btn_add" type="button" class="btn btn-primary btn-sm" onclick="Add(0)">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+            </button>
+        </div>
+        <div class="example">
+            <table id="exampleTablePagination" data-toggle="table"  data-query-params="queryParams" data-mobile-responsive="true" data-height="500" data-pagination="true" data-icon-size="outline" data-search="true">
+                <thead>
+                    <tr>
+                        <th>用户姓名</th>
+                        <th>角色名</th>
+                     
+                        <th>邮箱</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        List<Sys_User> list = ViewBag.sysuserlist;
+                        foreach (var item in list)
+                        {
+                            <tr>
+                                <td>@item.userName</td>
+                                <td>@item.roleName</td>
+                              
+                                <td>@item.email</td>
+                                <td>@item.state</td>
+                                <td>
+                                    @{
+                            if (item.state=="禁用")
+                            {
+                                <a class="btn btn-sm btn-primary" onclick="jihuo(@item.ID,'激活')">激活</a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-sm btn-primary" onclick="jihuo(@item.ID,'禁用') ">禁用</a>
+                            }
+}
+                                    <a class="btn btn-sm btn-info" onclick="Add(@item.ID) ">编辑</a>
+                                    <a class="btn btn-sm btn-danger" onclick="Del(@item.ID)">删除</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- End Example Pagination -->
+</div>
+
+

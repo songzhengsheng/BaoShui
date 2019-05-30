@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewBag.Title = "AddUser";
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
+}
+<form id="form1">
+
+    email<input type="text" id="email" name="email" v-model="Sys_User.userName">
+    <input type="password" id="passWord" name="passWord" v-model="Sys_User.passWord">
+    <button class="btn btn-primary" type="button" onclick="AddData()">保存</button>
+</form>
+<script type="text/javascript">
+    function AddData() {
+        if ($("#form1").valid()) {
+            var f = $("#form1").serializeArray();
+            f = stringtojson(f);
+       
+            var postData = {
+                tableName: 'Sys_User',
+                form: f
+            };
+            $.ajax({
+                type: 'get',
+                url: '/api/mapi/CommonAdd',
+                data: postData,
+                dataType: 'json',
+                success: function (data, textStatus) {
+                    alert(data);
+                },
+                error: function (xmlHttpRequest, textStatus, errorThrown) {
+                }
+            });
+        }
+    }
+
+    function  stringtojson(queryArray) {
+     
+        var jsonString= '{';
+        for (var i = 0; i < queryArray.length; i++) {
+            jsonString += JSON.stringify(queryArray[i].name) + ':' + JSON.stringify(queryArray[i].value) + ',';
+       
+        }
+        jsonString= jsonString.substring(0, (jsonString.length - 1));
+        jsonString += '}';
+        return jsonString;
+        return JSON.parse(jsonString);
+    }
+</script>

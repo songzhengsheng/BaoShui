@@ -1,0 +1,436 @@
+﻿@{
+    ViewBag.Title = "RoleManage";
+    Layout = "~/Views/Shared/_LayoutBase.cshtml";
+
+}
+@using OracleBase.Models
+
+<div class="ibox-content">
+    <div class="row row-lg">
+        <div class="col-sm-12">
+            <div class="example-wrap">
+                
+                <div class="example">
+                    <a data-toggle="modal" class="btn btn-primary" href="#modal-form">添加角色</a>
+                    <table id="exampleTablePagination" data-toggle="table" data-query-params="queryParams" data-mobile-responsive="true" data-height="400" data-pagination="true" data-icon-size="outline" data-search="true">
+                        <thead>
+                            <tr>
+                                <th data-field="roleId">ID</th>
+                                <th data-field="roleName">角色</th>
+                                <th data-field="action">操作</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                List<Sys_Role> list = ViewBag.sysrolelist;
+                                foreach (var item in list)
+                                {
+                                    <tr>
+                                        <td>@item.roleId</td>
+                                        <td>@item.roleName</td>
+                                        <td>
+                                            <a data-toggle="modal" class="btn btn-primary" href="#modal-form-edit" onclick="findrole(@item.ID); ">修改角色信息</a>
+                                            <a class="btn btn-primary" onclick="upMenus(@item.ID); ">编辑菜单</a>
+                                            <a data-toggle="modal" class="btn btn-danger" onclick="DelRole(@item.ID); ">删除</a>
+                                        </td>
+
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- End Example Pagination -->
+        </div>
+
+    </div>
+</div>
+
+@*模态框-添加*@
+<div id="modal-form" class="modal fade" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12 b-r">
+                        <h3 class="m-t-none m-b">添加角色</h3>
+
+                        <p>请填写完整信息</p>
+
+                        <form role="form" action="AddRole">
+                            <div class="form-group">
+                                <label>角色名：</label>
+                                <input type="text" placeholder="请输入角色名" class="form-control" name="rolename"required="required" id="addrolename">
+                            </div>
+                            <div class="form-group">
+                                <label>角色ID：</label>
+                                <input type="number" placeholder="请输入角色ID" class="form-control" name="id"id="addroleid"required="required">
+                            </div>
+                            <div>
+                                <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit" onclick="return checkrole();">
+                                    <strong>添加</strong>
+                                </button>
+
+                            </div>
+                        </form>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*模态框-修改*@
+<div id="modal-form-edit" class="modal fade" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12 b-r">
+                        <h3 class="m-t-none m-b">修改角色信息</h3>
+
+                        <p>请填写完整信息</p>
+
+                        <form role="form" action="EditRole" id="form-edit">
+                            <div class="form-group">
+                                <label>角色名：</label>
+                                <input type="number" id="secretid" name="ID" hidden="hidden"  />
+                                <input type="text" placeholder="请输入角色名" class="form-control" name="roleName" required="required" id="edit-rolename">
+                            </div>
+                            <div class="form-group">
+                                <label>角色ID：</label>
+                                <input type="number" placeholder="请输入角色ID" class="form-control" name="roleId" id="edit-id" required="required">
+                            </div>
+                            <div>
+                                <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="button"id="save"onclick="check();">
+                                    <strong>保存</strong>
+                                </button>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*模态框-menu*@
+<div id="modal-menu-edit" class="modal fade" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12 b-r">
+                        <h3 class="m-t-none m-b">修改菜单</h3>
+
+                        <p>勾选需要显示的菜单</p>
+
+                        <form role="form" action="EditRole" id="form-edit">
+                            <div class="form-group">
+                                <label>角色名：</label>
+                                <input type="number" id="secretid" name="ID" hidden="hidden" />
+                                <input type="text" placeholder="请输入角色名" class="form-control" name="roleName" required="required" id="edit-rolename">
+                            </div>
+                            <div class="form-group">
+                                <label>角色ID：</label>
+                                <input type="number" placeholder="请输入角色ID" class="form-control" name="roleId" id="edit-id" required="required">
+                            </div>
+                            <div>
+                                <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="button" id="save" onclick="check();">
+                                    <strong>保存</strong>
+                                </button>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*模态框-管理菜单*@
+<div id="modal-form-menu" class="modal fade" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12 b-r" >
+                        <h3 class="m-t-none m-b">菜单显示管理</h3>
+
+                        <p>请选择需要显示的菜单</p>
+
+                        <div class="ibox-content">
+                            <div id="menutree">
+                                <ul>
+                                    <li >
+                                        MENU
+                                        <ul id="ultree">
+                                            <li id="">
+                                                css
+                                                <ul>
+                                                    <li id="">style.css</li>
+                                                </ul>
+                                            </li>
+                                          
+                                        </ul>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var primaryid;
+    var primaryname;
+    $.ajaxSetup (
+    {///async 设置为 false，则所有的请求均为同步请求，在没有返回值之前，同步请求将锁住浏览器，用户其它操作必须等待请求完成才可以执行。
+        async: false
+    });
+    ///检查添加的用户字段是否重复
+    function checkrole() {
+        var flagnameuseful = false;
+        var flagiduseful = false;
+        if ($("#addrolename").val() == "") {
+            $("#addrolename").vaild();
+            alert("角色名为空！！");
+            return false;
+        }
+        if ($("#addroleid").val() == "") {
+            alert("ID为空！！");
+            return false;
+        }
+        $.post("CheckRoleRepeatName", { roleName: $("#addrolename").val() }, function (json) {
+            if (json == "success") {
+                flagnameuseful = true;
+            } else {
+                alert("角色名重复！！");
+            }
+        });
+        $.post("CheckRoleRepeatId", { id: $("#addroleid").val() }, function (json) {
+            if (json == "success") {
+                flagiduseful = true;
+            } else {
+                alert("ID重复！！");
+            }
+        });
+        if (flagiduseful&&flagnameuseful) {
+            return true;
+        } else {
+            return false;
+        }
+        
+
+    }
+    ///查找用户属性，并显示
+        function findrole(ID) {
+            $.post("FindRole", {ID:ID},function(json){
+                //alert("JSON Data: " + json);
+                $("#edit-id").val(json.roleId);
+                $("#edit-rolename").val(json.roleName);
+                $("#secretid").val(json.ID);
+                //$("#form-edit").submit(function () { check() });
+                primaryid=json.roleId;
+                primaryname=json.roleName;
+            });
+
+        }
+   ///查询用户输入是否重复
+        function check() {
+            //id未改动情况
+            if (primaryid==$("#edit-id").val()) {
+                //角色名未改动
+                if (primaryname==$("#edit-rolename").val()) {
+                    //alert("角色名未改动");
+                    return false;
+                }else {
+                    //角色名改动了
+
+                    $.post("CheckRoleRepeatName", {  roleName: $("#edit-rolename").val() }, function (json) {
+                        if (json == "success")
+                        {
+                            $("#form-edit").submit();
+                            return true;
+                        }else
+                        {
+                            alert("角色名重复！！");
+                
+                            return false;
+                        }
+                    }) 
+                }
+            }else {
+                
+                //id改动了
+                if (primaryname==$("#edit-rolename").val()) {
+                    //角色名未改动
+                    $.post("CheckRoleRepeatId", { id: $("#edit-id").val(), roleName: $("#edit-rolename").val() }, function (json) {
+                        if (json == "success")
+                        {
+                            $("#form-edit").submit();
+                            return true;
+                        }else
+                        {
+                            alert("ID重复！！");
+                
+                            return false;
+                        }
+                    })
+                } else {
+                    //alert("id改动，角色名改动");
+                    //id改动，角色名改动
+                    var flagid=false;
+                    var flagname=false;
+
+                    $.post("CheckRoleRepeatId", { id: $("#edit-id").val(), roleName: $("#edit-rolename").val() }, function (json) {
+                        //alert("id检查");
+                        if (json == "success")
+                        {
+                            //alert("id检查成功");
+                            flagid=true;
+                        }else
+                        {
+                            alert("ID重复！！");
+                
+                            return false;
+                        }
+                    });
+                    $.post("CheckRoleRepeatName", { id: $("#edit-id").val(), roleName: $("#edit-rolename").val() }, function (json) {
+                        //alert("name检查");
+                        if (json == "success")
+                        {
+                            //alert("name检查成功");
+                            flagname=true;
+                        }else
+                        {
+                            alert("角色名重复！！");
+                
+                            return false;
+                        }
+                    });
+                    
+
+                    if (flagid==true&&flagname==true) {
+                        
+                        $("#form-edit").submit();
+                    }
+
+                }
+            }
+
+          
+        }
+    ///显示所有菜单和已选择的条件
+        function findmenu(ID)
+        {
+            var fajson;
+            var sjson;
+            //遍历父级菜单并显示
+            $.post("ListFatherMenu", { ID: ID }, function (fatherjson) {
+                fajson = fatherjson;
+                $("#ultree").empty();
+                for (var i = 0; i < fatherjson.length; i++) {
+                    var script = "<li >" +
+                                    fatherjson[i].menuName +
+"                                                <ul id=\"" + fatherjson[i].menuName + "\">" +
+"                                                </ul>" +
+"                                            </li>";
+                    $("#ultree").append(script);
+                   
+                }
+                //遍历子级菜单并显示
+                $.post("ListSonMenu", {}, function (sonjson) {
+                    sjson = sonjson;
+                    for (var i = 0; i <fatherjson.length; i++) {
+                        for (var j = 0; j < sonjson.length; j++) {
+                            if (fatherjson[i].menuId == sonjson[j].fatherId) {
+                                var li = " <div class=\"checkbox checkbox-success\">" +
+"                                        <input id=\"" + sonjson[j].menuId + "\" type=\"checkbox\"" + " onclick=savechanges(" + sonjson[j].menuId +","+ID+"); " + ">" +
+"                                        <label for=\"" + sonjson[j].menuId + "\">" +
+sonjson[j].menuName +
+"                                        </label>" +
+"                                    </div>";
+                                $("#" + fatherjson[i].menuName).append(li);
+                            }
+                        }
+                    }
+                   
+                    
+                });
+                
+            });
+            //显示该角色所有已选中的菜单
+            $.post("FindMenu", { ID: ID }, function (json) {
+                for (var i = 0; i < json.length; i++) {
+                    if (json[i].fatherId != 0) {
+                        //显示已选标签
+                        $("#" + json[i].menuId).attr("checked", true);
+                    }
+                }
+            });
+        }
+    ///单击菜单更新数据库
+        function savechanges(id,pkID) {
+            if ($("#" + id).prop("checked") == true) {
+                //被选中的情况
+//                alert(id);
+//                alert(pkID);
+
+                $.post("AddMenuId", { id: id, pkID: pkID }, function () {
+
+                });
+            } else {
+                //取消选中的情况
+//                alert("取消选中");
+                $.post("DelMenuId", { id: id, pkID: pkID }, function () {
+
+                });
+            }
+
+        }
+        function DelRole(id){
+            if (confirm("确定删除吗?")) {
+                $.post("DelRole",{id:id});
+                location.reload();
+            }
+        }
+        function upMenus(id) {
+            layer.open({
+                type: 2,
+                title: "角色菜单",
+                shadeClose: true,
+                shade: 0.8,
+                area: ['20%', '90%'],
+                content: "/Sys/RoleManageMenu?roleid=" + id
+            });
+        }
+</script>
+<link rel="shortcut icon" href="favicon.ico"> <link href="~/Content/hplus/css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+<link href="~/Content/hplus/css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+<link href="~/Content/hplus/css/plugins/iCheck/custom.css" rel="stylesheet">
+<link href="~/Content/hplus/css/plugins/chosen/chosen.css" rel="stylesheet">
+<link href="~/Content/hplus/css/plugins/colorpicker/css/bootstrap-colorpicker.min.css" rel="stylesheet">
+<link href="~/Content/hplus/css/plugins/cropper/cropper.min.css" rel="stylesheet">
+<link href="~/Content/hplus/css/plugins/switchery/switchery.css" rel="stylesheet">
+<link href="~/Content/hplus/css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
+<link href="~/Content/hplus/css/plugins/nouslider/jquery.nouislider.css" rel="stylesheet">
+<link href="~/Content/hplus/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+<link href="~/Content/hplus/css/plugins/ionRangeSlider/ion.rangeSlider.css" rel="stylesheet">
+<link href="~/Content/hplus/css/plugins/ionRangeSlider/ion.rangeSlider.skinFlat.css" rel="stylesheet">
+<link href="~/Content/hplus/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+<link href="~/Content/hplus/css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
+<link href="~/Content/hplus/css/animate.min.css" rel="stylesheet">
+<link href="~/Content/hplus/css/style.min862f.css?v=4.1.0" rel="stylesheet">
+
+
+<link href="~/Content/hplus/css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+<link href="~/Content/hplus/css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+<script src="~/Content/layer/layer.js"></script>
+

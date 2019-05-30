@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewBag.Title = "GOODSBILL";
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
+}
+@using OracleBase.Models
+@model C_TB_HC_CONSIGN
+
+<script src="~/Content/My97DatePicker/WdatePicker.js"></script>
+
+@using (Html.BeginForm("Add_C_WeiTuo", "BsYeWuWeiTuo", @FormMethod.Post, new { id = "form1", @class = "form-horizontal" }))
+{
+
+
+    @Html.HiddenFor(n => Model.CREATETIME)
+    @Html.HiddenFor(n => Model.AUDITTIME)
+    @Html.HiddenFor(n => Model.State)
+    @Html.HiddenFor(n => Model.GOODSBILL_ID)
+    <input type="hidden" name="ID" value="@Model.ID" />
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">委托编号：</label>
+                        <div class="col-sm-4">
+                            <input id="WeiTuoBianHao" type="text" class="form-control" value="@Model.WeiTuoBianHao" maxlength="50" name="WeiTuoBianHao" readonly="readonly">
+                        </div>
+                        <label class="col-sm-2  control-label">指令项目：</label>
+                        <div class="col-sm-4">
+                            <input id="ZhiLingXiangMu" type="text" class="form-control" value="@Model.ZhiLingXiangMu" maxlength="50" name="ZhiLingXiangMu" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">申请人：</label>
+                        <div class="col-sm-4">
+                            <input id="ShenQingRen" type="text" class="form-control" value="@Model.ShenQingRen" maxlength="50" name="ShenQingRen" readonly="readonly">
+                        </div>
+                        <label class="col-sm-2  control-label">下达时间：</label>
+                        <div class="col-sm-4">
+                            <input id="XiaDaShiJian" name="XiaDaShiJian" type="text" class="form-control" value="@Model.XiaDaShiJian" maxlength="50" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">指令数量：</label>
+                        <div class="col-sm-4">
+                            <input id="ZhiLingShuLiang" type="text" class="form-control number" value="@Model.ZhiLingShuLiang" maxlength="50" name="ZhiLingShuLiang" readonly="readonly">
+                        </div>
+                        <label class="col-sm-2  control-label">分票船名航次：</label>
+                        <div class="col-sm-4">
+                            <input id="FengPiaoChuanMingHangCi" type="text" class="form-control" value="@ViewBag.FengPiaoChuanMingHangCi" maxlength="50" name="FengPiaoChuanMingHangCi" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">作业单号：</label>
+                        <div class="col-sm-4">
+                            <input id="ZuiYeDanHao" type="text" class="form-control" value="@Model.ZuiYeDanHao" maxlength="50" name="ZuiYeDanHao" required="required" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">备注：</label>
+                        <div class="col-sm-10">
+                            @Html.TextAreaFor(model => model.BeiZhu, new { @class = "form-control", @width = "70%", @style = "height:140px;",@readonly= "readonly" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+

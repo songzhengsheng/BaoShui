@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.lygport.com.cn/tofi/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://www.lygport.com.cn/tofi/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">http://www.lygport.com.cn/tofi/</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.lygport.com.cn/tofi/">
+      <s:element name="AppendRBill">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="codeuser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="xmlData" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AppendRBillResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AppendRBillResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteRBill">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="codeuser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="codecompany" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ivno" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteRBillResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DeleteRBillResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="IVIsAudit">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="codeuser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="codecompany" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ivno" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="IVIsAuditResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="IVIsAuditResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="IVIsStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="codeuser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="codecompany" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ivno" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="IVIsStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="IVIsStatusResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="IVIsFull">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="codeuser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="codecompany" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ivno" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="IVIsFullResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="IVIsFullResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QueryClient">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="codeuser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QueryClientResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="QueryClientResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QueryCharge">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="codeuser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QueryChargeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="QueryChargeResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QueryCharge1">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="codeuser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="filter" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QueryCharge1Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="QueryCharge1Result">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QueryChargeCompany">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="codeuser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="codecompany" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QueryChargeCompanyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="QueryChargeCompanyResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QueryCargo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="codeuser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QueryCargoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="QueryCargoResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="AppendRBillSoapIn">
+    <wsdl:part name="parameters" element="tns:AppendRBill" />
+  </wsdl:message>
+  <wsdl:message name="AppendRBillSoapOut">
+    <wsdl:part name="parameters" element="tns:AppendRBillResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeleteRBillSoapIn">
+    <wsdl:part name="parameters" element="tns:DeleteRBill" />
+  </wsdl:message>
+  <wsdl:message name="DeleteRBillSoapOut">
+    <wsdl:part name="parameters" element="tns:DeleteRBillResponse" />
+  </wsdl:message>
+  <wsdl:message name="IVIsAuditSoapIn">
+    <wsdl:part name="parameters" element="tns:IVIsAudit" />
+  </wsdl:message>
+  <wsdl:message name="IVIsAuditSoapOut">
+    <wsdl:part name="parameters" element="tns:IVIsAuditResponse" />
+  </wsdl:message>
+  <wsdl:message name="IVIsStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:IVIsStatus" />
+  </wsdl:message>
+  <wsdl:message name="IVIsStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:IVIsStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="IVIsFullSoapIn">
+    <wsdl:part name="parameters" element="tns:IVIsFull" />
+  </wsdl:message>
+  <wsdl:message name="IVIsFullSoapOut">
+    <wsdl:part name="parameters" element="tns:IVIsFullResponse" />
+  </wsdl:message>
+  <wsdl:message name="QueryClientSoapIn">
+    <wsdl:part name="parameters" element="tns:QueryClient" />
+  </wsdl:message>
+  <wsdl:message name="QueryClientSoapOut">
+    <wsdl:part name="parameters" element="tns:QueryClientResponse" />
+  </wsdl:message>
+  <wsdl:message name="QueryChargeSoapIn">
+    <wsdl:part name="parameters" element="tns:QueryCharge" />
+  </wsdl:message>
+  <wsdl:message name="QueryChargeSoapOut">
+    <wsdl:part name="parameters" element="tns:QueryChargeResponse" />
+  </wsdl:message>
+  <wsdl:message name="QueryCharge1SoapIn">
+    <wsdl:part name="parameters" element="tns:QueryCharge1" />
+  </wsdl:message>
+  <wsdl:message name="QueryCharge1SoapOut">
+    <wsdl:part name="parameters" element="tns:QueryCharge1Response" />
+  </wsdl:message>
+  <wsdl:message name="QueryChargeCompanySoapIn">
+    <wsdl:part name="parameters" element="tns:QueryChargeCompany" />
+  </wsdl:message>
+  <wsdl:message name="QueryChargeCompanySoapOut">
+    <wsdl:part name="parameters" element="tns:QueryChargeCompanyResponse" />
+  </wsdl:message>
+  <wsdl:message name="QueryCargoSoapIn">
+    <wsdl:part name="parameters" element="tns:QueryCargo" />
+  </wsdl:message>
+  <wsdl:message name="QueryCargoSoapOut">
+    <wsdl:part name="parameters" element="tns:QueryCargoResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ServiceRBillSoap">
+    <wsdl:operation name="AppendRBill">
+      <wsdl:input message="tns:AppendRBillSoapIn" />
+      <wsdl:output message="tns:AppendRBillSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteRBill">
+      <wsdl:input message="tns:DeleteRBillSoapIn" />
+      <wsdl:output message="tns:DeleteRBillSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="IVIsAudit">
+      <wsdl:input message="tns:IVIsAuditSoapIn" />
+      <wsdl:output message="tns:IVIsAuditSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="IVIsStatus">
+      <wsdl:input message="tns:IVIsStatusSoapIn" />
+      <wsdl:output message="tns:IVIsStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="IVIsFull">
+      <wsdl:input message="tns:IVIsFullSoapIn" />
+      <wsdl:output message="tns:IVIsFullSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="QueryClient">
+      <wsdl:input message="tns:QueryClientSoapIn" />
+      <wsdl:output message="tns:QueryClientSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="QueryCharge">
+      <wsdl:input message="tns:QueryChargeSoapIn" />
+      <wsdl:output message="tns:QueryChargeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="QueryCharge1">
+      <wsdl:input message="tns:QueryCharge1SoapIn" />
+      <wsdl:output message="tns:QueryCharge1SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="QueryChargeCompany">
+      <wsdl:input message="tns:QueryChargeCompanySoapIn" />
+      <wsdl:output message="tns:QueryChargeCompanySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="QueryCargo">
+      <wsdl:input message="tns:QueryCargoSoapIn" />
+      <wsdl:output message="tns:QueryCargoSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ServiceRBillSoap" type="tns:ServiceRBillSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AppendRBill">
+      <soap:operation soapAction="http://www.lygport.com.cn/tofi/AppendRBill" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteRBill">
+      <soap:operation soapAction="http://www.lygport.com.cn/tofi/DeleteRBill" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IVIsAudit">
+      <soap:operation soapAction="http://www.lygport.com.cn/tofi/IVIsAudit" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IVIsStatus">
+      <soap:operation soapAction="http://www.lygport.com.cn/tofi/IVIsStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IVIsFull">
+      <soap:operation soapAction="http://www.lygport.com.cn/tofi/IVIsFull" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryClient">
+      <soap:operation soapAction="http://www.lygport.com.cn/tofi/QueryClient" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryCharge">
+      <soap:operation soapAction="http://www.lygport.com.cn/tofi/QueryCharge" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryCharge1">
+      <soap:operation soapAction="http://www.lygport.com.cn/tofi/QueryCharge1" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryChargeCompany">
+      <soap:operation soapAction="http://www.lygport.com.cn/tofi/QueryChargeCompany" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryCargo">
+      <soap:operation soapAction="http://www.lygport.com.cn/tofi/QueryCargo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ServiceRBillSoap12" type="tns:ServiceRBillSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AppendRBill">
+      <soap12:operation soapAction="http://www.lygport.com.cn/tofi/AppendRBill" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteRBill">
+      <soap12:operation soapAction="http://www.lygport.com.cn/tofi/DeleteRBill" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IVIsAudit">
+      <soap12:operation soapAction="http://www.lygport.com.cn/tofi/IVIsAudit" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IVIsStatus">
+      <soap12:operation soapAction="http://www.lygport.com.cn/tofi/IVIsStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IVIsFull">
+      <soap12:operation soapAction="http://www.lygport.com.cn/tofi/IVIsFull" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryClient">
+      <soap12:operation soapAction="http://www.lygport.com.cn/tofi/QueryClient" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryCharge">
+      <soap12:operation soapAction="http://www.lygport.com.cn/tofi/QueryCharge" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryCharge1">
+      <soap12:operation soapAction="http://www.lygport.com.cn/tofi/QueryCharge1" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryChargeCompany">
+      <soap12:operation soapAction="http://www.lygport.com.cn/tofi/QueryChargeCompany" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryCargo">
+      <soap12:operation soapAction="http://www.lygport.com.cn/tofi/QueryCargo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ServiceRBill">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">http://www.lygport.com.cn/tofi/</wsdl:documentation>
+    <wsdl:port name="ServiceRBillSoap" binding="tns:ServiceRBillSoap">
+      <soap:address location="http://218.92.115.32/ToFIService/ServiceRBill.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ServiceRBillSoap12" binding="tns:ServiceRBillSoap12">
+      <soap12:address location="http://218.92.115.32/ToFIService/ServiceRBill.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

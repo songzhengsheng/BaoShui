@@ -1,0 +1,108 @@
+﻿
+@{
+    ViewBag.Title = "SureInfoPage";
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
+}
+@using OracleBase.Models
+@model B_TB_Sure
+@using (Html.BeginForm("", "", @FormMethod.Post, new { id = "form1", @class = "form-horizontal" }))
+{
+
+    <div class="form-group">
+
+
+        <label class="col-sm-2 control-label">货代：</label>
+        <div class="col-sm-4">
+            <input id="GoodsName" name="GoodsName" value="@Model.HUODAI" maxlength="50" type="text" class="form-control" required="" aria-required="true">
+        </div>
+        <label class="col-sm-2 control-label">货物名称：</label>
+        <div class="col-sm-4">
+            <input id="FullName" type="text" class="form-control" value="@Model.GoodsName" maxlength="50" name="FullName" required="" aria-required="true">
+        </div>
+    </div>
+
+    <div class="form-group">
+
+
+        <label class="col-sm-2 control-label">货物类型：</label>
+        <div class="col-sm-4">
+            <input id="GoodsName" name="GoodsName" value="@Model.GoodsType" maxlength="50" type="text" class="form-control" required="" aria-required="true">
+        </div>
+        <label class="col-sm-2 control-label">挂牌数量：</label>
+        <div class="col-sm-4">
+            <input id="FullName" type="text" class="form-control" value="@Model.ShuLiang" maxlength="50" name="FullName" required="" aria-required="true">
+        </div>
+    </div>
+
+
+    <div class="form-group">
+
+        <label class="col-sm-2 control-label">件重：</label>
+        <div class="col-sm-4">
+            <input id="Sjm" type="text" class="form-control" value="@Model.PIECEWEIGHT" maxlength="50" name="Sjm" required="" aria-required="true">
+        </div>
+
+        <label class="col-sm-2 control-label">航次：</label>
+        <div class="col-sm-4">
+            <input id="FullName" type="text" class="form-control" value="@Model.VGNO" maxlength="50" name="FullName" required="" aria-required="true">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">提单号：</label>
+        <div class="col-sm-4">
+            <input id="FullName" type="text" class="form-control" value="@Model.BLNO" maxlength="50" name="FullName" required="" aria-required="true">
+        </div>
+        <label class="col-sm-2 control-label">是否集装箱：</label>
+        <div class="col-sm-4">
+            <input id="FullName" type="text" class="form-control" value="@Model.MARK_GOOGSBILLTYPE" maxlength="50" name="FullName" required="" aria-required="true">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">内外贸：</label>
+        <div class="col-sm-4">
+            <input id="Code" type="text" class="form-control" value="@Model.NWM" maxlength="50" name="Code" required="" aria-required="true">
+        </div>
+        <label class="col-sm-2 control-label">合同号：</label>
+        <div class="col-sm-4">
+            <input id="FullName" type="text" class="form-control" value="@Model.HETONGHAO" maxlength="50" name="FullName" required="" aria-required="true">
+        </div>
+    </div>
+
+    <div class="form-group">
+
+
+        <label class="col-sm-2 control-label">大宗平台提交人：</label>
+        <div class="col-sm-4">
+            <input id="FullName" type="text" class="form-control" value="@Model.CreatPeopleID" maxlength="50" name="FullName" required="" aria-required="true">
+        </div>
+
+        <label class="col-sm-2 control-label">船名：</label>
+        <div class="col-sm-4">
+            <input id="FullName" type="text" class="form-control" value="@Model.ShipName" maxlength="50" name="FullName" required="" aria-required="true">
+        </div>
+
+    </div>
+    <div class="form-group">
+
+        <label class="col-sm-2 control-label">备注：</label>
+        <div class="col-sm-4">
+            <input id="FullName" type="text" class="form-control" value="@Model.MARK" maxlength="50" name="FullName" required="" aria-required="true">
+        </div>
+        <label class="col-sm-2 control-label">状态：</label>
+        <div class="col-sm-4">
+            <input id="FullName" type="text" class="form-control" value="@Model.State" maxlength="50" name="FullName" required="" aria-required="true">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">创建时间：</label>
+        <div class="col-sm-4">
+            <input id="FullName" type="text" class="form-control" value="@Model.CreatTime" maxlength="50" name="FullName" required="" aria-required="true">
+        </div>
+        <label class="col-sm-2 control-label">创建人：</label>
+        <div class="col-sm-4">
+            <input id="FullName" type="text" class="form-control" value="@Model.CreatPeople" maxlength="50" name="FullName" required="" aria-required="true">
+        </div>
+    </div>
+}
+
+

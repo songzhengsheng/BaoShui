@@ -1,0 +1,103 @@
+﻿
+@{
+    ViewBag.Title = "SureBao";
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
+}
+@using OracleBase.Models;
+@model C_TB_HC_GOODSBILL
+<script src="~/Content/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+
+    function AddData() {
+        if ($("#form1").valid()) {
+            $.ajax({
+                //提交数据的类型 POST GET
+                type: "POST",
+                //提交的网址
+                url: $('#form1').attr('action'),
+                //提交的数据
+                data: $('#form1').serialize(),
+                //返回数据的格式
+                datatype: "json",//"xml", "html", "script", "json", "jsonp", "text".
+                //在请求之前调用的函数
+                beforeSend: function () {
+                    //$("#msg").html("logining");
+                },
+                //成功返回之后调用的函数
+                success: function (data) {
+                    alert(data);
+                    window.parent.location.reload(); //刷新父页面
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(index);
+                },
+                //调用执行后调用的函数
+                complete: function (XMLHttpRequest, textStatus) {
+
+                    //HideLoading();
+                },
+                //调用出错执行的函数
+                error: function () {
+                    //请求出错处理
+                }
+            });
+        }
+    }
+     function SureBao() {
+        if (confirm("确认操作") == true) {
+            var Shyj = $("#RejectReason").val();
+            var postData = {
+                id: '@Model.ID',
+                Shyj: Shyj
+
+            };
+            $.ajax({
+                type: 'POST',
+                url: '/GoodsBill/Ajaxbh',
+                data: postData,
+                dataType: 'json',
+                success: function (data, textStatus) {
+                    alert(data);
+                    window.parent.location.reload(); //刷新父页面
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(index);
+                },
+                error: function (xmlHttpRequest, textStatus, errorThrown) {
+                }
+            });
+        }
+     }
+
+</script>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                @using (Html.BeginForm("", "GoodsBill", @FormMethod.Post, new { id = "form1", @class = "form-horizontal" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary()
+                    @Html.HiddenFor(n => n.ID)
+                    <div class="form-group">
+
+
+                        <div class="col-sm-4" style="width:90%;height:200px;float:left">
+                            <label>审核意见:</label>  @Html.TextAreaFor(model => model.RejectReason, new { @class = "form-control", @width = "100%", @style = "height:140px;" })
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-2">
+                            
+                                    <button class="btn btn-primary" type="button" onclick="SureBao()">确认</button>
+                             
+
+
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>

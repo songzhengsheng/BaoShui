@@ -1,0 +1,154 @@
+﻿
+@{
+    ViewBag.Title = "导出主页面";
+    Layout = "~/Views/Shared/_LayoutBase.cshtml";
+
+}
+<script src="~/Content/layer/layer.js"></script>
+<script src="~/Content/My97DatePicker/WdatePicker.js"></script>
+<script>
+    function expExcel() {
+        var postData = {
+
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '/ToOut/WorkNumToExcel_year?year=' + $("#Year").val(),
+            data: postData,
+            dataType: 'json',
+            success: function (data, textStatus) {
+                data = eval('(' + data + ')');
+                if (data.state == "error") {
+                    layer.msg(data.message, { icon: 6 });
+
+                } else {
+                    location.href = data.message;
+
+                }
+                
+            },
+            error: function (xmlHttpRequest, textStatus, errorThrown) {
+            }
+        });
+    }
+    function expExcel_ribao() {
+        var postData = {
+
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '/ToOut/WorkNumToExcel_ribao?date=' + $("#ribao").val() + '&&date1=' + $("#ribao1").val(),
+            data: postData,
+            dataType: 'json',
+            //beforeSend: function () { layer.load("请等待。。。"); },
+
+            success: function (data, textStatus) {
+                data = eval('(' + data + ')');
+                if (data.state == "error") {
+                    layer.msg(data.message, { icon: 6 });
+
+                } else {
+                    location.href = data.message;
+
+                }
+
+            },
+            complete: function (XMLHttpRequest, textStatus) {
+                alert("导出成功");
+                //HideLoading();
+            },
+
+            error: function (xmlHttpRequest, textStatus, errorThrown) {
+            }
+        });
+    }
+</script>
+<form class="form-horizontal" id="form1" action="/ToOut/WorkNumToExcel" method="get">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="contact-box">
+                    <div class="form-group">
+                        <label class="col-sm-3  control-label">开始时间：</label>
+                        <div class="col-sm-9">
+                            <input id="starTime" name="starTime" type="text" class="form-control " required="required" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" />
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3  control-label">结束时间：</label>
+                        <div class="col-sm-9">
+                            <input id="endTime" name="endTime" type="text" class="form-control" required="required" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" />
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3  control-label"></label>
+                        <div class="col-sm-9 ">
+                            <button class="btn btn-primary" type="submit">作业量导出</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="contact-box">
+                    <div class="form-group">
+                        <label class="col-sm-3  control-label">导出年份：</label>
+                        <div class="col-sm-9">
+                            <input id="Year" name="Year" type="text" class="form-control" onclick="WdatePicker({ dateFmt: 'yyyy' })" />
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3  control-label"></label>
+                        <div class="col-sm-9 ">
+                            <button class="btn btn-primary" type="button" onclick="expExcel()">年进出库导出</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="contact-box">
+                    <div class="form-group">
+                        <label class="col-sm-3  control-label">导出日期从：</label>
+                        <div class="col-sm-9">
+                            <input id="ribao" name="ribao" type="text" class="form-control" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" />
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3  control-label">导出日期至：</label>
+                        <div class="col-sm-9">
+                            <input id="ribao1" name="ribao1" type="text" class="form-control" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" />
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3  control-label"></label>
+                        <div class="col-sm-9 ">
+                            <button class="btn btn-primary" type="button" onclick="expExcel_ribao()">新路代日报表导出</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<script>
+    $(function () {
+        parent.layer.closeAll();
+    });
+</script>
+

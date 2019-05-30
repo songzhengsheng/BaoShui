@@ -1,0 +1,464 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="C_CARTEAM">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="GoodsName" Type="varchar2" MaxLength="255" />
+    <Property Name="Code" Type="varchar2" MaxLength="255" />
+    <Property Name="Sjm" Type="varchar2" MaxLength="255" />
+    <Property Name="FullName" Type="varchar2" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="C_DIC_JILIANG">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="varchar2" MaxLength="255" />
+    <Property Name="Name" Type="varchar2" MaxLength="255" />
+    <Property Name="Sjm" Type="varchar2" MaxLength="255" />
+    <Property Name="ReMark" Type="varchar2" MaxLength="255" />
+    <Property Name="creater" Type="varchar2" MaxLength="255" />
+    <Property Name="creatTime" Type="date" />
+  </EntityType>
+  <EntityType Name="C_Dic_YuanQu">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="YuanQuName" Type="varchar2" MaxLength="255" Nullable="false" />
+    <Property Name="PicPach" Type="varchar2" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="C_GOODS">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="GoodsName" Type="varchar2" MaxLength="255" />
+    <Property Name="Code" Type="varchar2" MaxLength="255" />
+    <Property Name="Sjm" Type="varchar2" MaxLength="255" />
+    <Property Name="FullName" Type="varchar2" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="C_GOODSAGENT">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="varchar2" MaxLength="255" />
+    <Property Name="Name" Type="varchar2" MaxLength="255" />
+    <Property Name="Sjm" Type="varchar2" MaxLength="255" />
+    <Property Name="Type" Type="varchar2" MaxLength="255" />
+    <Property Name="FullName" Type="varchar2" MaxLength="255" />
+    <Property Name="Remak" Type="varchar2" MaxLength="255" />
+    <Property Name="creater" Type="varchar2" MaxLength="255" />
+    <Property Name="creatTime" Type="date" />
+    <Property Name="ModifyUserName" Type="varchar2" MaxLength="255" />
+    <Property Name="ModifyTime" Type="date" />
+    <Property Name="ExamineUserName" Type="varchar2" MaxLength="255" />
+    <Property Name="ExamineTime" Type="date" />
+    <Property Name="State" Type="varchar2" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="C_GOODSTYPE">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="GoodsName" Type="varchar2" MaxLength="255" />
+    <Property Name="Code" Type="varchar2" MaxLength="255" />
+    <Property Name="Sjm" Type="varchar2" MaxLength="255" />
+    <Property Name="FullName" Type="varchar2" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="C_TB_CODE_BOOTH">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Storage_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="TB_CODE_BOOTH" Type="varchar2" MaxLength="255" />
+    <Property Name="CODE_BOOTH" Type="varchar2" MaxLength="255" />
+    <Property Name="BOOTH" Type="varchar2" MaxLength="255" />
+    <Property Name="LOGOGRAM" Type="varchar2" MaxLength="255" />
+    <Property Name="REMARK" Type="varchar2" MaxLength="255" />
+    <Property Name="MARK_FORBID" Type="varchar2" MaxLength="10" />
+    <Property Name="color" Type="varchar2" MaxLength="255" />
+    <Property Name="height" Type="number" Precision="38" Scale="0" />
+    <Property Name="width" Type="number" Precision="38" Scale="0" />
+    <Property Name="pageX" Type="number" Precision="38" Scale="0" />
+    <Property Name="pageY" Type="number" Precision="38" Scale="0" />
+    <Property Name="CompanyId" Type="number" Precision="38" Scale="0" />
+  </EntityType>
+  <EntityType Name="C_TB_CODE_CAOZUO">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="CODE" Type="varchar2" MaxLength="255" />
+    <Property Name="NAME" Type="varchar2" MaxLength="255" />
+    <Property Name="DISPLAYNAME" Type="varchar2" MaxLength="255" />
+    <Property Name="CODE_OPBTYPE" Type="varchar2" MaxLength="255" />
+    <Property Name="CODE_CARRIER_S" Type="varchar2" MaxLength="255" />
+    <Property Name="CODE_CARRIER_E" Type="varchar2" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="C_TB_CODE_CUSTOMER">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="varchar2" MaxLength="255" />
+    <Property Name="Name" Type="varchar2" MaxLength="255" />
+    <Property Name="Sjm" Type="varchar2" MaxLength="255" />
+    <Property Name="ReMark" Type="varchar2" MaxLength="255" />
+    <Property Name="creater" Type="varchar2" MaxLength="255" />
+    <Property Name="creatTime" Type="date" />
+  </EntityType>
+  <EntityType Name="C_TB_CODE_INOUT">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="varchar2" MaxLength="255" />
+    <Property Name="Name" Type="varchar2" MaxLength="255" />
+    <Property Name="ReMark" Type="varchar2" MaxLength="255" />
+    <Property Name="Sjm" Type="varchar2" MaxLength="255" />
+    <Property Name="creater" Type="varchar2" MaxLength="255" />
+    <Property Name="creatTime" Type="date" />
+  </EntityType>
+  <EntityType Name="C_TB_CODE_PACK">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="varchar2" MaxLength="255" />
+    <Property Name="Name" Type="varchar2" MaxLength="255" />
+    <Property Name="Sjm" Type="varchar2" MaxLength="255" />
+    <Property Name="ReMark" Type="varchar2" MaxLength="255" />
+    <Property Name="creater" Type="varchar2" MaxLength="255" />
+    <Property Name="creatTime" Type="date" />
+  </EntityType>
+  <EntityType Name="C_TB_CODE_SECTION">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="CODE_COMPANY" Type="number" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="CODE_COMPANY_Name" Type="varchar2" MaxLength="255" />
+    <Property Name="CODE_SECTION" Type="varchar2" MaxLength="255" />
+    <Property Name="SECTION" Type="varchar2" MaxLength="255" />
+    <Property Name="LOGOGRAM" Type="varchar2" MaxLength="255" />
+    <Property Name="REMARK" Type="varchar2" MaxLength="255" />
+    <Property Name="MARK_FORBID" Type="varchar2" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="C_TB_CODE_STORAGE">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="SECTION_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="CODE_STORAGE" Type="varchar2" MaxLength="255" />
+    <Property Name="STORAGEName" Type="varchar2" MaxLength="255" />
+    <Property Name="LOGOGRAM" Type="varchar2" MaxLength="255" />
+    <Property Name="REMARK" Type="varchar2" MaxLength="255" />
+    <Property Name="THISTYPE" Type="varchar2" MaxLength="255" />
+    <Property Name="OUT_TYPE" Type="varchar2" MaxLength="20" />
+    <Property Name="FULLNAME" Type="varchar2" MaxLength="255" />
+    <Property Name="ENGINE" Type="varchar2" MaxLength="255" />
+    <Property Name="UNITCAPACITY" Type="varchar2" MaxLength="255" />
+    <Property Name="TRANS_DISTANCE" Type="number" Precision="38" Scale="0" />
+    <Property Name="INOUTTYPE" Type="varchar2" MaxLength="255" />
+    <Property Name="NUM_VBOOTH" Type="varchar2" MaxLength="255" />
+    <Property Name="NUM_BOOTH" Type="varchar2" MaxLength="255" />
+    <Property Name="AREA" Type="varchar2" MaxLength="255" />
+    <Property Name="CUBAGE" Type="varchar2" MaxLength="255" />
+    <Property Name="EFFECT_AREA" Type="varchar2" MaxLength="255" />
+    <Property Name="AREA_USERATE" Type="varchar2" MaxLength="255" />
+    <Property Name="UNIT_LOAD_TECH_FIXED" Type="varchar2" MaxLength="255" />
+    <Property Name="UNIT_LOAD_USE_FIXED" Type="varchar2" MaxLength="255" />
+    <Property Name="WAREHOUSE_CAPACITY" Type="varchar2" MaxLength="255" />
+    <Property Name="AVG_WAREHOUSE_CAPACITY" Type="varchar2" MaxLength="255" />
+    <Property Name="THROUGH_ABILITY" Type="varchar2" MaxLength="255" />
+    <Property Name="VOLUME" Type="varchar2" MaxLength="255" />
+    <Property Name="IPORT_CODE_COMPANY" Type="varchar2" MaxLength="255" />
+    <Property Name="CODE_SCHEME" Type="varchar2" MaxLength="255" />
+    <Property Name="CODE_SCHEMEITEM" Type="varchar2" MaxLength="255" />
+    <Property Name="LAT" Type="varchar2" MaxLength="255" />
+    <Property Name="LOT" Type="varchar2" MaxLength="255" />
+    <Property Name="CODE_CLIENT" Type="varchar2" MaxLength="255" />
+    <Property Name="ISTC" Type="varchar2" MaxLength="10" />
+    <Property Name="MARK_FORBID" Type="number" Precision="38" Scale="0" />
+    <Property Name="STORAGETYPE" Type="varchar2" MaxLength="255" />
+    <Property Name="CODE_WORKINGAREA" Type="varchar2" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="C_TB_CODE_TRADE">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="varchar2" MaxLength="255" />
+    <Property Name="Name" Type="varchar2" MaxLength="255" />
+    <Property Name="ReMark" Type="varchar2" MaxLength="255" />
+    <Property Name="Sjm" Type="varchar2" MaxLength="255" />
+    <Property Name="creater" Type="varchar2" MaxLength="255" />
+    <Property Name="creatTime" Type="date" />
+  </EntityType>
+  <EntityType Name="C_TB_CODE_VOYAGE">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="varchar2" MaxLength="255" />
+    <Property Name="Name" Type="varchar2" MaxLength="255" />
+    <Property Name="Sjm" Type="varchar2" MaxLength="255" />
+    <Property Name="ReMark" Type="varchar2" MaxLength="255" />
+    <Property Name="creater" Type="varchar2" MaxLength="255" />
+    <Property Name="creatTime" Type="date" />
+  </EntityType>
+  <EntityType Name="C_TB_HC_CONSIGN">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="GOODSBILL_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="CGNO" Type="varchar2" MaxLength="255" />
+    <Property Name="CODE_OPERATION" Type="varchar2" MaxLength="255" />
+    <Property Name="WeiTuoRen" Type="varchar2" MaxLength="255" />
+    <Property Name="ShouHuoRen" Type="varchar2" MaxLength="255" />
+    <Property Name="CODE_TRANS" Type="varchar2" MaxLength="255" />
+    <Property Name="WeiTuoTime" Type="date" />
+    <Property Name="BLNO" Type="varchar2" MaxLength="255" />
+    <Property Name="PLANAMOUNT" Type="number" Precision="38" Scale="0" />
+    <Property Name="PLANWEIGHT" Type="number" Precision="38" Scale="0" />
+    <Property Name="PLANVOLUME" Type="number" Precision="38" Scale="0" />
+    <Property Name="CONTAINERTYPE" Type="varchar2" MaxLength="255" />
+    <Property Name="CONTAINERNUM" Type="number" Precision="38" Scale="0" />
+    <Property Name="PAPERYNO" Type="varchar2" MaxLength="255" />
+    <Property Name="BoolQuanLuYun" Type="varchar2" MaxLength="10" />
+    <Property Name="SPONSOR" Type="varchar2" MaxLength="255" />
+    <Property Name="Phone" Type="varchar2" MaxLength="20" />
+    <Property Name="CREATORNAME" Type="varchar2" MaxLength="255" />
+    <Property Name="CREATETIME" Type="date" />
+    <Property Name="AUDITTIME" Type="date" />
+    <Property Name="AUDITORNAME" Type="varchar2" MaxLength="255" />
+    <Property Name="CaoZuoGuoCheng" Type="varchar2" MaxLength="255" />
+    <Property Name="BeiZhu" Type="varchar2" MaxLength="255" />
+    <Property Name="HengZhong" Type="varchar2" MaxLength="255" />
+    <Property Name="State" Type="varchar2" MaxLength="255" />
+    <Property Name="GoodsBill_Num" Type="varchar2" MaxLength="255" />
+    <Property Name="YuanQuID" Type="number" Precision="38" Scale="0" />
+    <Property Name="CarTeam" Type="varchar2" MaxLength="255" />
+    <Property Name="GoodsType" Type="varchar2" MaxLength="255" />
+    <Property Name="CarMan" Type="varchar2" MaxLength="255" />
+    <Property Name="CarManPhone" Type="varchar2" MaxLength="255" />
+    <Property Name="BillBranch" Type="varchar2" MaxLength="255" />
+    <Property Name="BillVolume" Type="varchar2" MaxLength="255" />
+    <Property Name="jccj" Type="varchar2" MaxLength="255" />
+    <Property Name="GoodsName" Type="varchar2" MaxLength="255" />
+    <Property Name="ShipName" Type="varchar2" MaxLength="255" />
+    <Property Name="TestingVolume" Type="varchar2" MaxLength="255" />
+    <Property Name="VGNO" Type="varchar2" MaxLength="255" />
+    <Property Name="jbr" Type="varchar2" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="C_TB_HC_CONTRACT">
+    <Key>
+      <PropertyRef Name="Guid" />
+    </Key>
+    <Property Name="Guid" Type="varchar2" MaxLength="255" Nullable="false" />
+    <Property Name="ContoractNumber" Type="varchar2" MaxLength="100" />
+    <Property Name="EntrustPeople" Type="varchar2" MaxLength="255" />
+    <Property Name="EntrustID" Type="number" Precision="38" Scale="0" />
+    <Property Name="CreatTime" Type="date" />
+    <Property Name="State" Type="varchar2" MaxLength="50" />
+    <Property Name="YuanQuID" Type="number" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="LastEdiTime" Type="date" />
+  </EntityType>
+  <EntityType Name="C_TB_HC_CONTRACT_DETAILED">
+    <Key>
+      <PropertyRef Name="Guid" />
+    </Key>
+    <Property Name="Guid" Type="varchar2" MaxLength="255" Nullable="false" />
+    <Property Name="CONTRACT_Guid" Type="varchar2" MaxLength="255" />
+    <Property Name="HuoZhong" Type="varchar2" MaxLength="255" />
+    <Property Name="HuoMing" Type="varchar2" MaxLength="100" />
+    <Property Name="FeiMuZhongLei" Type="varchar2" MaxLength="20" />
+    <Property Name="JiLiangDanWei" Type="varchar2" MaxLength="100" />
+    <Property Name="DanJia" Type="number" Precision="38" Scale="0" />
+    <Property Name="MianDuiCunTianShu" Type="number" Precision="38" Scale="0" />
+    <Property Name="BiaoZhi" Type="varchar2" MaxLength="10" />
+    <Property Name="BeiZhu" Type="varchar2" MaxLength="255" />
+    <Property Name="CreatTime" Type="date" />
+    <Property Name="LastEdiTime" Type="date" />
+    <Property Name="State" Type="varchar2" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="C_TB_HC_CONTRACT_FILES">
+    <Key>
+      <PropertyRef Name="Guid" />
+    </Key>
+    <Property Name="CONTRACT_Guid" Type="varchar2" MaxLength="50" Nullable="false" />
+    <Property Name="path" Type="varchar2" MaxLength="255" />
+    <Property Name="FileName" Type="varchar2" MaxLength="255" />
+    <Property Name="Guid" Type="varchar2" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="C_TB_HC_GOODSBILL">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="GBNO" Type="varchar2" MaxLength="24" />
+    <Property Name="CODE_INOUT" Type="varchar2" MaxLength="255" />
+    <Property Name="NWM" Type="varchar2" MaxLength="255" />
+    <Property Name="C_GOODSAGENT_ID" Type="number" Precision="38" Scale="0" />
+    <Property Name="C_GOODSAGENT_NAME" Type="varchar2" MaxLength="255" />
+    <Property Name="CODE_PACK_ID" Type="number" Precision="38" Scale="0" />
+    <Property Name="CODE_PACK_NAME" Type="varchar2" MaxLength="255" />
+    <Property Name="PIECEWEIGHT" Type="number" Precision="38" Scale="0" />
+    <Property Name="VGNO" Type="varchar2" MaxLength="255" />
+    <Property Name="MAITOU" Type="varchar2" MaxLength="255" />
+    <Property Name="BLNO" Type="varchar2" MaxLength="255" />
+    <Property Name="PLANAMOUNT" Type="number" Precision="38" Scale="0" />
+    <Property Name="PLANWEIGHT" Type="number" Precision="38" Scale="0" />
+    <Property Name="MARK_GOOGSBILLTYPE" Type="varchar2" MaxLength="10" />
+    <Property Name="MARK" Type="varchar2" MaxLength="255" />
+    <Property Name="CHANGCUNLIANG" Type="varchar2" MaxLength="255" />
+    <Property Name="KEBANLIWEITUOLIANG" Type="varchar2" MaxLength="255" />
+    <Property Name="JINXIANGZONGSHU" Type="number" Precision="38" Scale="0" />
+    <Property Name="ZAICHANGXIANGSHU" Type="number" Precision="38" Scale="0" />
+    <Property Name="HETONGHAO" Type="varchar2" MaxLength="255" />
+    <Property Name="HETONGBIANMA" Type="varchar2" MaxLength="255" />
+    <Property Name="CreatTime" Type="date" />
+    <Property Name="CreatPeople" Type="varchar2" MaxLength="50" />
+    <Property Name="State" Type="varchar2" MaxLength="255" />
+    <Property Name="C_GOODS" Type="varchar2" MaxLength="255" />
+    <Property Name="YuanQuID" Type="number" Precision="38" Scale="0" />
+    <Property Name="CONTRACT_Guid" Type="varchar2" MaxLength="255" />
+    <Property Name="ContoractNumber" Type="varchar2" MaxLength="255" />
+    <Property Name="ShipName" Type="varchar2" MaxLength="255" />
+    <Property Name="KunCun" Type="varchar2" MaxLength="255" />
+    <Property Name="jcjs" Type="varchar2" MaxLength="255" />
+    <Property Name="jccj" Type="varchar2" MaxLength="255" />
+    <Property Name="GoodsType" Type="varchar2" MaxLength="255" />
+    <Property Name="KunCunW" Type="varchar2" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="C_TB_HS_STOCKDORMANT">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="CODE_STORAGE" Type="varchar2" MaxLength="255" />
+    <Property Name="CODE_BOOTH" Type="varchar2" MaxLength="255" />
+    <Property Name="GBNO" Type="varchar2" MaxLength="255" />
+    <Property Name="AMOUNT" Type="number" Precision="38" Scale="0" />
+    <Property Name="WEIGHT" Type="number" Precision="38" Scale="0" />
+    <Property Name="VOLUME" Type="number" Precision="38" Scale="0" />
+    <Property Name="FIRST_INDATE" Type="date" />
+    <Property Name="BOOTH_INDATE" Type="date" />
+    <Property Name="REMARK" Type="varchar2" MaxLength="255" />
+    <Property Name="LastEidTime" Type="date" />
+    <Property Name="TALLYBILL_ID" Type="varchar2" MaxLength="255" />
+    <Property Name="HuoDai" Type="varchar2" MaxLength="255" />
+    <Property Name="GoodsName" Type="varchar2" MaxLength="255" />
+    <Property Name="YuanQuID" Type="number" Precision="38" Scale="0" />
+  </EntityType>
+  <EntityType Name="C_TB_HS_TALLYBILL">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="TBNO" Type="varchar2" MaxLength="255" Nullable="false" />
+    <Property Name="CONSIGN_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="CGNO" Type="varchar2" MaxLength="255" Nullable="false" />
+    <Property Name="CODE_SECTION" Type="varchar2" MaxLength="255" Nullable="false" />
+    <Property Name="SIGNDATE" Type="date" />
+    <Property Name="CODE_OPSTYPE" Type="varchar2" MaxLength="20" />
+    <Property Name="PIECEWEIGHT" Type="number" Precision="38" Scale="0" />
+    <Property Name="AMOUNT" Type="number" Precision="38" Scale="0" />
+    <Property Name="WEIGHT" Type="number" Precision="38" Scale="0" />
+    <Property Name="VOLUME" Type="number" Precision="38" Scale="0" />
+    <Property Name="CODE_QUALITY" Type="varchar2" MaxLength="10" />
+    <Property Name="CODE_WORKTEAM" Type="varchar2" MaxLength="10" />
+    <Property Name="BEGINTIME" Type="date" />
+    <Property Name="ENDTIME" Type="date" />
+    <Property Name="REMARK" Type="varchar2" MaxLength="255" />
+    <Property Name="USERNAME" Type="varchar2" MaxLength="255" />
+    <Property Name="CODE_TALLYMAN" Type="varchar2" MaxLength="255" />
+    <Property Name="TALLYMAN" Type="varchar2" MaxLength="255" />
+    <Property Name="MARK_CLEARBOOTH" Type="varchar2" MaxLength="255" />
+    <Property Name="TRAINNUM" Type="number" Precision="38" Scale="0" />
+    <Property Name="CODE_LOADPLACE" Type="varchar2" MaxLength="255" />
+    <Property Name="TALLYNUMRIGHT" Type="varchar2" MaxLength="255" />
+    <Property Name="CONTAINERNUM" Type="number" Precision="38" Scale="0" />
+    <Property Name="State" Type="varchar2" MaxLength="10" />
+    <Property Name="CAOZUO" Type="varchar2" MaxLength="255" />
+    <Property Name="FANGSHI" Type="varchar2" MaxLength="255" />
+    <Property Name="CHANGORCAR" Type="varchar2" MaxLength="255" />
+    <Property Name="GOODSBILL" Type="varchar2" MaxLength="255" />
+    <Property Name="XIANGSHU" Type="number" Precision="38" Scale="0" />
+    <Property Name="GONGBAN" Type="varchar2" MaxLength="255" />
+    <Property Name="STORAG" Type="varchar2" MaxLength="255" />
+    <Property Name="Type" Type="varchar2" MaxLength="255" />
+    <Property Name="CleraNum" Type="varchar2" MaxLength="255" />
+    <Property Name="GoodsName" Type="varchar2" MaxLength="255" />
+    <Property Name="YuanQuID" Type="number" Precision="38" Scale="0" />
+    <Property Name="HangCi" Type="varchar2" MaxLength="255" />
+    <Property Name="HuoDai" Type="varchar2" MaxLength="255" />
+    <Property Name="ChuanMing" Type="varchar2" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="Sys_Menu">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="menuName" Type="varchar2" MaxLength="255" />
+    <Property Name="fatherId" Type="number" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="url" Type="varchar2" MaxLength="255" />
+    <Property Name="sort" Type="number" Precision="38" Scale="0" />
+  </EntityType>
+  <EntityType Name="Sys_Role">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="roleId" Type="number" Precision="38" Scale="0" Nullable="false" />
+    <Property Name="roleName" Type="varchar2" MaxLength="255" />
+    <Property Name="menuId" Type="varchar2" MaxLength="500" />
+  </EntityType>
+  <EntityType Name="Sys_User">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="userName" Type="varchar2" MaxLength="255" />
+    <Property Name="passWord" Type="varchar2" MaxLength="255" />
+    <Property Name="roleId" Type="number" Precision="38" Scale="0" />
+    <Property Name="roleName" Type="varchar2" MaxLength="255" />
+    <Property Name="state" Type="varchar2" MaxLength="255" />
+    <Property Name="email" Type="varchar2" MaxLength="255" />
+    <Property Name="YuanQuId" Type="number" Precision="38" Scale="0" />
+  </EntityType>
+  <EntityContainer Name="ModelStoreContainer">
+    <EntitySet Name="C_CARTEAM" EntityType="Self.C_CARTEAM" Schema="STORAGEHARBOR" store:Type="Tables" />
+    <EntitySet Name="C_DIC_JILIANG" EntityType="Self.C_DIC_JILIANG" Schema="STORAGEHARBOR" store:Type="Tables" />
+    <EntitySet Name="C_Dic_YuanQu" EntityType="Self.C_Dic_YuanQu" Schema="STORAGEHARBOR" store:Type="Tables" />
+    <EntitySet Name="C_GOODS" EntityType="Self.C_GOODS" Schema="STORAGEHARBOR" store:Type="Tables" />
+    <EntitySet Name="C_GOODSAGENT" EntityType="Self.C_GOODSAGENT" Schema="STORAGEHARBOR" store:Type="Tables" />
+    <EntitySet Name="C_GOODSTYPE" EntityType="Self.C_GOODSTYPE" Schema="STORAGEHARBOR" store:Type="Tables" />
+    <EntitySet Name="C_TB_CODE_BOOTH" EntityType="Self.C_TB_CODE_BOOTH" Schema="STORAGEHARBOR" store:Type="Tables" />
+    <EntitySet Name="C_TB_CODE_CAOZUO" EntityType="Self.C_TB_CODE_CAOZUO" Schema="STORAGEHARBOR" store:Type="Tables" />
+    <EntitySet Name="C_TB_CODE_CUSTOMER" EntityType="Self.C_TB_CODE_CUSTOMER" Schema="STORAGEHARBOR" store:Type="Tables" />
+    <EntitySet Name="C_TB_CODE_INOUT" EntityType="Self.C_TB_CODE_INOUT" Schema="STORAGEHARBOR" store:Type="Tables" />
+    <EntitySet Name="C_TB_CODE_PACK" EntityType="Self.C_TB_CODE_PACK" Schema="STORAGEHARBOR" store:Type="Tables" />
+    <EntitySet Name="C_TB_CODE_SECTION" EntityType="Self.C_TB_CODE_SECTION" Schema="STORAGEHARBOR" store:Type="Tables" />
+    <EntitySet Name="C_TB_CODE_STORAGE" EntityType="Self.C_TB_CODE_STORAGE" Schema="STORAGEHARBOR" store:Type="Tables" />
+    <EntitySet Name="C_TB_CODE_TRADE" EntityType="Self.C_TB_CODE_TRADE" Schema="STORAGEHARBOR" store:Type="Tables" />
+    <EntitySet Name="C_TB_CODE_VOYAGE" EntityType="Self.C_TB_CODE_VOYAGE" Schema="STORAGEHARBOR" store:Type="Tables" />
+    <EntitySet Name="C_TB_HC_CONSIGN" EntityType="Self.C_TB_HC_CONSIGN" Schema="STORAGEHARBOR" store:Type="Tables" />
+    <EntitySet Name="C_TB_HC_CONTRACT" EntityType="Self.C_TB_HC_CONTRACT" Schema="STORAGEHARBOR" store:Type="Tables" />
+    <EntitySet Name="C_TB_HC_CONTRACT_DETAILED" EntityType="Self.C_TB_HC_CONTRACT_DETAILED" Schema="STORAGEHARBOR" store:Type="Tables" />
+    <EntitySet Name="C_TB_HC_CONTRACT_FILES" EntityType="Self.C_TB_HC_CONTRACT_FILES" Schema="STORAGEHARBOR" store:Type="Tables" />
+    <EntitySet Name="C_TB_HC_GOODSBILL" EntityType="Self.C_TB_HC_GOODSBILL" Schema="STORAGEHARBOR" store:Type="Tables" />
+    <EntitySet Name="C_TB_HS_STOCKDORMANT" EntityType="Self.C_TB_HS_STOCKDORMANT" Schema="STORAGEHARBOR" store:Type="Tables" />
+    <EntitySet Name="C_TB_HS_TALLYBILL" EntityType="Self.C_TB_HS_TALLYBILL" Schema="STORAGEHARBOR" store:Type="Tables" />
+    <EntitySet Name="Sys_Menu" EntityType="Self.Sys_Menu" Schema="STORAGEHARBOR" store:Type="Tables" />
+    <EntitySet Name="Sys_Role" EntityType="Self.Sys_Role" Schema="STORAGEHARBOR" store:Type="Tables" />
+    <EntitySet Name="Sys_User" EntityType="Self.Sys_User" Schema="STORAGEHARBOR" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

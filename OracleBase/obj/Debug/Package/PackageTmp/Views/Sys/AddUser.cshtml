@@ -1,0 +1,232 @@
+﻿@{
+    ViewBag.Title = "AddUser";
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
+}
+
+@using OracleBase.Models
+@model OracleBase.Models.Sys_User
+<style type="text/css"> 
+/*密码强度*/
+    .pw-strength {clear: both;position: relative;top: 8px;width: 180px;}
+    .pw-bar {
+        background: url("/Content/images/pwd-1.png") no-repeat;
+        height: 14px;
+        overflow: hidden;
+        width: 179px;
+    }
+.pw-bar-on { background: url("/Content/images/pwd-2.png") no-repeat; width: 0px; height: 14px; position: absolute; top: 1px; left: 2px; transition: width .5s ease-in; -moz-transition: width .5s ease-in; -webkit-transition: width .5s ease-in; -o-transition: width .5s ease-in; }
+    .pw-weak .pw-defule{ width:0px;}
+    .pw-weak .pw-bar-on {width: 60px;}
+    .pw-medium .pw-bar-on {width: 120px;}
+    .pw-strong .pw-bar-on {width: 179px;}
+    .pw-txt {padding-top: 2px;width: 180px;overflow: hidden;}
+    .pw-txt span {color: #707070;float: left;font-size: 12px;text-align: center;width: 58px;}</style>
+<script type="text/javascript">
+
+    function AddData() {
+        if ($("#form1").valid()) {
+            $.ajax({
+                //提交数据的类型 POST GET
+                type: "POST",
+                //提交的网址
+                url: $('#form1').attr('action'),
+                //提交的数据
+                data: $('#form1').serialize(),
+                //返回数据的格式
+                datatype: "json",//"xml", "html", "script", "json", "jsonp", "text".
+                //在请求之前调用的函数
+                beforeSend: function () {
+                    //$("#msg").html("logining");
+                },
+                //成功返回之后调用的函数
+                success: function (data) {
+
+                    alert(data);
+
+
+                },
+                //调用执行后调用的函数
+                complete: function (XMLHttpRequest, textStatus) {
+
+                    //HideLoading();
+                },
+                //调用出错执行的函数
+                error: function () {
+                    //请求出错处理
+                }
+            });
+        }
+
+
+    }
+    $(function () {
+        var roleId = '@Model.roleId';
+        $("#roleId").find("option[value=" + roleId + "]").attr("selected", true);
+        var YuanQuId = '@Model.YuanQuId';
+        $("#YuanQuId").find("option[value=" + YuanQuId + "]").attr("selected", true);
+        var HuoDaiId = '@Model.HuoDaiId';
+        $("#HuoDaiId").find("option[value=" + HuoDaiId + "]").attr("selected", true);
+      
+    });
+    $(document).ready(function () {
+        var text = $("#roleId").find("option:selected").text();
+        if (text == "货代") {
+            $("#isShownHd").removeAttr("style");
+            $("#isShownYq").attr("style", "display:none");
+        }
+        else {
+            $("#isShownHd").attr("style", "display:none");
+            $("#isShownYq").removeAttr("style");
+
+        }
+    });
+    function IsShown() {
+        var text = $("#roleId").find("option:selected").text();
+        if (text == "货代") {
+            $("#isShownHd").removeAttr("style");
+            $("#isShownYq").attr("style", "display:none");
+        }
+        else {
+            $("#isShownHd").attr("style", "display:none");
+            $("#isShownYq").removeAttr("style");
+
+        }
+    }
+    $(function(){ 
+        $('#passWord').keyup(function () { 
+            var strongRegex = new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g"); 
+            var mediumRegex = new RegExp("^(?=.{7,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$", "g"); 
+            var enoughRegex = new RegExp("(?=.{6,}).*", "g"); 
+	
+            if (false == enoughRegex.test($(this).val())) { 
+                $('#level').removeClass('pw-weak'); 
+                $('#level').removeClass('pw-medium'); 
+                $('#level').removeClass('pw-strong'); 
+                $('#level').addClass(' pw-defule'); 
+                //密码小于六位的时候，密码强度图片都为灰色 
+            } 
+            else if (strongRegex.test($(this).val())) { 
+                $('#level').removeClass('pw-weak'); 
+                $('#level').removeClass('pw-medium'); 
+                $('#level').removeClass('pw-strong'); 
+                $('#level').addClass(' pw-strong'); 
+                //密码为八位及以上并且字母数字特殊字符三项都包括,强度最强 
+            } 
+            else if (mediumRegex.test($(this).val())) { 
+                $('#level').removeClass('pw-weak'); 
+                $('#level').removeClass('pw-medium'); 
+                $('#level').removeClass('pw-strong'); 
+                $('#level').addClass(' pw-medium'); 
+                //密码为七位及以上并且字母、数字、特殊字符三项中有两项，强度是中等 
+            } 
+            else { 
+                $('#level').removeClass('pw-weak'); 
+                $('#level').removeClass('pw-medium'); 
+                $('#level').removeClass('pw-strong'); 
+                $('#level').addClass('pw-weak'); 
+                //如果密码为6为及以下，就算字母、数字、特殊字符三项都包括，强度也是弱的 
+            } 
+            return true; 
+        }); 
+    }) 
+
+</script>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+
+            <div class="ibox-content">
+                @using (Html.BeginForm("AddUser", "Sys", @FormMethod.Post, new { id = "form1", @class = "form-horizontal" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary()
+                    @Html.HiddenFor(n => n.ID)
+                    @Html.HiddenFor(n => n.state)
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">用户姓名：</label>
+                        <div class="col-sm-8">
+                            <input id="userName" name="userName" type="text" required="required" class="form-control" aria-required="true" value="@Model.userName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">密码：</label>
+                        <div class="col-sm-8">
+                            <input type="password" id="passWord" name="passWord" class="form-control" aria-required="true" required="required" value="@Model.passWord" maxlength="20">
+                            <div id="level" class="pw-strength">
+                                <div class="pw-bar"></div>
+                                <div class="pw-bar-on"></div>
+                                <div class="pw-txt">
+                                    <span>弱</span>
+                                    <span>中</span>
+                                    <span>强</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">邮箱：</label>
+                        <div class="col-sm-8">
+                            <input type="email" id="email" name="email" class="form-control" aria-required="true" required="required" value="@Model.email">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">角色：</label>
+                        <div class="col-sm-8">
+                            <select class="form-control m-b" name="roleId" id="roleId" onchange="IsShown()">
+                                @{
+                                    List<Sys_Role> rolelist = ViewBag.rolelist;
+                                    foreach (Sys_Role item in rolelist)
+                                    {
+                                        <option value="@item.roleId">@item.roleName</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" id="isShownYq">
+                        <label class="col-sm-3 control-label">所属园区：</label>
+                        <div class="col-sm-8">
+                            <select class="form-control m-b" name="YuanQuId" id="YuanQuId">
+                                @{
+                                    List<C_Dic_YuanQu> YuanQulist = ViewBag.YuanQulist;
+                                    foreach (C_Dic_YuanQu item in YuanQulist)
+                                    {
+                                        <option value="@item.ID">@item.YuanQuName</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" id="isShownHd" style="display:none">
+                        <label class="col-sm-3 control-label">所属货代：</label>
+                        <div class="col-sm-8">
+                            <select class="form-control m-b" name="HuoDaiId" id="HuoDaiId">
+                                @{
+                                    List<C_GOODSAGENT> GOODSAGENTlist = ViewBag.GOODSAGENTlist;
+                                    foreach (C_GOODSAGENT item in GOODSAGENTlist)
+                                    {
+                                        <option value="@item.ID">@item.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <button class="btn btn-primary" type="button" onclick="AddData()">保存内容</button>
+
+                        </div>
+                    </div>
+                }
+
+            </div>
+
+
+
+        </div>
+    </div>
+</div>

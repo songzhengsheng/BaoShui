@@ -1,0 +1,241 @@
+﻿
+@{
+    ViewBag.Title = "编辑清场单";
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
+}
+@using OracleBase.Models
+@model C_TB_HS_TALLYBILL
+
+<script src="~/Content/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#form1 input:text,select").keypress(function (e) {
+            if (e.which == 13) {// 判断所按是否回车键
+                var inputs = $("#form1 input:text,select"); // 获取表单中的所有输入框
+                var idx = inputs.index(this); // 获取当前焦点输入框所处的位置
+                if (idx == inputs.length - 1) {// 判断是否是最后一个输入框
+                    if (confirm("最后一个输入框已经输入,是否提交?")) // 用户确认
+                        AddData1();// 提交表单
+                } else {
+                    inputs[idx + 1].focus(); // 设置焦点
+                    // inputs[idx + 1].select(); // 选中文字
+                }
+                return false; // 取消默认的提交行为
+            }
+        });
+    });
+
+    function AddData1() {
+        if ($("#form1").valid()) {
+            var f = $("#form1").serializeArray();
+            $.ajax({
+                type: 'Post',
+                url: '/TallyBll/AddClear',
+                data: f,
+                dataType: 'json',
+                success: function (data, textStatus) {
+                    data = eval('(' + data + ')');
+                    if (data.state == "success") {
+                        layer.msg(data.message, { icon: 6 });
+
+                    } else {
+                        layer.msg(data.message, { icon: 5 });
+
+                    }
+                },
+                error: function (xmlHttpRequest, textStatus, errorThrown) {
+                    layer.msg("系统错误", { icon: 5 });
+                }
+            });
+        }
+    }
+    $(function () {
+
+        var CODE_WORKTEAM = '@Model.CODE_WORKTEAM';
+        $("#CODE_WORKTEAM").find("option[value=" + CODE_WORKTEAM + "]").attr("selected", true);
+        var CODE_QUALITY = '@Model.CODE_QUALITY';
+        $("#CODE_QUALITY").find("option[value=" + CODE_QUALITY + "]").attr("selected", true);
+
+        $("#STORAG").change(function () {
+            var v = $(this).val();
+          
+            $("#CODE_SECTION").empty();
+            $.ajax({
+                type: "GET",
+                url: "/TallyBll/GetBoothByChangId?id=" + v,
+                success: function(data) {
+                    data = eval('(' + data + ')');
+                    $.each(data, function(idx, obj) {
+                        //console.log(obj.ID);
+                        //console.log(obj.BoothName);
+                        $("#CODE_SECTION").append("<option value=" + obj.ID + ">" + obj.BoothName + "</option>");
+                    });
+                  
+                }
+            });
+        });
+        var v = $("#STORAG").val();
+        $("#CODE_SECTION").empty();
+        $.ajax({
+            type: "GET",
+            url: "/TallyBll/GetBoothByChangId?id=" + v,
+            success: function(data) {
+                data = eval('(' + data + ')');
+                $.each(data, function(idx, obj) {
+                    //console.log(obj.ID);
+                    //console.log(obj.BoothName);
+                    if (obj.ID == '@Model.CODE_SECTION') {
+                        $("#CODE_SECTION").append("<option selected=\"selected\" value=" + obj.ID + ">" + obj.BoothName + "</option>");
+                       
+                    } else {
+                        $("#CODE_SECTION").append("<option value=" + obj.ID + ">" + obj.BoothName + "</option>");
+                    }
+                   
+                });
+                  
+            }
+        });
+    });
+
+
+
+</script>
+<form class="form-horizontal" id="form1">
+ 
+    <div class="container">
+    
+            @Html.HiddenFor(n => Model.ID)
+            @Html.HiddenFor(n => Model.CleraNum)
+            @Html.HiddenFor(n => Model.State)
+           @Html.HiddenFor(n => Model.Type)
+   
+<hr/>
+            <div class="form-group">
+                <label class="col-sm-1 control-label">方式：</label>
+                <div class="col-sm-2">
+                    <input id="FANGSHI" name="FANGSHI" type="text" class="form-control" value="@Model.FANGSHI" maxlength="50" required="" aria-required="true">
+                </div>
+                <label class="col-sm-1 control-label">作业：</label>
+                <div class="col-sm-2">
+                    @Html.DropDownList("CAOZUO", (SelectList)ViewData["CAOZUOList"], new { @class = "form-control required" })
+                </div>
+                <label class="col-sm-1 control-label">票货：</label>
+                <div class="col-sm-2">
+                    <input id="GOODSBILL" name="GOODSBILL" type="text" class="form-control" value="@Model.GOODSBILL" maxlength="50" required="" aria-required="true">
+                </div>
+                <label class="col-sm-1 control-label">作业工班：</label>
+                <div class="col-sm-2">
+                    <input id="GONGBAN" name="GONGBAN" type="text" class="form-control" value="@Model.GONGBAN" maxlength="50" required="" aria-required="true">
+                </div>
+            </div>
+    
+
+            <div class="form-group" id="divs">
+                <label class="col-sm-1 control-label">进/出库：</label>
+                <div class="col-sm-2">
+                    
+                    <input type="text" class="form-control" id="CODE_OPSTYPE" name="CODE_OPSTYPE" value="出库" readonly="readonly"/>
+                
+                </div>
+                <div id="div11">
+                    <label class="col-sm-1 control-label">场：</label>
+                    <div class="col-sm-2">
+                        @Html.DropDownList("STORAG", (SelectList)ViewData["STORAGEList"], new { @class = "form-control required" })
+                    </div>
+
+                    <label class="col-sm-1 control-label">位：</label>
+                    <div class="col-sm-2">
+                        <select id="CODE_SECTION" name="CODE_SECTION" class="form-control"></select>
+
+                    </div>
+                </div>
+
+                <div id="div22">
+                    <label class="col-sm-1 control-label">场||车：</label>
+                    <div class="col-sm-2">
+                        <input id="CHANGORCAR" name="CHANGORCAR" type="text" class="form-control" value="@Model.CHANGORCAR" maxlength="50" required="" aria-required="true">
+                    </div>
+                </div>
+
+
+            </div>
+        
+            <div class="form-group">
+
+                <label class="col-sm-1 control-label">货物：</label>
+                <div class="col-sm-2">
+                    @Html.DropDownList("GoodsName", (SelectList)ViewData["GOODS_List"], new { @class = "form-control required" })
+                </div>
+                <label class="col-sm-1 control-label">件重：</label>
+                <div class="col-sm-2">
+                    <input id="PIECEWEIGHT" name="PIECEWEIGHT" type="text" class="form-control number" value="@Model.PIECEWEIGHT" maxlength="50" required="" aria-required="true">
+                </div>
+
+                <label class="col-sm-1 control-label">件数：</label>
+                <div class="col-sm-2">
+                    <input id="AMOUNT" name="AMOUNT" type="text" class="form-control number" value="@Model.AMOUNT" maxlength="50" required="" aria-required="true">
+                </div>
+
+                <label class="col-sm-1 control-label">重量：</label>
+                <div class="col-sm-2">
+                    <input id="WEIGHT" name="WEIGHT" type="text" class="form-control number" value="@Model.WEIGHT" maxlength="50" required="" aria-required="true">
+                </div>
+
+            </div>
+  
+            <div class="form-group">
+
+                <label class="col-sm-1 control-label">箱数：</label>
+                <div class="col-sm-2">
+                    <input id="XIANGSHU" name="XIANGSHU" type="text" class="form-control number" value="@Model.XIANGSHU" maxlength="50" required="" aria-required="true">
+                </div>
+                <label class="col-sm-1 control-label">过磅：</label>
+                <div class="col-sm-2">
+                    <select id="CODE_QUALITY" name="CODE_QUALITY" class="form-control">
+                        <option value="是">是</option>
+                        <option value="否">否</option>
+                    </select>
+
+                </div>
+                <label class="col-sm-1 control-label">苫盖：</label>
+                <div class="col-sm-2">
+                    <select id="CODE_WORKTEAM" name="CODE_WORKTEAM" class="form-control">
+                        <option value="是">是</option>
+                        <option value="否">否</option>
+                    </select>
+                </div>
+
+
+
+                <label class="col-sm-1 control-label">开始时间：</label>
+                <div class="col-sm-2">
+                    <input id="BEGINTIME" name="BEGINTIME" type="text" class="form-control" value="@Model.BEGINTIME" maxlength="50" required="" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss' })">
+                </div>
+
+               
+            </div>
+            <div class="form-group">
+                <label class="col-sm-1 control-label">结束时间：</label>
+                <div class="col-sm-2">
+                    <input id="ENDTIME" name="ENDTIME" type="text" class="form-control" value="@Model.ENDTIME" maxlength="50" required="" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss' })">
+                </div>
+                <label class="col-sm-1 control-label">理货员：</label>
+                <div class="col-sm-2">
+                    <input id="TALLYMAN" name="TALLYMAN" type="text" class="form-control" value="@Model.TALLYMAN" maxlength="50" required="" aria-required="true">
+                </div>
+
+                <label class="col-sm-1 control-label">备注：</label>
+                <div class="col-sm-2">
+                    <input id="REMARK" name="REMARK" type="text" class="form-control" value="@Model.REMARK" maxlength="50" required="" aria-required="true">
+                </div>
+                <div class="col-sm-1 ">
+                    <button class="btn btn-primary" type="button" onclick="AddData1()">保存</button>
+                </div>
+            </div>
+
+
+
+    </div>
+</form>
+
+

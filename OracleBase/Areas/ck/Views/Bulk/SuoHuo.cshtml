@@ -1,0 +1,120 @@
+﻿
+@{
+    ViewBag.Title = "SuoHuo";
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
+}
+@using OracleBase.Models
+@model C_TB_HC_GOODSBILL
+<script type="text/javascript">
+    function SvaeButton() {
+        if ($("#form1").valid()) {
+            $.ajax({
+                //提交数据的类型 POST GET
+                type: "POST",
+                //提交的网址
+                url: $('#form1').attr('action'),
+                //提交的数据
+                data: $('#form1').serialize(),
+                //返回数据的格式
+                datatype: "json",//"xml", "html", "script", "json", "jsonp", "text".
+                //成功返回之后调用的函数
+                success: function (data) {
+              
+                    if (data.state == "success") {
+                        layer.msg(data.message, {
+                            icon: 6,
+                            time: 1000 //1秒关闭（如果不配置，默认是3秒）
+                        }, function () {
+                            var v = $("#GBNO").val();
+                            change(v);
+                        });
+                    }
+                    else {
+                        layer.msg(data.message,
+                            {
+                                icon: 6,
+                                time: 1000 //1秒关闭（如果不配置，默认是3秒）
+                            });
+
+                    }
+                }
+            });
+        }
+
+
+    }
+    $(function () {
+  
+    });
+
+</script>
+
+@using (Html.BeginForm("SuoHuo", "Bulk", @FormMethod.Post, new { id = "form1", @class = "form-horizontal" }))
+{
+ 
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">票货编码：</label>
+                        <div class="col-sm-4">
+                            <input id="GBNO" type="text" class="form-control required"  maxlength="50" name="GBNO">
+                        </div>
+                     
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">库存件数：</label>
+                        <div class="col-sm-4">
+                            <input id="KunCun" type="text" class="form-control" readonly="readonly"  maxlength="50" name="KunCun">
+                        </div>
+                        <label class="col-sm-2  control-label">库存吨/材积：</label>
+                        <div class="col-sm-4">
+                            <input id="KunCunW" type="text" class="form-control"readonly="readonly" maxlength="50" name="KunCunW">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">已锁定库存件数：</label>
+                        <div class="col-sm-4">
+                            <input id="SuoHuoKunCun" type="text" class="form-control required number"  maxlength="50" name="SuoHuoKunCun">
+                        </div>
+                        <label class="col-sm-2  control-label">已锁定库存吨/材积：</label>
+                        <div class="col-sm-4">
+                            <input id="SuoHuoKunCunW" type="text" class="form-control required number" maxlength="50" name="SuoHuoKunCunW">
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-sm-offset-5">
+                        <button class="btn btn-primary" type="button" onclick="SvaeButton()">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+<script type="text/javascript">
+    $("#GBNO").on("change",
+        function () {
+           
+            var v = $("#GBNO").val();
+            change(v);
+        });
+    function change(v) {
+        $.ajax({
+            type: "GET",
+            url: "/Bulk/GetInfoByWtHao?GBNO=" + v,
+            success: function (data) {
+            
+                $("#KunCun").val(data.KunCun);
+                $("#KunCunW").val(data.KunCunW);
+                $("#SuoHuoKunCun").val(data.SuoHuoKunCun);
+                $("#SuoHuoKunCunW").val(data.SuoHuoKunCunW);
+            }
+        });
+    }
+
+             $(function () {
+                 parent.layer.closeAll();
+             });
+         </script>

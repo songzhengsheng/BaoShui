@@ -1,0 +1,53 @@
+﻿@{
+    ViewBag.Title = "EdtMenu";
+    Layout = "~/Views/Shared/_LayoutBase.cshtml";
+}
+
+@using Main.Models
+@model Sys_Menu
+
+
+
+
+@Html.AntiForgeryToken()
+<input type="hidden" name="ID" value="@Model.ID" />
+
+
+<div class="ibox-content">
+    <form class="form-horizontal m-t" id="signupForm" method="post">
+
+        @Html.HiddenFor(n => n.fatherId)
+        
+        @*<div class="form-group">
+            <label class="col-sm-3 control-label">ID：</label>
+            <div class="col-sm-8">
+                <input id="rsid" name="menuId" type="number" min="1" class="form-control"  value="@Model.menuId">
+            </div>
+        </div>*@
+        <div class="form-group">
+            <label class="col-sm-3 control-label">名称：</label>
+            <div class="col-sm-8">
+                <input id="rsnemuName" name="menuName" type="text" class="form-control"  value="@Model.menuName">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">url：</label>
+            <div class="col-sm-8">
+                <input id="rsurl" name="ur" type="text" class="form-control" value="@Model.ur">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">序号：</label>
+            <div class="col-sm-8">
+                <input id="rssort" name="sort" type="number" min="1" class="form-control" value="@Model.sort">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-4 col-sm-offset-3">
+                <button class="btn btn-primary" type="submit">提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+

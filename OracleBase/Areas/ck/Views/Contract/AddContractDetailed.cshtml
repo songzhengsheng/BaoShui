@@ -1,0 +1,401 @@
+﻿
+@{
+    ViewBag.Title = "编辑合同详细";
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
+}
+@using OracleBase.Models
+@model C_TB_HC_CONTRACT_DETAILED
+
+<script>
+
+    function Save() {
+        if ($("#form1").valid()) {
+            $.ajax({
+                //提交数据的类型 POST GET
+                type: "POST",
+                //提交的网址
+                url: $('#form1').attr('action'),
+                //提交的数据
+                data: $('#form1').serialize(),
+                //返回数据的格式
+                datatype: "json",//"xml", "html", "script", "json", "jsonp", "text".
+                //在请求之前调用的函数
+                beforeSend: function () {
+
+                },
+                //成功返回之后调用的函数
+                success: function (data) {
+                    data = eval('(' + data + ')');
+                    if (data.state == "success") {
+                        $('#form1')[0].reset();
+                        layer.msg(data.message, {
+                            icon: 6,
+                            time: 1000 //1秒关闭（如果不配置，默认是3秒）
+                        }, function () {
+
+                            //AddContractFile(data.data);
+                        });
+
+
+                    } else {
+                        layer.msg(data.message, { icon: 5 });
+
+                    }
+                }
+            });
+        }
+    }
+    function AddContractFile(guid) {
+        parent.layer.open({
+            type: 2,
+            title: "编辑合同附件",
+            shadeClose: true,
+            shade: 0.8,
+            area: ['80%', '80%'],
+            content: "/ck/Contract/AddContractFile?CONTRACT_Guid=" + guid,
+            btn: ['关闭'],
+            yes: function (index) {
+                parent.layer.closeAll();
+            }
+        });
+    }
+    $(function () {
+        var Type = '@Model.Type';
+        $("#Type").find("option[value=" + Type + "]").attr("selected", true);
+        var JiLiangDanWei = '@Model.JiLiangDanWei';
+        $("#JiLiangDanWei").val(JiLiangDanWei);
+        var ChengBenJiFeiYiJu = '@Model.ChengBenJiFeiYiJu';
+        $("#ChengBenJiFeiYiJu").find("option[value=" + ChengBenJiFeiYiJu + "]").attr("selected", true);
+
+        var BiaoZhi = '@Model.BiaoZhi';
+        if (BiaoZhi=="on") {
+            $("#BiaoZhi").attr("checked", true);
+        }
+    });
+</script>
+
+@using (Html.BeginForm("AddContractDetailed", "Contract", @FormMethod.Post, new { id = "form1", @class = "form-horizontal" }))
+{
+    @Html.HiddenFor(n => Model.Guid)
+    @Html.HiddenFor(n => Model.CONTRACT_Guid)
+    @Html.HiddenFor(n => Model.CreatTime)
+    @Html.HiddenFor(n => Model.State)
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="form-group">
+
+
+                        <label class="col-sm-2  control-label">货名：</label>
+                        <div class="col-sm-4">
+
+                            @Html.DropDownList("HuoMingCode", (SelectList)ViewData["GOODS_List"], new { @class = "form-control required" })
+                        </div>
+                        <label class="col-sm-2  control-label">单价：</label>
+                        <div class="input-group m-b  col-sm-3">
+                            <input id="DanJia" type="text" class="form-control required number" value="@Model.DanJia" maxlength="50" name="DanJia" />
+                            <span class="input-group-addon">元</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">费目种类：</label>
+                        <div class="col-sm-4">
+                            @*<div class="input-group">
+
+                                <input type="text" class="form-control" id="FeiMuZhongLei" name="FeiMuZhongLei" value="@Model.FeiMuZhongLei">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>
+                                </div>
+                   
+                            </div>*@
+                            @Html.DropDownList("FeiMuZhongLeiCode", (SelectList)ViewData["emplistlistC_Charge"], new { @class = "form-control required" })
+                        </div>
+
+                        <label class="col-sm-2  control-label">计量单位：</label>
+                        <div class="col-sm-4">
+                            <select id="JiLiangDanWei" name="JiLiangDanWei" class="form-control">
+                                <option value="吨">吨</option>
+                                <option value="吨*天">吨*天</option>
+                                <option value="方">方</option>
+                                <option value="立方吨*天">立方吨*天</option>
+                                <option value="件">件</option>
+                                <option value="箱*天">箱*天</option>
+                                <option value="吨*次">吨*次</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <label class="col-sm-2  control-label">计费依据：</label>
+                        <div class="col-sm-4">
+                            <select id="Type" name="Type" class="form-control">
+                                <option value="全部">全部</option>
+                                <option value="进库">进库</option>
+                                <option value="出库">出库</option>
+                                <option value="计划量">计划量</option>
+                            </select>
+                        </div>
+                        <label class="col-sm-2  control-label">免吨存天数：</label>
+                        <div class="col-sm-4">
+                            <input id="MianDuiCunTianShu" type="text" class="form-control required number" value="@Model.MianDuiCunTianShu" maxlength="50" name="MianDuiCunTianShu" />
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">税率（%）：</label>
+                        <div class="col-sm-4">
+
+                            <input id="ShuiE" type="text" class="form-control required number" value="@Model.ShuiE" maxlength="50" name="ShuiE" />
+                        </div>
+                        <label class="col-sm-2  control-label">备注：</label>
+                        <div class="col-sm-4">
+
+                            <input id="BeiZhu" type="text" class="form-control" value="@Model.BeiZhu" maxlength="100" name="BeiZhu" />
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">成本费率：</label>
+                        <div class="col-sm-4">
+
+                            <input id="ChengBenFeiLv" type="text" class="form-control number" value="@Model.ChengBenFeiLv" maxlength="50" name="ChengBenFeiLv" />
+                        </div>
+                        <label class="col-sm-2  control-label">成本计费依据：</label>
+                        <div class="col-sm-4">
+                            <select id="ChengBenJiFeiYiJu" name="ChengBenJiFeiYiJu" class="form-control">
+                                <option value="全部">全部</option>
+                                <option value="进库">进库</option>
+                                <option value="出库">出库</option>
+                                <option value="计划量">计划量</option>
+                            </select>
+
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">堆存费估算标志：</label>
+                        <div class="col-sm-4">
+
+                            <input id="BiaoZhi" name="BiaoZhi" type="checkbox" />
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-sm-offset-4" style="padding-top: 10px; padding-left: 100px;">
+                        <button class="btn btn-primary" type="button" onclick="Save()">保存</button>
+                        <button class="btn btn-info" type="button" onclick="AddContractFile('@Model.CONTRACT_Guid')">合同附件</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+    @*<script src="~/Content/hplus/js/plugins/suggest/bootstrap-suggest.min.js"></script>*@
+
+<script type="text/javascript">
+
+    //var testdataBsSuggest = $("#FeiMuZhongLei").bsSuggest({
+    //    indexId: 2,
+    //    indexKey: 1,
+    //    data: {
+    //        "value": [{
+    //            "id": "byf",
+    //            "word": "搬移费",
+              
+    //        },
+    //        {
+    //            "id": "bgf",
+    //            "word": "包干费",
+              
+    //        },
+    //        {
+    //            "id": "bgf",
+    //            "word": "包干费(吨)",
+               
+    //        },
+    //        {
+    //            "id": "bgf",
+    //            "word": "包干费(箱)",
+              
+    //            }
+    //            ,
+    //            {
+    //                "id": "ccf",
+    //                "word": "仓储费",
+              
+    //            },
+    //            {
+    //                "id": "cxf",
+    //                "word": "拆箱费",
+              
+    //            },
+    //            {
+    //                "id": "czf",
+    //                "word": "场站费",
+              
+    //            },
+    //            {
+    //                "id": "dlf",
+    //                "word": "代理费",
+              
+    //            },
+    //            {
+    //                "id": "dlf3",
+    //                "word": "代理服务费",
+              
+    //            },
+    //            {
+    //                "id": "dcf",
+    //                "word": "堆存费",
+              
+    //            },
+    //            {
+    //                "id": "ddtxf",
+    //                "word": "吨袋掏箱费",
+              
+    //            },
+    //            {
+    //                "id": "fzzy",
+    //                "word": "翻转作业",
+              
+    //            },
+    //            {
+    //                "id": "fwf",
+    //                "word": "服务费",
+              
+    //            },
+    //            {
+    //                "id": "gbf",
+    //                "word": "改包费",
+              
+    //            },
+    //            {
+    //                "id": "gbf",
+    //                "word": "割包费",
+              
+    //            },
+    //            {
+    //                "id": "gbf",
+    //                "word": "灌包费",
+              
+    //            },
+    //            {
+    //                "id": "gbf",
+    //                "word": "过磅费",
+              
+    //            },
+    //            {
+    //                "id": "jxf",
+    //                "word": "机械费",
+              
+    //            },
+    //            {
+    //                "id": "jgf",
+    //                "word": "加固费",
+              
+    //            },
+    //            {
+    //                "id": "knzyf",
+    //                "word": "困难作业费",
+              
+    //            },
+    //            {
+    //                "id": "rgf",
+    //                "word": "人工费",
+              
+    //            },
+    //            {
+    //                "id": "ssf",
+    //                "word": "洒水费",
+              
+    //            },
+    //            {
+    //                "id": "sgf",
+    //                "word": "苫盖费",
+              
+    //            },
+    //            {
+    //                "id": "tjf",
+    //                "word": "挑拣翻垛费",
+              
+    //            },
+    //            {
+    //                "id": "xxf",
+    //                "word": "洗箱费",
+              
+    //            },
+    //            {
+    //                "id": "xcf",
+    //                "word": "卸车费",
+              
+    //            },
+    //            {
+    //                "id": "xcf",
+    //                "word": "修车费",
+              
+    //            },
+    //            {
+    //                "id": "ydf",
+    //                "word": "用电费",
+              
+    //            },
+    //            {
+    //                "id": "ysf",
+    //                "word": "运输费",
+              
+    //            },
+    //            {
+    //                "id": "yzf",
+    //                "word": "运杂费",
+              
+    //            },
+    //            {
+    //                "id": "zf",
+    //                "word": "杂费",
+              
+    //            },
+    //            {
+    //                "id": "zcf",
+    //                "word": "转场费",
+
+    //            },
+    //            {
+    //                "id": "zcf",
+    //                "word": "装船费",
+
+    //            },
+    //            {
+    //                "id": "zhcf",
+    //                "word": "装火车费",
+
+    //            },
+    //            {
+    //                "id": "zhcf",
+    //                "word": "装火车转场过磅费",
+
+    //            },
+    //            {
+    //                "id": "zqcf",
+    //                "word": "装汽车费",
+
+    //            },
+    //            {
+    //                "id": "zxf",
+    //                "word": "装箱费",
+
+    //            },
+    //            {
+    //                "id": "zxf",
+    //                "word": "装卸费",
+
+    //            }
+    //        ],
+          
+    //    }
+    //});
+   
+</script>

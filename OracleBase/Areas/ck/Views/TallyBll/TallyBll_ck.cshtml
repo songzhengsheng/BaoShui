@@ -1,0 +1,174 @@
+﻿
+@{
+    ViewBag.Title = "编辑理货单";
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
+}
+@using OracleBase.Models
+@model C_TB_HS_TALLYBILL
+
+<script src="~/Content/My97DatePicker/WdatePicker.js"></script>
+<script>
+    $(document).ready(function () {
+        var v = $('#CODE_OPSTYPE').val();
+        if (v == "进库") {
+            $("#div22").after($("#div11"));
+        } else {
+            $("#div11").after($("#div22"));
+        }
+        $('#CODE_OPSTYPE').change(function () {
+            var v = $('#CODE_OPSTYPE').val();
+            if (v == "进库") {
+                $("#div22").after($("#div11"));
+            } else {
+                $("#div11").after($("#div22"));
+            }
+        });
+    });
+</script>
+<form class="form-horizontal" id="form1">
+    <hr />
+    <div class="container">
+
+        @Html.HiddenFor(n => Model.ID)
+        @Html.HiddenFor(n => Model.TBNO)
+        @Html.HiddenFor(n => Model.State)
+        @Html.HiddenFor(n => Model.Type)
+        <input id="CGNO" name="CGNO" type="hidden" value="@ViewBag.CGNO">
+        <input id="CONSIGN_ID" name="CONSIGN_ID" type="hidden" value="@ViewBag.CONSIGN_ID">
+
+
+        <div class="form-group">
+
+            <label class="col-sm-1 control-label">船名：</label>
+            <div class="col-sm-2">
+                <input id="ChuanMing" name="ChuanMing" type="text" class="form-control" value="@Model.ChuanMing" maxlength="50" required="" aria-required="true" readonly="readonly">
+            </div>
+            <label class="col-sm-1 control-label">航次：</label>
+            <div class="col-sm-2">
+                <input id="HangCi" name="HangCi" type="text" class="form-control" value="@Model.HangCi" maxlength="50" required="" aria-required="true" readonly="readonly">
+            </div>
+            <label class="col-sm-1 control-label">货代：</label>
+            <div class="col-sm-2">
+                <input id="HuoDai" name="HuoDai" type="text" class="form-control" value="@Model.HuoDai" maxlength="50" required="" aria-required="true" readonly="readonly">
+            </div>
+            <label class="col-sm-1 control-label">车数：</label>
+            <div class="col-sm-2">
+                <input id="TRAINNUM" name="TRAINNUM" type="text" class="form-control" value="@Model.TRAINNUM" maxlength="50" required="" aria-required="true" readonly="readonly">
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            <label class="col-sm-1 control-label">作业过程：</label>
+            <div class="col-sm-2">
+                <input id="CAOZUO" name="CAOZUO" type="text" class="form-control" value="@Model.CAOZUO" maxlength="50" required="" aria-required="true" readonly="readonly">
+            </div>
+
+            <label class="col-sm-1 control-label">作业工班：</label>
+            <div class="col-sm-2">
+                <input id="GONGBAN" name="GONGBAN" type="text" class="form-control" value="@Model.GONGBAN" maxlength="50" required="" aria-required="true" readonly="readonly">
+            </div>
+            <label class="col-sm-1 control-label">理货员：</label>
+            <div class="col-sm-2">
+                <input id="TALLYMAN" name="TALLYMAN" type="text" class="form-control" value="@Model.TALLYMAN" maxlength="50" readonly="readonly" required="" aria-required="true" >
+            </div>
+            <label class="col-sm-1 control-label">理货时间：</label>
+            <div class="col-sm-2">
+                <input id="SIGNDATE" name="SIGNDATE" type="text" class="form-control" value="@Model.SIGNDATE" maxlength="50" required="" readonly="readonly">
+
+            </div>
+
+        </div>
+
+
+        <div class="form-group" id="divs">
+            <label class="col-sm-1 control-label">进/出库：</label>
+            <div class="col-sm-2">
+                <input id="CODE_OPSTYPE" name="CODE_OPSTYPE" type="text" class="form-control" value="@Model.CODE_OPSTYPE" maxlength="50" required="" readonly="readonly">
+            </div>
+            <div id="div11">
+                <label class="col-sm-1 control-label">场：</label>
+                <div class="col-sm-2">
+                    <input id="STORAG" name="STORAG" type="text" class="form-control" value="@ViewBag.STORAG" maxlength="50" required="" readonly="readonly">
+                </div>
+
+                <label class="col-sm-1 control-label">位：</label>
+                <div class="col-sm-2">
+                    <input id="CODE_SECTION" name="CODE_SECTION" type="text" class="form-control" value="@ViewBag.CODE_SECTION" maxlength="50" required="" readonly="readonly">
+
+                </div>
+                <label class="col-sm-1 control-label">班次：</label>
+                <div class="col-sm-2">
+                    <input  type="text" class="form-control" value="@Model.BanCi" maxlength="50" required="" readonly="readonly">
+
+                </div>
+            </div>
+
+
+
+        </div>
+
+        <div class="form-group">
+
+
+            <label class="col-sm-1 control-label">实际件重：</label>
+            <div class="col-sm-2">
+                <input id="PIECEWEIGHT" name="PIECEWEIGHT" type="text" class="form-control number" value="@Model.PIECEWEIGHT" maxlength="50" required="" aria-required="true" readonly="readonly">
+            </div>
+
+            <label class="col-sm-1 control-label">实际件数：</label>
+            <div class="col-sm-2">
+                <input id="AMOUNT" name="AMOUNT" type="text" class="form-control number" value="@Model.AMOUNT" maxlength="50" required="" aria-required="true" readonly="readonly">
+            </div>
+
+            <label class="col-sm-1 control-label">实际重量：</label>
+            <div class="col-sm-2">
+                <input id="WEIGHT" name="WEIGHT" type="text" class="form-control number" value="@Model.WEIGHT" maxlength="50" required="" aria-required="true" readonly="readonly">
+            </div>
+            <label class="col-sm-1 control-label">实际箱数：</label>
+            <div class="col-sm-2">
+                <input id="XIANGSHU" name="XIANGSHU" type="text" class="form-control number" value="@Model.XIANGSHU" maxlength="50" required="" aria-required="true" readonly="readonly">
+            </div>
+        </div>
+
+        <div class="form-group">
+
+
+            <label class="col-sm-1 control-label">过磅：</label>
+            <div class="col-sm-2">
+                <input id="CODE_QUALITY" name="CODE_QUALITY" type="text" class="form-control number" value="@Model.CODE_QUALITY" maxlength="50" required="" aria-required="true" readonly="readonly">
+
+            </div>
+            <label class="col-sm-1 control-label">苫盖：</label>
+            <div class="col-sm-2">
+                <input id="CODE_WORKTEAM" name="CODE_WORKTEAM" type="text" class="form-control number" value="@Model.CODE_WORKTEAM" maxlength="50" required="" aria-required="true" readonly="readonly">
+            </div>
+
+
+
+            @*<label class="col-sm-1 control-label">开始时间：</label>
+            <div class="col-sm-2">
+                <input id="BEGINTIME" name="BEGINTIME" type="text" class="form-control" value="@Model.BEGINTIME" maxlength="50" required="" readonly="readonly">
+            </div>
+
+            <label class="col-sm-1 control-label">结束时间：</label>
+            <div class="col-sm-2">
+                <input id="ENDTIME" name="ENDTIME" type="text" class="form-control" value="@Model.ENDTIME" maxlength="50" required="" readonly="readonly">
+            </div>*@
+        </div>
+        <div class="form-group">
+
+
+            <label class="col-sm-1 control-label">备注：</label>
+            <div class="col-sm-11">
+                <textarea style="width:85%" id="REMARK" name="REMARK" rows="2" cols="140" readonly="readonly">@Model.REMARK</textarea>
+
+            </div>
+
+        </div>
+
+
+    </div>
+</form>
+
+

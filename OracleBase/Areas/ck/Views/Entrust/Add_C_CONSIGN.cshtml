@@ -1,0 +1,254 @@
+﻿
+@{
+    ViewBag.Title = "CONSIGN";
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
+}
+@using OracleBase.Models
+@model C_TB_HC_CONSIGN
+
+<script src="~/Content/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+    function TiJiao() {
+        if ($("#form1").valid()) {
+            $.ajax({
+                //提交数据的类型 POST GET
+                type: "POST",
+                //提交的网址
+                url: $('#form1').attr('action'),
+                //提交的数据
+                data: $('#form1').serialize(),
+                //返回数据的格式
+                datatype: "json",//"xml", "html", "script", "json", "jsonp", "text".
+                //在请求之前调用的函数
+                beforeSend: function () {
+                    //$("#msg").html("logining");
+                },
+                //成功返回之后调用的函数
+                success: function (data) {
+                    if (data.state == "success") {
+                        layer.msg(data.message, {
+                            icon: 6,
+                            time: 1000 //1秒关闭（如果不配置，默认是3秒）
+                        }, function () {
+                            AddConsignFile(data.data);
+                        });
+
+                    } else {
+                        layer.msg(data.message, { icon: 5 });
+
+                    }
+
+                }
+
+            });
+        }
+    }
+    function AddConsignFile(guid) {
+        parent.layer.open({
+            type: 2,
+            title: "编辑委托附件",
+            shadeClose: true,
+            shade: 0.8,
+            area: ['80%', '80%'],
+            content: "/ck/Entrust/AddConsignFile?CONSING_ID=" + guid,
+            btn: ['关闭'],
+            yes: function (index) {
+                parent.layer.closeAll();
+            }
+        });
+    }
+    $(function () {
+        $("#form1 input:text,select").keypress(function (e) {
+            if (e.which == 13) {// 判断所按是否回车键
+                var inputs = $("#form1 input:text,select"); // 获取表单中的所有输入框
+                var idx = inputs.index(this); // 获取当前焦点输入框所处的位置
+                if (idx == inputs.length - 1) {// 判断是否是最后一个输入框
+                    if (confirm("最后一个输入框已经输入,是否提交?")) // 用户确认
+                        TiJiao();// 提交表单
+                } else {
+                    inputs[idx + 1].focus(); // 设置焦点
+                    // inputs[idx + 1].select(); // 选中文字
+                }
+                return false; // 取消默认的提交行为
+            }
+        });
+    });
+
+
+
+      $(function () {
+          document.getElementById("CODE_OPERATION").focus();
+          var CODE_OPERATION = '@Model.CODE_OPERATION';
+          $("#CODE_OPERATION").find("option[value=" + CODE_OPERATION + "]").attr("selected", true);
+
+          var CONTAINERTYPE = '@Model.CONTAINERTYPE';
+          $("#CONTAINERTYPE").find("option[value=" + CONTAINERTYPE + "]").attr("selected", true);
+
+          var BoolQuanLuYun = '@Model.BoolQuanLuYun';
+          $("#BoolQuanLuYun").find("option[value=" + BoolQuanLuYun + "]").attr("selected", true);
+
+          var CaoZuoGuoCheng = '@Model.CaoZuoGuoCheng';
+          $("#CaoZuoGuoCheng").find("option[value=" + CaoZuoGuoCheng + "]").attr("selected", true);
+
+          var HengZhong = '@Model.HengZhong';
+          $("#HengZhong").find("option[value=" + HengZhong + "]").attr("selected", true);
+
+
+
+
+    });
+</script>
+@using (Html.BeginForm("Add_C_CONSIGN", "Entrust", @FormMethod.Post, new { id = "form1", @class = "form-horizontal" }))
+{
+    @Html.HiddenFor(n => Model.ID)
+    @Html.HiddenFor(n => Model.CGNO)
+    @Html.HiddenFor(n => Model.CREATORNAME)
+    @Html.HiddenFor(n => Model.CREATETIME)
+    @Html.HiddenFor(n => Model.State)
+    @Html.HiddenFor(n => Model.YuanQuID)
+    @Html.HiddenFor(n => Model.LaiYuan)
+    <input id="GOODSBILL_ID" type="hidden" class="form-control" value="@ViewBag.id_GoodsBill" name="GOODSBILL_ID">
+    <input id="GoodsBill_Num" type="hidden" class="form-control" value="@ViewBag.GoodsBill_Num" name="GoodsBill_Num">
+    <input id="GoodsName" type="hidden" class="form-control" value="@ViewBag.GoodsName" name="GoodsName">
+    <input id="GoodsType" type="hidden" class="form-control" value="@ViewBag.GoodsType" name="GoodsType">
+    <input id="VGNO" type="hidden" class="form-control" value="@ViewBag.VGNO" name="VGNO">
+
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="form-group">
+
+                        <label class="col-sm-2  control-label">电子委托号：</label>
+                        <div class="col-sm-4">
+                            <input id="CGNO" type="text" class="form-control" value="@Model.CGNO" maxlength="50" name="CGNO" readonly="readonly">
+                        </div>
+                        <label class="col-sm-2  control-label">提单号：</label>
+                        <div class="col-sm-4">
+                            <input id="BLNO" type="text" class="form-control" value="@ViewBag.BLNO" maxlength="50" name="BLNO" readonly="readonly">
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">委托人：</label>
+                        <div class="col-sm-4">
+                            <input id="WeiTuoRen" type="text" class="form-control" value="@ViewBag.WeiTuoRen" maxlength="50" name="WeiTuoRen" readonly="readonly">
+                        </div>
+                        <label class="col-sm-2  control-label">货物：</label>
+                        <div class="col-sm-4">
+                            @Html.DropDownList("GoodsName", (SelectList)ViewData["GOODS_List"], "请选择", new { @class = "form-control", disabled = "disabled" })
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">船名：</label>
+                        <div class="col-sm-4">
+                            <input id="ShipName" type="text" class="form-control" value="@ViewBag.ShipName" maxlength="50" name="ShipName" readonly="readonly">
+                        </div>
+                        <label class="col-sm-2  control-label">航次：</label>
+                        <div class="col-sm-4">
+                            <input id="VGNO" type="text" class="form-control" value="@ViewBag.VGNO" maxlength="50" name="VGNO" readonly="readonly">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">委托日期：</label>
+                        <div class="col-sm-4">
+                            <input type="text" id="WeiTuoTime" name="WeiTuoTime" class="form-control required" value="@Model.WeiTuoTime" onclick=" WdatePicker()">
+                        </div>
+                        <label class="col-sm-2  control-label">纸质委托号：</label>
+                        <div class="col-sm-4">
+                            <input id="PAPERYNO" type="text" class="form-control required" value="@Model.PAPERYNO" maxlength="50" name="PAPERYNO" required="" aria-required="true">
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+
+                        <label class="col-sm-2  control-label">作业过程：</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" name="CODE_OPERATION" id="CODE_OPERATION">
+                                <option value="场-汽">场-汽</option>
+                                <option value="汽-场">汽-场</option>
+                                <option value="其他">其他</option>
+                            </select>
+                        </div>
+                        <label class="col-sm-2  control-label">衡重：</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" name="HengZhong" id="HengZhong">
+                                <option value="否">否</option>
+                                <option value="是">是</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">计划件数：</label>
+                        <div class="col-sm-4">
+                            <input id="PLANAMOUNT" type="text" class="form-control number" value="@ViewBag.PLANAMOUNT" maxlength="50" name="PLANAMOUNT">
+                        </div>
+                        <label class="col-sm-2  control-label">计划重量/材积：</label>
+                        <div class="col-sm-4">
+                            <input id="PLANWEIGHT" type="text" class="form-control number" value="@ViewBag.PLANWEIGHT" maxlength="50" name="PLANWEIGHT">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+
+                        <label class="col-sm-2  control-label">箱型：</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" name="CONTAINERTYPE" id="CONTAINERTYPE">
+                                <option value="0">请选择</option>
+                                <option value="20GP">20GP</option>
+                                <option value="40GP">40GP</option>
+                                <option value="20HC">20HC</option>
+                                <option value="40HC">40HC</option>
+                                <option value="20HO">20HO</option>
+                            </select>
+                        </div>
+                        <label class="col-sm-2  control-label">箱数量：</label>
+                        <div class="col-sm-4">
+                            <input id="CONTAINERNUM" type="text" class="form-control number" value="@Model.CONTAINERNUM" maxlength="50" name="CONTAINERNUM">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">经办人：</label>
+                        <div class="col-sm-4">
+                            <input id="jbr" type="text" class="form-control" value="@Model.jbr" maxlength="50" name="jbr">
+                        </div>
+                        <label class="col-sm-2  control-label">电话号码：</label>
+                        <div class="col-sm-4">
+                            <input id="Phone" type="text" class="form-control number" value="@Model.Phone" maxlength="50" name="Phone" required="" aria-required="true">
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">货物类型：</label>
+                        <div class="col-sm-4">
+                            @Html.DropDownList("GoodsType", (SelectList)ViewData["GOODSTYPE_List"], "请选择", new { @class = "form-control", disabled = "disabled" })
+                        </div>
+                        <label class="col-sm-2  control-label">委托备注：</label>
+                        <div class="col-sm-4">
+                            <input id="BeiZhu" type="text" class="form-control" value="@Model.BeiZhu" maxlength="50" name="BeiZhu">
+                        </div>
+
+
+                    </div>
+                    <div class="col-sm-4 col-sm-offset-3" style="padding-top:50px;padding-left:200px;">
+                        @{
+                            if (Model.ID == 0)
+                            {
+                                <button class="btn btn-primary" type="button" onclick="TiJiao()">添加</button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-primary" type="button" onclick="TiJiao()">保存</button>
+                            }
+                        }
+                    </div>
+                </div>
+                </div>
+        </div>
+    </div>
+}

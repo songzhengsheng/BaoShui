@@ -1,0 +1,153 @@
+﻿@{
+    ViewBag.Title = "AddC_GOODSAGENT";
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
+
+}
+@using OracleBase.Models;
+@model C_GOODSAGENT
+
+<link href="~/Content/webUpLoad/css/webuploader.css" rel="stylesheet" />
+<script src="~/Content/webUpLoad/webuploader.js"></script>
+<script src="~/Content/layer/layer.js"></script>
+<script src="~/Content/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+    function AddData1(tablename) {
+        if ($("#form1").valid()) {
+            var f = $("#form1").serializeArray();
+            f = stringtojson(f);
+            $.ajax({
+                type: 'Post',
+                url: '/api/mapi/Add_C_GOODSAGENT',
+                contentType: "application/json",
+                data: JSON.stringify({ tableName: tablename, form: f }),
+                dataType: 'json',
+                success: function (data, textStatus) {
+                    data = eval('(' + data + ')');
+                    if (data.state == "success") {
+                        layer.msg(data.message, { icon: 6 });
+
+                    } else {
+                        layer.msg(data.message, { icon: 5 });
+
+                    }
+                },
+                error: function (xmlHttpRequest, textStatus, errorThrown) {
+                    layer.msg("系统错误", { icon: 5 });
+                }
+            });
+        }
+    }
+    function stringtojson(queryArray) {
+        var jsonString = '{';
+        for (var i = 0; i < queryArray.length; i++) {
+            jsonString += JSON.stringify(queryArray[i].name) + ':' + JSON.stringify(queryArray[i].value) + ',';
+        }
+        jsonString = jsonString.substring(0, (jsonString.length - 1));
+        jsonString += '}';
+        return jsonString;
+    }
+</script>
+
+<form id="form1" class="form-horizontal m-t">
+    @{
+        if (!string.IsNullOrEmpty(Model.creater))
+        {
+            @Html.HiddenFor(n => Model.creater)
+        }
+        if (!string.IsNullOrEmpty(Model.creatTime.ToString()))
+        {
+            @Html.HiddenFor(n => Model.creatTime)
+        }
+        if (!string.IsNullOrEmpty(Model.ModifyUserName))
+        {
+            @Html.HiddenFor(n => Model.ModifyUserName)
+        }
+        if (!string.IsNullOrEmpty(Model.ModifyTime.ToString()))
+        {
+            @Html.HiddenFor(n => Model.ModifyTime)
+        }
+        if (!string.IsNullOrEmpty(Model.ExamineUserName))
+        {
+            @Html.HiddenFor(n => Model.ExamineUserName)
+        }
+        if (!string.IsNullOrEmpty(Model.ExamineTime.ToString()))
+        {
+            @Html.HiddenFor(n => Model.ExamineTime)
+        }
+        if (!string.IsNullOrEmpty(Model.State))
+        {
+            @Html.HiddenFor(n => Model.State)
+        }
+        if (Model.ID.ToString() != "0")
+        {
+            @Html.HiddenFor(n => Model.ID)
+            @Html.HiddenFor(n => Model.YuanQuID)
+        }
+    }
+  
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">编码：</label>
+                        <div class="col-sm-4">
+                            <input type="text" id="Code" name="Code" class="form-control required" value="@Model.Code">
+                        </div>
+                        <label class="col-sm-2 control-label">姓名：</label>
+                        <div class="col-sm-4">
+                            <input type="text" id="Name" name="Name" class="form-control required" value="@Model.Name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">速记码：</label>
+                        <div class="col-sm-4">
+                            <input type="text" id="Sjm" name="Sjm" class="form-control required" value="@Model.Sjm">
+                        </div>
+                        <label class="col-sm-2 control-label">类别：</label>
+                        <div class="col-sm-4">
+                            <input type="text" id="Type" name="Type" class="form-control required" value="@Model.Type">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">全称：</label>
+                        <div class="col-sm-4">
+                            <input type="text" id="FullName" name="FullName" class="form-control required" value="@Model.FullName">
+                        </div>
+                        <label class="col-sm-2 control-label">备注：</label>
+                        <div class="col-sm-4">
+                            <input type="text" id="Remak" name="Remak" class="form-control required" value="@Model.Remak">
+                        </div>
+                    </div>
+         
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-4 col-sm-offset-2">
+                    @{
+                        if (Model.ID == 0)
+                        {
+                            <button class="btn btn-primary" type="button" onclick="AddData1('C_GOODSAGENT')">添加</button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-primary" type="button" onclick="Edit('C_GOODSAGENT')">保存</button>
+                        }
+                    }
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+
+
+
+
+
+

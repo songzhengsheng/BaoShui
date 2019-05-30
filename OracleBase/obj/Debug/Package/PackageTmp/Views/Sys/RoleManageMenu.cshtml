@@ -1,0 +1,109 @@
+﻿
+@{
+    ViewBag.Title = "RoleManage";
+    Layout = null;
+}
+
+
+<link href="~/Content/zTree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" />
+<link href="~/Content/zTree/css/demo.css" rel="stylesheet" />
+<script src="~/Content/zTree/js/jquery-1.4.4.min.js"></script>
+<script src="~/Content/zTree/js/jquery.ztree.core.js"></script>
+<script src="~/Content/zTree/js/jquery.ztree.excheck.js"></script>
+
+    <script type="text/javascript">
+        var setting = {
+            check:{
+                enable:true
+            },
+            data:    {
+                simpleData:{
+                    enable:true
+                }
+            },
+            callback:{
+                onCheck:onCheck
+            }
+
+        };
+
+
+
+        var zNodes = "";
+        function Inint() {//初始化加载节点
+            $.ajax({
+                global: true,
+                async: false,
+                cache: false,
+                dataType: "json",
+                url: '/Sys/GetMenus',
+                type: "post",
+                //data: { "roleId": GetQueryString("roleId") },
+                success: function (data) {
+                    zNodes = data;
+                }
+            });
+        };
+
+
+
+        $(document).ready(function () {
+            Inint();
+            $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+            $.fn.zTree.getZTreeObj("treeDemo").expandAll(true);
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo");//treeDemo界面中加载ztree的div
+            var stringmenus = '@ViewBag.menusstring';
+            var ids = stringmenus.split(',');          
+            for (var i = 0; i < ids.length - 1; i++) {              
+                var n = zTree.getNodesByParam("id", ids[i])[0];
+                if (n==null) {
+                    alert("部分菜单被删除，请重新选择");
+                    return;
+                }
+               
+                zTree.checkNode(zTree.getNodesByParam("id", ids[i])[0], true);
+            }
+        
+         
+        });
+
+            function onCheck(e,treeId,treeNode) {
+                var treeObj = $.fn.zTree.getZTreeObj("treeDemo"),
+                    nodes = treeObj.getCheckedNodes(true);        
+           var  menuid="";
+            for(var i=0;i<nodes.length;i++){
+                menuid += nodes[i].id + ",";          
+            }
+           // alert(menuid); //获取选中节点的值
+            UpdateMeun(menuid);
+            }
+            function UpdateMeun(menuids) {
+                //修改菜单
+                var roleid = '@ViewBag.roleid';
+                var postData = {
+                    RoleId: roleid,
+                    MenuValues: menuids
+                };
+                $.ajax({
+                    type: 'POST',
+                    url: '/Sys/UpMenuValue',
+                    data: postData,
+                    dataType: 'json',
+                    success: function (data, textStatus) {
+           
+                    },
+                    error: function (xmlHttpRequest, textStatus, errorThrown) {
+                    }
+                });
+            };
+    </script>
+
+
+
+
+<div class="zTreeDemoBackground left">
+    <ul id="treeDemo" class="ztree"></ul>
+</div>
+<hr/>
+
+

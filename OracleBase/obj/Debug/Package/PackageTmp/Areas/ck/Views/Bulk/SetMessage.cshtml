@@ -1,0 +1,244 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <title>在线交流</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.2.3.js"></script>
+    <script src="/signalr/hubs"></script>
+
+    <script src="~/Content/layer/layer.js"></script>
+    <style>
+        body {
+            background: #fff;
+        }
+
+        .weui-cells {
+            width: 90%;
+            margin: 0 auto;
+            border-radius: .2em;
+            margin-top: 10px;
+        }
+
+        footer {
+            background: #FFFFFFEF;
+            bottom: 0;
+        }
+
+            footer dl dd {
+                float: left;
+            }
+
+                footer dl dd a {
+                    color: red;
+                }
+
+        header {
+            box-shadow: none;
+            height: 40px !important;
+            line-height: 40px !important;
+            background: rgba(250, 250, 250, .9) !important;
+        }
+
+        .weui-cell__hd img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50px;
+        }
+
+
+
+        .weui-cells:after,
+        .weui-cells:before {
+            position: inherit !important;
+            background: transparent;
+        }
+
+        .weui-cell:before {
+            border-top: none;
+        }
+
+        .main {
+            background: #e1f4e0;
+            border-radius: 5px;
+        }
+
+            .main p {
+                padding: 10px;
+            }
+
+        ::-webkit-input-placeholder {
+            /* WebKit browsers */
+            padding-left: 5px;
+        }
+
+        .ritb {
+            display: block;
+        }
+
+        button {
+            width: 80%;
+            height: 35px;
+            background: red;
+            border: none;
+            color: #fff;
+            border-radius: 2px;
+            font-size: 14px;
+            line-height: 35px;
+        }
+
+        input {
+            border-radius: 3px;
+            height: 35px !important;
+        }
+
+        .time {
+            text-align: center;
+            margin-top: 20px;
+            color: #C7C7C7;
+        }
+
+        .name {
+            position: relative;
+            top: 8px;
+            " font-size: 5px !important;
+        }
+
+        .name-l {
+            left: 75px;
+        }
+
+        .name-r {
+            right: 75px;
+            text-align: right;
+        }
+
+        .col1 {
+            color: #e1f4e0;
+        }
+
+        .col2 {
+            transform: rotate(180deg);
+            color: #f0f0f0;
+        }
+    </style>
+    <script type="text/javascript">
+        function TiJiao() {
+            $.ajax({
+                //提交数据的类型 POST GET
+                type: "POST",
+                //提交的网址
+                url: $('#form1').attr('action'),
+                //提交的数据
+                data: $('#form1').serialize(),
+                //返回数据的格式
+                datatype: "json",//"xml", "html", "script", "json", "jsonp", "text".
+                //在请求之前调用的函数
+                beforeSend: function () {
+                    //$("#msg").html("logining");
+                },
+                //成功返回之后调用的函数
+                success: function (data) {
+                    layer.msg(data, {
+                        icon: 6,
+                        time: 1000 //1秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                    });
+
+
+                },
+                //调用执行后调用的函数
+                complete: function (XMLHttpRequest, textStatus) {
+
+                    //HideLoading();
+                },
+                //调用出错执行的函数
+                error: function () {
+                    //请求出错处理
+                }
+            });
+
+        }
+
+
+    </script>
+</head>
+
+<body>
+@using (Html.BeginForm("PostSetMessage", "Bulk", @FormMethod.Post, new {id = "form1", @class = "form-horizontal"}))
+{
+
+    <input type="button" onclick="TiJiao()" value="发送信息"/>
+}
+    <div id="message" style="overflow-y: auto">
+       
+    </div>
+
+    <div style="height: 80px;"></div>
+    <footer class="fixed">
+        <dl>
+            <dd style="width: 15%;">
+         
+            </dd>
+            <dd style="width: 75%;"><input id="txt" class="weui-input" type="text" placeholder="这里输入内容" style="background:#EEEEEE;height: 3.0em;"></dd>
+            <dd style="width: 25%;"><button id="send">发送</button></dd>
+     
+
+        </dl>
+
+    </footer>
+
+
+</body>
+</html>
+<script type="text/javascript">
+
+    $(function() {
+        var con = $.connection.myhub;
+
+
+        //接收数据
+        con.client.receiveMessage = function(name, message, userid,id) {
+
+            if (userid === '@ViewBag.userid') {
+                $("#message").append("<div class=\"weui-cells\"><p class=\"name name-r\">" + name + "</p><div class=\"weui-cell\"  style=\"float: right;\"><div class=\"main\" style=\"background: #f0f0f0;\"><p class=\"target\" onclick=\"Del('" + id + "')\" id=\"" + id + "\">" + message + "</p></div><span class=\"iconfont col2\" >&#xe697;</span><div class=\"weui-cell__hd\" ><img src=\"/Content/dangjian2/img/3.png\"></div></div></div>");
+
+            } else {
+                $("#message").append("<div class=\"weui-cells\" ><p class=\"name name-l\">" + name + "</p><div class=\"weui-cell\" style=\"border: none;\"><div class=\"weui-cell__hd\" ><img src=\"/Content/dangjian2/img/4.png\"></div><span class=\"iconfont col1\">&#xe697;</span><div class=\"main\"><p class=\"target\" onclick=\"Del('" + id + "')\" id=\"" + id + "\">" + message + "</p></div></div></div>");
+
+            }
+
+
+                $('#message').scrollTop($('#message')[0].scrollHeight);
+            }
+
+
+            //发送数据
+            $.connection.hub.start().done(function () {
+                con.server.register('@ViewBag.username');
+
+                $("#send").click(function () {
+                    var info = $("#txt").val();
+   
+                    if (info == "") {
+                        return;
+                    }
+                    con.server.sendMessage('@ViewBag.fatherid', '@ViewBag.username', '@ViewBag.userid',$("#txt").val());
+                    $("#txt").val("");
+
+                    $('#message').scrollTop($('#message')[0].scrollHeight);
+                });
+
+            });
+        })
+
+
+
+
+</script>
+

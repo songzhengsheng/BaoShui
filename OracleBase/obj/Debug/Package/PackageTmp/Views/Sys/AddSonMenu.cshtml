@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewBag.Title = "AddSonMenu";
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
+}
+<script type="text/javascript">
+    function AddData() {
+        if ($("#form1").valid()) {
+            $.ajax({
+                //提交数据的类型 POST GET
+                type: "POST",
+                //提交的网址
+                url: $('#form1').attr('action'),
+                //提交的数据
+                data: $('#form1').serialize(),
+                //返回数据的格式
+                datatype: "json",//"xml", "html", "script", "json", "jsonp", "text".
+                //在请求之前调用的函数
+                beforeSend: function () {
+                    //$("#msg").html("logining");
+                },
+                //成功返回之后调用的函数
+                success: function (data) {
+                    alert(data);
+                    window.parent.location.reload(); //刷新父页面
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(index);
+
+                },
+                //调用执行后调用的函数
+                complete: function (XMLHttpRequest, textStatus) {
+
+                    //HideLoading();
+                },
+                //调用出错执行的函数
+                error: function () {
+                    //请求出错处理
+                }
+            });
+        }
+    }
+
+</script>
+@using (Html.BeginForm("AddSonMenu", "Sys", @FormMethod.Post, new { id = "form1", @class = "form-horizontal" }))
+{
+ 
+        <input type="hidden" name="fatherId" value="@ViewBag.fatherId"/>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">名称：</label>
+            <div class="col-sm-8">
+                <input id="rsnemuName" name="menuName" type="text" class="form-control" required="" aria-required="true">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">url：</label>
+            <div class="col-sm-8">
+                <input id="rsurl" name="url" type="text" class="form-control" required="" aria-required="true">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">序号：</label>
+            <div class="col-sm-8">
+                <input id="rssort" name="sort" type="number" min="1" class="form-control" required="" aria-required="true">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-4 col-sm-offset-3">
+                <button class="btn btn-primary" type="button" onclick="AddData()">保存</button>
+
+            </div>
+        </div>
+  
+
+}

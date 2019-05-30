@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="~/Content/hplus/js/jquery.min.js"></script>
+    <script src="~/Content/hplus/js/plugins/echarts/echarts.common.min.js"></script>
+    <script src="~/Content/layer/layer.js"></script>
+    <script src="~/Content/My97DatePicker/WdatePicker.js"></script>
+</head>
+<body>
+    <div>
+        开始时间:<input id="starTime" name="starTime" type="text" class="form-control " required="required" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" />
+        结束时间:<input id="endTime" name="endTime" type="text" class="form-control" required="required" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" />
+        <input type="button" value="查询" onclick="Getdata()"/>
+    </div>
+    <div id="main" style="height: 600px; width: 100%"></div>
+<script type="text/javascript">
+
+    function Getdata() {
+        $.ajax({
+            type: "GET",
+            url: "/ToOut/GetKehufenxi2",
+            datatype: "json",
+            data: { starTime: $('#starTime').val(), endTime: $('#endTime').val() },
+            beforeSend: function () {
+              layer.load("请等待。。。");
+            },
+            success: function (res) {
+                var names = [];
+                //var zuoyeliang = [];
+                //var shouru = [];
+                var BingData = [];
+                for (var i = 0; i < res.data.length; i++) {
+                    names[i] = res.data[i].name;
+                    //zuoyeliang[i] = res.data[i].zuoyeliang;
+                    //shouru[i] = res.data[i].shouru;
+
+                    BingData.push({
+                        name: res.data[i].name,
+                        value: res.data[i].zuoyeliang
+                    });
+                }
+                var myChart = echarts.init(document.getElementById('main'));
+                var option = {
+                    /* 标题设置 */
+                    title : {
+                        text: '客户作业量分析',
+                        subtext: '',
+                        x:'center'
+                    },
+                    tooltip : {
+                        trigger: 'item',
+                        formatter: "{b}:<br/>{c} ({d}%)"
+                    },
+                    /* 颜色和选项的对应关系 */
+                    legend: {
+                        orient: 'vertical',
+                        left: 'left',
+                        data: names,
+                    },
+                    /* 内容显示 */
+                    series : [
+                        {
+                            name: '',  	//鼠标移至不同扇形区提示信息的标题
+                            type: 'pie',	//指定数据生成的图表类型
+                            radius : '55%',
+                            center: ['50%', '60%'],
+                            data: BingData, 
+                            /* 阴影区域设置 */
+                            itemStyle: {
+                                emphasis: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            }
+                        }
+                    ]
+                };
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
+              
+            },
+            complete: function (XMLHttpRequest, textStatus) {
+                layer.closeAll();
+            },
+        });
+    }
+
+
+</script>
+</body>
+
+<!-- Mirrored from www.zi-han.net/theme/hplus/graph_echarts.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:18:59 GMT -->
+</html>
+
+

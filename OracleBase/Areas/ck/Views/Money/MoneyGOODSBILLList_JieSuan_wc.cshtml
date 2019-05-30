@@ -1,0 +1,781 @@
+﻿
+@{
+    ViewBag.Title = "结算管理";
+    Layout = "~/Views/Shared/_LayoutBootstrapTable.cshtml";
+}
+
+<script src="~/Content/layer/layer.js"></script>
+<script src="~/Content/My97DatePicker/WdatePicker.js"></script>
+
+<div class="panel-body">
+    <div id="toolbar" class="btn-group">
+
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">
+            <span class="glyphicon glyphicon-search" aria-hidden="true">  </span>查询
+        </button>
+    </div>
+    <table id="table"></table>
+</div>
+<input type="hidden" class="form-control" id="roleId" name="roleId" value="@ViewBag.roleId">
+<div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">关闭</span>
+                </button>
+
+                <h4 class="modal-title">请输入查询条件</h4>
+
+            </div>
+            <div class="modal-body">
+                <form id="formSearch" class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="GBNO" placeholder="编码">
+                        </div>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="C_GOODSAGENT_NAME" placeholder="货代">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <input type="text" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" class="form-control" id="CreatTime" placeholder="创建时间从">
+                        </div>
+                        <div class="col-sm-5">
+                            <input type="text" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" class="form-control" id="CreatTime1" placeholder="创建时间至">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="BLNO" placeholder="提单">
+                        </div>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="C_GOODS" placeholder="货物">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="HuoZhu" placeholder="货主">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                <button type="button" id="btn_query" class="btn btn-sm btn-primary" onclick="Serach()">查询</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function chakan_dc(id) {
+
+        var url = "/ck/Money/TallyBll_dc?id=" + id;
+        var newTab = window.parent.document.getElementById("addNewTabBySon");
+        newTab.href = url;
+        newTab.innerText = "堆存费用详情";
+        newTab.click();
+    }
+    function changeDateFormat(cellval) {
+        var dateVal = cellval + "";
+        if (cellval != null) {
+            var date = new Date(parseInt(dateVal.replace("/Date(", "").replace(")/", ""), 10));
+            var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+            var currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+            return date.getFullYear() + "-" + month + "-" + currentDate;
+        }
+    }
+    var TableInit = function () {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $('#table').bootstrapTable({
+                url: '/Money/GetGOODSBILLList_wc_jiesuan', //请求后台的URL（*）
+                method: 'get', //请求方式（*）
+                toolbar: '#toolbar', //工具按钮用哪个容器
+                striped: true, //是否显示行间隔色
+                cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true, //是否显示分页（*）
+                sortable: true, //是否启用排序
+                sortOrder: "asc", //排序方式
+                queryParams: oTableInit.queryParams, //传递参数（*）
+                sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1, //初始化加载第一页，默认第一页
+                pageSize: 10, //每页的记录行数（*）
+                pageList: [10, 25, 50, 100], //可供选择的每页的行数（*）
+                search: false, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: false,
+                showColumns: true, //是否显示所有的列
+                showRefresh: true, //是否显示刷新按钮
+                minimumCountColumns: 2, //最少允许的列数
+                clickToSelect: true, //是否启用点击选中行
+                // height: $(window).height() - 30,
+                uniqueId: "ID", //每一行的唯一标识，一般为主键列
+                showToggle: false, //是否显示详细视图和列表视图的切换按钮
+                cardView: false, //是否显示详细视图
+                //fixedColumns: true,
+                //fixedNumber:5,
+                detailView: true, //是否显示父子表
+                onLoadSuccess: function (data) {  //加载成功时执行
+                    var sum_1 = 0.0;
+                    var sum_2 = 0.0;
+                    var sum_3 = 0.0;
+                    for (var o in data.rows) {
+                        sum_1 = parseFloat(sum_1) + parseFloat(data.rows[o].Fyjehj);
+                        sum_2 = parseFloat(sum_2) + parseFloat(data.rows[o].Lkjehj);
+                        sum_3 = parseFloat(sum_3) + parseFloat(data.rows[o].Sryk);
+                    }
+                    var rows = [];
+                    rows.push({
+                        Fyjehj: parseFloat(sum_1).toFixed(3),
+                        Lkjehj: parseFloat(sum_2).toFixed(3),
+                        Sryk: parseFloat(sum_3).toFixed(3),
+                        ContoractNumber: "",
+                        C_GOODSAGENT_NAME: "合计",
+                        GBNO: "",
+                        C_GOODS: "",
+                        ShipName: "",
+                        VGNO: "",
+                        PLANWEIGHT: "",
+                        ShiJiChuKu: "",
+                        ShiJiJInKu: "",
+                        MARK: "",
+                        daochu: "",
+                        State_JieSuan: "",
+
+                    });
+                    $('#table').bootstrapTable('append', rows);
+                },
+                columns: [
+
+                    {
+
+
+                        title: '提交',
+                        formatter: function (value, row, index) {
+                            if (row.State_FaPiao != "开票信息已提交") {
+
+                                return '<a  onclick="SureBao_Newshenhe(\'' + row.ID + '\')">提交</a>';
+
+                            }
+                            else {
+
+                                return '<p>已提交</p>';
+                            }
+                        }
+                        ,
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                    },
+                    {
+
+                        title: '导出',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        },
+                        formatter: function (value, row, index) {
+                            if (row.GBNO == "") {
+                                return '';
+                            }
+                            return '<a onclick="expExcel(\'' + row.ID + '\')">开票明细<a/>';
+                        }
+
+
+                    },
+                    {
+                        width: 140,
+                        field: 'GBNO',
+                        title: '票货编码',
+                        formatter: function (value, row, index) {
+                            return '<a  onclick="chakan(\'' + row.ID + '\')">' + row.GBNO + '</a>';
+                        }
+                        ,
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                    },
+                    {
+                        width: 130,
+                        field: 'ContoractNumber',
+                        title: '合同号',
+                        formatter: function (value, row, index) {
+                            if (row.ContoractNumber != null) {
+                                return '<a  onclick="chakan_ht(\'' + row.CONTRACT_Guid + '\')">' + row.ContoractNumber + '</a>';
+                            }
+
+                        }
+
+                    },
+                    {
+                        field: 'C_GOODSAGENT_NAME',
+                        title: '货代',
+                        //formatter: tdShowAll
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                        , formatter: tdShowAll
+
+                    },
+
+                    {
+                        field: 'C_GOODS',
+                        title: '货物',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                        , formatter: tdShowAll
+                    },
+                    {
+                        field: 'ShipName',
+                        title: '船名',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                        , formatter: tdShowAll
+                    },
+                    {
+                        field: 'VGNO',
+                        title: '航次',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                        , formatter: tdShowAll
+                    },
+                    {
+                        field: 'ShiJiJInKu',
+                        title: '实际进库量',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                        , formatter: tdShowAll
+                    },
+                    {
+                        field: 'ShiJiChuKu',
+                        title: '实际出库量',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                        , formatter: tdShowAll
+                    },
+
+
+                    {
+                        field: 'Fyjehj',
+                        title: '费用金额合计',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                        , formatter: tdShowAll
+                    },
+                    {
+                        field: 'Lkjehj',
+                        title: '来款金额合计',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                        , formatter: tdShowAll
+                    },
+                    {
+                        field: 'Sryk',
+                        title: '收入余款',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                        , formatter: tdShowAll
+                    },
+                    {
+                        field: 'MARK',
+                        title: '备注',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                        , formatter: tdShowAll
+                    },
+
+                    {
+                        field: 'State_JieSuan',
+                        title: '状态',
+                        formatter: function (value, row, index) {
+                            if (row.State_JieSuan == null) {
+                                return '<span class="label label-warning ">进行中</span>';
+                            }
+                            else {
+                                return '<span class="label label-warning ">' + value + '</span>';
+                            }
+
+                        },
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                    }
+
+
+                ],
+                //注册加载子表的事件。注意下这里的三个参数！
+                onExpandRow: function (index, row, $detail) {
+
+                    InitSubTable(index, row, $detail);
+                },
+                formatLoadingMessage: function () {
+                    return "请稍等，正在加载中。。。";
+                }
+            });
+        };
+        InitSubTable = function (index, row, $detail) {
+            var fatherId = row.ID;
+            var cur_table = $detail.html('<table id="Serach_CONSIGN"></table>').find('table');
+            $(cur_table).bootstrapTable({
+                url: '/Money/GetTallyBllList_fy',
+                method: 'get',
+                queryParams: { id: fatherId },
+                ajaxOptions: { id: fatherId },
+                striped: true, //是否显示行间隔色
+                cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: false, //是否显示分页（*）
+                sortable: false, //是否启用排序
+                sortOrder: "asc", //排序方式
+                sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1, //初始化加载第一页，默认第一页
+                search: false, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: false,
+                showColumns: false, //是否显示所有的列
+                showRefresh: false, //是否显示刷新按钮
+                minimumCountColumns: 2, //最少允许的列数
+                clickToSelect: true, //是否启用点击选中行
+                uniqueId: "guid", //每一行的唯一标识，一般为主键列
+                showToggle: false, //是否显示详细视图和列表视图的切换按钮
+                cardView: false, //是否显示详细视图
+                detailView: true, //是否显示父子表
+                pageSize: 100,
+                pageList: [10, 25],
+                columns: [
+                    {
+                        width: 100,
+                        title: '操作',
+                        formatter: function (value, row, index) {
+                            if (row.FMZhongLei == "合计") {
+                                return ''
+                            }
+                            else {
+                                return '<div  class="btn-group"><button data-toggle="dropdown" class="btn btn-success btn-sm dropdown-toggle" aria-expanded="false">操作 <span class="caret"></span></button><ul class="dropdown-menu"><li><a  onclick="jifeixx(0,\'' + row.GoodsBill_id + '\',\'' + row.Type + '\',\'' + row.FMZhongLei + '\')">添加结算信息</a></li></ul></div>';
+                            }
+                        }
+
+
+                    },
+                    {
+                        field: 'FMZhongLei',
+                        title: '费目种类',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        },
+                        formatter: function (value, row, index) {
+                            if (row.JiLiangDanWei.indexOf("*天") > 0) {
+                                if (row.Type == "进库" || row.Type == "出库") {
+                                    return '<a  onclick="chakan_dc(\'' + row.ID + '\')">' + row.FMZhongLei + '</a>';
+                                }
+                                else {
+                                    return '<a  onclick="chakan_dc_k(\'' + row.ID + '\')">' + row.FMZhongLei + '</a>';
+                                }
+                            }
+                            else {
+                                return '' + row.FMZhongLei + '';
+                            }
+                        }
+                    },
+                    {
+                        field: 'FeiYong',
+                        title: '费用金额',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        },
+                        formatter: tdShowAll
+                    }
+                    ,
+                    {
+                        field: 'ShuiHouJinE',
+                        title: '费用税后金额',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        },
+                        formatter: tdShowAll
+                    }
+                    ,
+                    {
+                        field: 'KaiPiaoJinE',
+                        title: '开票金额',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        },
+                        formatter: tdShowAll
+                    }
+                    ,
+                    {
+                        field: 'KaiPiaoShuiHou',
+                        title: '开票税后金额',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        },
+                        formatter: tdShowAll
+                    }
+                    ,
+                    {
+                        field: 'WeiKaiPiaoJinE',
+                        title: '未开票金额',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        },
+                        formatter: tdShowAll
+                    }
+                    ,
+                    {
+                        field: 'WeiKaiPiaoShuiHou',
+                        title: '未开票税后金额',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        },
+                        formatter: tdShowAll
+                    }
+                    ,
+                    {
+                        field: 'YinSHouYuE',
+                        title: '应收账款余额',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        },
+                        formatter: tdShowAll
+                    }
+                ],
+                //无线循环取子表，直到子表里面没有记录
+                onExpandRow: function (index, row, $Subdetail) {
+                    InitSubTable(index, row, $Subdetail);
+                },
+                //注册加载子表的事件。注意下这里的三个参数！
+                onExpandRow: function (index, row, $detail) {
+
+                    InitSubTable_TALLYBILL(index, row, $detail);
+                },
+                formatLoadingMessage: function () {
+                    return "请稍等，正在加载中。。。";
+                }
+            });
+        };
+        InitSubTable_TALLYBILL = function (index, row, $detail) {
+            var GoodsBill_id = row.GoodsBill_id;
+            var FeiMuZhongLei = row.FMZhongLei;
+            var Type = row.Type;
+            var cur_table = $detail.html('<table id="Serach_TALLYBILL"></table>').find('table');
+            $(cur_table).bootstrapTable({
+                url: '/Money/GetFeiTongLis_JieSuan',
+                method: 'get',
+                queryParams: { GoodsBill_id: GoodsBill_id, FeiMuZhongLei: FeiMuZhongLei, Type: Type },
+                ajaxOptions: { GoodsBill_id: GoodsBill_id, FeiMuZhongLei: FeiMuZhongLei, Type: Type },
+                striped: true, //是否显示行间隔色
+                cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: false, //是否显示分页（*）
+                sortable: false, //是否启用排序
+                sortOrder: "asc", //排序方式
+                sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1, //初始化加载第一页，默认第一页
+                search: false, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: false,
+                showColumns: false, //是否显示所有的列
+                showRefresh: false, //是否显示刷新按钮
+                minimumCountColumns: 2, //最少允许的列数
+                clickToSelect: true, //是否启用点击选中行
+                uniqueId: "guid", //每一行的唯一标识，一般为主键列
+                showToggle: false, //是否显示详细视图和列表视图的切换按钮
+                cardView: false, //是否显示详细视图
+                detailView: false, //是否显示父子表
+                pageSize: 100,
+                pageList: [10, 25],
+                columns: [
+                    {
+                        width: 100,
+                        title: '操作',
+                        formatter: function (value, row, index) {
+                            return '<div  class="btn-group"><button data-toggle="dropdown" class="btn btn-success btn-sm dropdown-toggle" aria-expanded="false">操作 <span class="caret"></span></button><ul class="dropdown-menu"><li><a  onclick="jifeixx(\'' + row.ID + '\',\'' + row.GoodsBill_id + '\',\'' + row.Type + '\',\'' + row.FeiMuZhongLei + '\')">编辑</a></li><li><a  onclick="Del(\'' + row.ID + '\')">删除</a></li></ul></div>';
+                        }
+
+
+                    },
+                    {
+                        field: 'KaiPiaoJinE',
+                        title: '开票金额',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                    },
+                    {
+                        field: 'KaiPianDanWei',
+                        title: '开票单位',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                    }
+                    ,
+                    {
+                        field: 'Time1',
+                        title: '结算开始时间',
+                        formatter: function (value, row, index) {
+                            return changeDateFormat(value)
+                        },
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+
+                    },
+                    {
+                        field: 'Time2',
+                        title: '结算结束时间',
+                        formatter: function (value, row, index) {
+                            return changeDateFormat(value)
+                        },
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+
+                    },
+                    {
+                        field: 'KaiPiaoRiQi',
+                        title: '开票日期',
+                        formatter: function (value, row, index) {
+                            return changeDateFormat(value)
+                        },
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+
+                    },
+                    {
+                        field: 'LaiKuanJinE',
+                        title: '来款金额',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                    }
+                    ,
+                    {
+                        field: 'LaiKuanShiJian',
+                        title: '来款日期',
+                        formatter: function (value, row, index) {
+                            return changeDateFormat(value)
+                        },
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+
+                    },
+                    {
+                        field: 'LaiKuanDanWei',
+                        title: '来款单位',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                    }
+                    ,
+
+                ],
+                //无线循环取子表，直到子表里面没有记录
+                onExpandRow: function (index, row, $Subdetail) {
+                    InitSubTable(index, row, $Subdetail);
+                },
+
+            });
+        };
+        //得到查询的参数
+        oTableInit.queryParams = function (params) {
+            var temp = {
+                limit: params.limit, //页面大小
+                offset: params.offset, //页码
+                GBNO: $("#GBNO").val(),
+                C_GOODSAGENT_NAME: $("#C_GOODSAGENT_NAME").val(),
+                CreatTime: $("#CreatTime").val(),
+                CreatTime1: $("#CreatTime1").val(),
+                BLNO: $("#BLNO").val(),
+                C_GOODS: $("#C_GOODS").val(),
+                HuoZhu: $("#HuoZhu").val(),
+            };
+            return temp;
+        };
+        return oTableInit;
+    };
+
+
+    function chakan(id) {
+        layer.open({
+            type: 2,
+            title: "查看票货",
+            shadeClose: true,
+            shade: 0.8,
+            area: ['80%', '80%'],
+            content: "/ck/GoodsBill/GOODSBILL_xq?id=" + id,
+            btn: ['关闭'],
+            yes: function (index) {
+                layer.close(index);
+            },
+            end: function () {
+            }
+        });
+    }
+    function jifeixx(id, GoodsBill_id, Type, FeiMuZhongLei) {
+        layer.open({
+            type: 2,
+            title: "编辑结算信息",
+            shadeClose: true,
+            shade: 0.8,
+            area: ['80%', '80%'],
+            content: "/ck/Money/AddMoney_JieSuan?id=" + id + "&&GoodsBill_id=" + GoodsBill_id + "&&Type=" + Type + "&&FeiMuZhongLei=" + FeiMuZhongLei,
+            btn: ['关闭'],
+            yes: function (index) {
+                layer.close(index);
+            },
+            end: function () {
+                Serach_TALLYBILL();
+            }
+        });
+    }
+
+    function Del(id) {
+        swal({
+            title: "您确定要删除这条信息吗",
+            text: "删除后将无法恢复，请谨慎操作！",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "删除",
+            closeOnConfirm: false
+        }, function () {
+
+            id = JSON.stringify({ ID: id });
+            $.ajax({
+                type: 'POST',
+                url: '/api/mapi/DelById',
+                contentType: "application/json",
+                data: JSON.stringify({ tableName: 'C_TB_JIESUAN', ID: id }),
+                dataType: 'json',
+                success: function (data, textStatus) {
+                    data = eval('(' + data + ')');
+                    if (data.state == "success") {
+                        swal("删除成功！", "您已经永久删除了这条信息。", "success");
+                        Serach_TALLYBILL();
+
+                    } else {
+                        swal("删除失败！", "请联系管理员。", "error");
+
+                    }
+                },
+                error: function (xmlHttpRequest, textStatus, errorThrown) {
+                }
+            });
+
+
+        });
+
+    }
+    function chakan_dc_k(id) {
+        var url = "/ck/Money/TallyBll_dc_k?id=" + id;
+        var newTab = window.parent.document.getElementById("addNewTabBySon");
+        newTab.href = url;
+        newTab.innerText = "堆存费用详情";
+        newTab.click();
+    }
+</script>
+<script>
+    $(function () {
+        parent.layer.closeAll();
+    });
+    function chakan_ht(CONTRACT_Guid) {
+        layer.open({
+            type: 2,
+            title: "查看合同",
+            shadeClose: true,
+            shade: 0.8,
+            area: ['80%', '80%'],
+            content: "/ck/GoodsBill/HeTong_xq?CONTRACT_Guid=" + CONTRACT_Guid,
+            btn: ['关闭'],
+            yes: function (index) {
+                layer.close(index);
+            },
+            end: function () {
+            }
+        });
+    }
+    function expExcel(GoodsBill_Id) {
+        var postData = {
+
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '/Money/WorkNumToExcel_JieSuan?GoodsBill_Id=' + GoodsBill_Id,
+            data: postData,
+            dataType: 'json',
+            success: function (data, textStatus) {
+                data = eval('(' + data + ')');
+                if (data.state == "error") {
+                    layer.msg(data.message, { icon: 6 });
+
+                } else {
+                    location.href = data.message;
+
+                }
+
+            },
+            error: function (xmlHttpRequest, textStatus, errorThrown) {
+            }
+        });
+    }
+    function TiJiao(id) {
+        swal({
+            title: "您确定要提交这条信息吗",
+            text: "完成后将改变此条数据以及所有子数据，请谨慎操作！",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "完成",
+            closeOnConfirm: false
+        }, function () {
+            $.ajax({
+                type: 'POST',
+                url: '/ck/Money/TiJiao_FaPiao',
+                data: { ID: id },
+                dataType: 'json',
+                success: function (data, textStatus) {
+                    data = eval('(' + data + ')');
+                    if (data.state == "success") {
+                        swal("操作成功！", "您已经提交了此条数据。", "success");
+                        Serach_TALLYBILL();
+
+                    } else {
+                        swal("操作失败！", "请联系管理员。", "error");
+
+                    }
+                },
+                error: function (xmlHttpRequest, textStatus, errorThrown) {
+                }
+            });
+
+
+        });
+
+    }
+    function SureBao_Newshenhe(id) {
+        layer.open({
+            type: 2,
+            title: "提交操作",
+            shadeClose: true,
+            shade: 0.8,
+            area: ['60%', '70%'],
+            content: "/ck/Money/TiJiao_FaPiao_ym?id=" + id
+        });
+    }
+</script>
+<link href="~/Content/hplus/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+<script src="~/Content/hplus/js/plugins/sweetalert/sweetalert.min.js"></script>
+
+

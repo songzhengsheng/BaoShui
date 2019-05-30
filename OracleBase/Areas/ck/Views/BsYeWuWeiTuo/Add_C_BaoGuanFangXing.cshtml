@@ -1,0 +1,186 @@
+﻿
+@{
+    ViewBag.Title = "报关";
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
+
+}
+
+
+@using OracleBase.Models
+@model BS_BAOGUAN
+
+<script src="~/Content/My97DatePicker/WdatePicker.js"></script>
+<script>
+
+    function TiJiao() {
+        if ($("#form1").valid()) {
+            $.ajax({
+                //提交数据的类型 POST GET
+                type: "POST",
+                //提交的网址
+                url: $('#form1').attr('action'),
+                //提交的数据
+                data: $('#form1').serialize(),
+                //返回数据的格式
+                datatype: "json",//"xml", "html", "script", "json", "jsonp", "text".
+                //在请求之前调用的函数
+                beforeSend: function () {
+                    //$("#msg").html("logining");
+                },
+                //成功返回之后调用的函数
+                success: function (data) {
+                    layer.msg(data,{
+                        icon: 6,
+                        time: 1000 //1秒关闭（如果不配置，默认是3秒）
+                    },function(){
+                        var index = parent.layer.getFrameIndex(window.name);
+                        if (data == "成功") {
+                            parent.layer.close(index);
+                        }
+                    });
+
+
+                },
+                //调用执行后调用的函数
+                complete: function (XMLHttpRequest, textStatus) {
+
+                    //HideLoading();
+                },
+                //调用出错执行的函数
+                error: function () {
+                    //请求出错处理
+                }
+            });
+        }
+
+
+    }
+      $(function () {
+          var BaoGuanLeiBie = '@Model.BaoGuanLeiBie';
+          $("#BaoGuanLeiBie").find("option[value=" + BaoGuanLeiBie + "]").attr("selected", true);
+          var LiuXiang = '@Model.LiuXiang';
+          $("#LiuXiang").find("option[value=" + LiuXiang + "]").attr("selected", true);
+
+    });
+
+</script>
+
+
+@using (Html.BeginForm("Add_C_BaoGuanFangXing", "BsYeWuWeiTuo", @FormMethod.Post, new { id = "form1", @class = "form-horizontal" }))
+{
+    @Html.HiddenFor(n => Model.Guid)
+    @Html.HiddenFor(n => Model.CreatPeople)
+    @Html.HiddenFor(n => Model.CreatTime)
+    @Html.HiddenFor(n => Model.State)
+    @Html.HiddenFor(n => Model.BaoGuanDanHao)
+    @Html.HiddenFor(n => Model.GoodsBillId)
+    @Html.HiddenFor(n => Model.BaoGuanShenQingRen)
+    @Html.HiddenFor(n => Model.BaoGuanLeiBie)
+    @Html.HiddenFor(n => Model.LiuXiang)
+    @Html.HiddenFor(n => Model.ChuanGongSi)
+    @Html.HiddenFor(n => Model.ShenPiKaiShiRiQi)
+    @Html.HiddenFor(n => Model.ShenPiJieShuRiQi)
+    @Html.HiddenFor(n => Model.MianShiQi)
+    @Html.HiddenFor(n => Model.MaoZhong)
+    @Html.HiddenFor(n => Model.JingZhong)
+    @Html.HiddenFor(n => Model.DanJia)
+    @Html.HiddenFor(n => Model.JianShu)
+    @Html.HiddenFor(n => Model.HuoZhi)
+    @Html.HiddenFor(n => Model.PiCi)
+    @Html.HiddenFor(n => Model.BaoGuanMiaoShu)
+    @*<input id="GoodsBillId" type="hidden" class="form-control" value="@ViewBag.GoodsBillId" maxlength="50" name="GoodsBillId" required="required">*@
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label text-danger">放行日期：</label>
+                        <div class="col-sm-4">
+                            <input id="FangXingRiQi" name="FangXingRiQi" type="text" class="form-control" value="@Model.FangXingRiQi" maxlength="50" required="" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })">
+                        </div>
+                        <label class="col-sm-2  control-label text-danger">报关日期：</label>
+                        <div class="col-sm-4">
+                            <input id="BaoGuanRiQi" type="text" class="form-control" value="@Model.BaoGuanRiQi" maxlength="50" name="BaoGuanRiQi" required="" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">报关单号：</label>
+                        <div class="col-sm-4">
+                            <input id="BaoGuanDanHao" type="text" class="form-control" value="@Model.BaoGuanDanHao" maxlength="50" name="BaoGuanDanHao">
+                        </div>
+                        <label class="col-sm-2  control-label">保证金：</label>
+                        <div class="col-sm-4">
+                            <input id="BaoZhengJin" type="text" class="form-control number" value="@Model.BaoZhengJin" maxlength="50" name="BaoZhengJin">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">关税：</label>
+                        <div class="col-sm-4">
+                            <input id="GuanShui" type="text" class="form-control number" value="@Model.GuanShui" maxlength="50" name="GuanShui">
+                        </div>
+                        <label class="col-sm-2  control-label">增值税：</label>
+                        <div class="col-sm-4">
+                            <input id="ZengZhiShui" type="text" class="form-control number" value="@Model.ZengZhiShui" maxlength="50" name="ZengZhiShui">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">备注：</label>
+                        <div class="col-sm-4">
+                            <input id="BeiZhu" type="text" class="form-control" value="@Model.BeiZhu" maxlength="50" name="BeiZhu">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-3" style="padding-top: 50px; padding-left: 200px;">
+                            <button class="btn btn-primary" type="button" onclick="TiJiao()">保存</button>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script src="~/Content/hplus/js/plugins/suggest/bootstrap-suggest.min.js"></script>
+<script type="text/javascript">
+    var admdirector = $("#ContoractNumber").bsSuggest({
+        indexId: 4, //data.value 的第几个数据，作为input输入框的内容
+        indexKey: 0, //data.value 的第几个数据，作为input输入框的内容
+        allowNoKeyword: false, //是否允许无关键字时请求数据
+        multiWord: false, //以分隔符号分割的多关键字支持
+        separator: ",", //多关键字支持时的分隔符，默认为空格
+        getDataMethod: "url", //获取数据的方式，总是从 URL 获取
+        effectiveFields: ["ContoractNumber",],
+        effectiveFieldsAlias: { ContoractNumber: "合同编号", Guid: "Guid" },
+        showHeader: true,
+        idField: "Guid",
+        keyField: "ContoractNumber",
+        fnPreprocessKeyword: function (keyword) {
+            return encodeURI(keyword, "UTF-8");
+        },
+        url: "/GoodsBill/GetEntrustListByCode?Keyword=", /*优先从url ajax 请求 json 帮助数据，注意最后一个参数为关键字请求参数*/
+        processData: function (json) { // url 获取数据时，对数据的处理，作为 getData 的回调函数
+            var i, len, data = { value: [] };
+            if (!json || json.length == 0) {
+                return false;
+            }
+            len = json.length;
+            for (i = 0; i < len; i++) {
+                data.value.push({
+                    "Guid": json[i].Guid,
+                    "ContoractNumber": json[i].ContoractNumber
+
+                });
+            }
+            return data;
+        }
+    }).on('onSetSelectValue', function (e, keyword, data) {
+        var Guid = keyword.id;
+        $("#CONTRACT_Guid").val(Guid);
+        //console.log('onSetSelectValue2: ', keyword.id);
+        //console.log('onSetSelectValue4: ', keyword.key);
+    });
+
+</script>
+

@@ -1,0 +1,136 @@
+﻿
+@{
+    ViewBag.Title = "GOODSBILL";
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
+}
+@using NFine.Code
+@using OracleBase.Models
+@model C_TB_HC_GOODSBILL
+
+
+<script>
+
+      $(function () {
+          document.getElementById("BLNO").focus();
+          var MARK_GOOGSBILLTYPE = '@Model.MARK_GOOGSBILLTYPE';
+          $("#MARK_GOOGSBILLTYPE").find("option[value=" + MARK_GOOGSBILLTYPE + "]").attr("selected", true);
+        
+    });
+</script>
+<script type="text/javascript" src="Scripts/jquery-1.4.4.min.js"></script>
+@using (Html.BeginForm("Add_C_GOODSBILL", "GoodsBill", @FormMethod.Post, new { id = "form1", @class = "form-horizontal" }))
+{
+    @Html.HiddenFor(n => Model.ID)
+    @Html.HiddenFor(n => Model.GBNO)
+    @Html.HiddenFor(n => Model.CreatPeople)
+    @Html.HiddenFor(n => Model.CreatTime)
+    @Html.HiddenFor(n => Model.State)
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="form-group">
+
+
+                        <label class="col-sm-2  control-label">合同号：</label>
+                        <div class="col-sm-4">
+                            <input id="ContoractNumber" type="text" class="form-control" value="@Model.ContoractNumber" maxlength="50" name="ContoractNumber" readonly="readonly">
+                        </div>
+                        <label class="col-sm-2  control-label">提单号：</label>
+                        <div class="col-sm-4">
+                            <input id="BLNO" type="text" class="form-control required" value="@Model.BLNO" maxlength="50" name="BLNO" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <label class="col-sm-2  control-label">船名：</label>
+                        <div class="col-sm-4">
+                            <input id="ShipName" type="text" class="form-control" value="@Model.ShipName" maxlength="50" name="ShipName" readonly="readonly">
+                        </div>
+                        <label class="col-sm-2  control-label">货物类型：</label>
+                        <div class="col-sm-4">
+                            <input id="GoodsType" type="text" class="form-control" value="@Model.GoodsType" maxlength="50" name="GoodsType" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+
+                        <label class="col-sm-2  control-label">内外贸：</label>
+                        <div class="col-sm-4">
+                            <input id="NWM" type="text" class="form-control" value="@Model.NWM" maxlength="50" name="NWM" readonly="readonly">
+                        </div>
+                        <label class="col-sm-2  control-label">航次：</label>
+                        <div class="col-sm-4">
+                            <input id="VGNO" type="text" class="form-control" value="@Model.VGNO" maxlength="50" name="VGNO" readonly="readonly">
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+
+                        <label class="col-sm-2  control-label">货代：</label>
+                        <div class="col-sm-4">
+                            <input id="C_GOODSAGENT_NAME" type="text" class="form-control" value="@Model.C_GOODSAGENT_NAME" maxlength="50" name="C_GOODSAGENT_NAME" readonly="readonly">
+                        </div>
+                        <label class="col-sm-2  control-label">货物：</label>
+                        <div class="col-sm-4">
+                            <input id="C_GOODS" type="text" class="form-control" value="@Model.C_GOODS" maxlength="50" name="C_GOODS" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <label class="col-sm-2  control-label">是否集装箱：</label>
+                        <div class="col-sm-4">
+                            <input id="MARK_GOOGSBILLTYPE" type="text" class="form-control number" value="@Model.MARK_GOOGSBILLTYPE" maxlength="50" name="MARK_GOOGSBILLTYPE" readonly="readonly">
+                        </div>
+                        <label class="col-sm-2  control-label">件重（吨）：</label>
+                        <div class="col-sm-4">
+                            <input id="PIECEWEIGHT" type="text" class="form-control number" value="@Model.PIECEWEIGHT" maxlength="50" name="PIECEWEIGHT" readonly="readonly">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+
+                        <label class="col-sm-2  control-label">计划件数：</label>
+                        <div class="col-sm-4">
+                            <input id="PLANAMOUNT" type="text" class="form-control number" value="@Model.PLANAMOUNT" maxlength="50" name="PLANAMOUNT" readonly="readonly">
+                        </div>
+                        <label class="col-sm-2  control-label">计划重量：</label>
+                        <div class="col-sm-4">
+                            <input id="PLANWEIGHT" type="text" class="form-control number" value="@Model.PLANWEIGHT" maxlength="50" name="PLANWEIGHT" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <label class="col-sm-2  control-label">检尺件数：</label>
+                        <div class="col-sm-4">
+                            <input id="jcjs" type="text" class="form-control number" value="@Model.jcjs" maxlength="50" name="jcjs" readonly="readonly">
+                        </div>
+                        <label class="col-sm-2  control-label">检尺材积：</label>
+                        <div class="col-sm-4">
+                            <input id="jccj" type="text" class="form-control number" value="@Model.jccj" maxlength="50" name="jccj" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <label class="col-sm-2  control-label">备注：</label>
+                        <div class="col-sm-4">
+                            <input id="MARK" type="text" class="form-control" value="@Model.MARK" maxlength="50" name="MARK" readonly="readonly">
+                        </div>
+                        @{
+                           int roiled=OperatorProvider.Provider.GetCurrent().RoleId.ToInt();
+                            if (roiled!=4)
+                            {
+                                <label class="col-sm-2  control-label">货主：</label>
+                                <div class="col-sm-4">
+                                    <input id="HuoZhu" type="text" class="form-control" value="@Model.HuoZhu" maxlength="50" name="HuoZhu" readonly="readonly">
+                                </div>
+                            }
+                        }
+                     
+                     
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

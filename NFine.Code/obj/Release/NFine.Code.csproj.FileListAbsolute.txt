@@ -1,0 +1,2 @@
+D:\项目文件\wlkg\NFine.Code\obj\Release\NFine.Code.csprojAssemblyReference.cache
+D:\项目文件\wlkg\NFine.Code\obj\Release\NFine.Code.csproj.CoreCompileInputs.cache

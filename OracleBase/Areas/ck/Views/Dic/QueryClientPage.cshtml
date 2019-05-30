@@ -1,0 +1,157 @@
+﻿
+@{
+    ViewBag.Title = "QueryClientPage";
+    Layout = "~/Views/Shared/_LayoutBootstrapTable.cshtml";
+}
+<script src="~/Content/layer/layer.js"></script>
+<div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">关闭</span>
+                </button>
+
+                <h4 class="modal-title">请输入查询条件</h4>
+
+            </div>
+            <div class="modal-body">
+                <form id="formSearch" class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="Name" placeholder="名称">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                <button type="button" id="btn_query" class="btn btn-sm btn-primary" onclick="Serach()">查询</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel-body">
+    <div id="toolbar" class="btn-group">
+        <button id="btn_delete" type="button" class="btn btn-danger">
+         添加
+        </button>
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">
+            <span class="glyphicon glyphicon-search" aria-hidden="true">  </span>查询
+        </button>
+    </div>
+    <table id="table"></table>
+</div>
+
+
+
+<script type="text/javascript">
+    var TableInit = function () {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $('#table').bootstrapTable({
+                url: '/Dic/QueryClient', //请求后台的URL（*）
+                method: 'get', //请求方式（*）
+                toolbar: '#toolbar', //工具按钮用哪个容器
+                striped: true, //是否显示行间隔色
+                cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true, //是否显示分页（*）
+                sortable: true, //是否启用排序
+                sortOrder: "asc", //排序方式
+                queryParams: oTableInit.queryParams, //传递参数（*）
+                sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1, //初始化加载第一页，默认第一页
+                pageSize: 10, //每页的记录行数（*）
+                pageList: [10, 25, 50, 100], //可供选择的每页的行数（*）
+                search: false, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: false,
+                showColumns: true, //是否显示所有的列
+                showRefresh: true, //是否显示刷新按钮
+                minimumCountColumns: 2, //最少允许的列数
+                clickToSelect: true, //是否启用点击选中行
+                height: $(window).height() - 30,
+                uniqueId: "ID", //每一行的唯一标识，一般为主键列
+
+                columns: [
+                    {
+                        checkbox: true,
+
+                    },
+                    {
+                        field: 'CODE',
+                        title: '编码',
+                    },
+                    {
+                        field: 'NAME',
+                        title: '名称',
+                    },
+                    {
+                        field: 'LOGOGRAM',
+                        title: '速记码',
+                    },
+                    {
+                        field: 'FULLNAME',
+                        title: '全称',        
+                    }
+                ],
+            });
+        };
+        //得到查询的参数
+        oTableInit.queryParams = function (params) {
+            var temp = {
+                limit: params.limit, //页面大小
+                offset: params.offset, //页码
+                Name: $("#Name").val()
+            };
+            return temp;
+        };
+        return oTableInit;
+    };
+    $("#btn_delete").click(function() {
+        var a = $("#table").bootstrapTable('getSelections');
+        if (a.length <= 0) {
+
+            swal("失败！", "请选中一行。", "error");
+            return;
+        }
+        swal({
+                title: "您确定要操作这些信息吗",
+                text: "请谨慎操作！",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "添加",
+                closeOnConfirm: false
+            },
+            function() {
+                var b = JSON.stringify(a);
+                var url = "/Dic/AddFIKeHuToCUSTOMER";
+                $.ajax({
+                    dataType: "json",
+                    traditional: true, //这使json格式的字符不会被转码
+                    data: { "datalist": b },
+                    type: "post",
+                    url: url,
+                    success: function(data) {
+                        swal("成功", "添加成功", "success");
+                     
+                    },
+                    error: function(data) {
+                        swal("失败！", "请联系管理员。", "error");
+                    }
+                });
+
+            });
+
+    });
+</script>
+<link href="~/Content/hplus/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+<script src="~/Content/hplus/js/plugins/sweetalert/sweetalert.min.js"></script>
+<script>
+    $(function () {
+        parent.layer.closeAll();
+    });
+</script>
+
+

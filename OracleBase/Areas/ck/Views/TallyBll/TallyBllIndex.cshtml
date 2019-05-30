@@ -1,0 +1,377 @@
+﻿
+@{
+    ViewBag.Title = "理货单列表";
+    Layout = "~/Views/Shared/_LayoutBootstrapTable.cshtml";
+}
+<script src="~/Content/layer/layer.js"></script>
+<script src="~/Content/bootstraptableedu/bootstrap-table-export.js"></script>
+<script src="~/Content/bootstraptableedu/tableExport.js"></script>
+<script src="~/Content/My97DatePicker/WdatePicker.js"></script>
+<script>
+    function expExcel() {
+        var postData = {
+           
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '/TallyBll/WorkNumToExcel',
+            data: postData,
+            dataType: 'json',
+            success: function (data, textStatus) {
+                location.href = data;
+            },
+            error: function (xmlHttpRequest, textStatus, errorThrown) {
+            }
+        });
+    }
+</script>
+<div class="panel-body">
+    <div id="toolbar" class="btn-group">
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">
+            <span class="glyphicon glyphicon-search" aria-hidden="true">  </span>查询
+        </button>
+    </div>
+    <table id="table"></table>
+</div>
+
+<div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">关闭</span>
+                </button>
+
+                <h4 class="modal-title">请输入查询条件</h4>
+
+            </div>
+            <div class="modal-body">
+                <form id="formSearch" class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="TBNO" placeholder="理货单号">
+                        </div>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="CGNO" placeholder="委托号">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <input type="text" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" class="form-control" id="BEGINTIME" placeholder="理货时间从">
+                        </div>
+                        <div class="col-sm-5">
+                            <input type="text" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" class="form-control" id="ENDTIME" placeholder="理货时间至">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="huodai" placeholder="货代">
+                        </div>
+                        <div class="col-sm-5">
+                            <select id="banci" name="banci" class="form-control">
+                                <option value="">白/夜班</option>
+                                <option value="白班">白班</option>
+                                <option value="夜班">夜班</option>
+                            </select>
+                          
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="chuanming" placeholder="船名">
+                        </div>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="hangci" placeholder="航次">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                <button type="button" id="btn_query" class="btn btn-sm btn-primary" onclick="Serach()">查询</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var TableInit = function () {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $('#table').bootstrapTable({
+                url: '/TallyBll/GetTallyBllList', //请求后台的URL（*）
+                method: 'get', //请求方式（*）
+                toolbar: '#toolbar', //工具按钮用哪个容器
+                striped: true, //是否显示行间隔色
+                cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true, //是否显示分页（*）
+                sortable: true, //是否启用排序
+                sortOrder: "asc", //排序方式
+                queryParams: oTableInit.queryParams, //传递参数（*）
+                sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1, //初始化加载第一页，默认第一页
+                pageSize: 10, //每页的记录行数（*）
+                pageList: [10, 25, 10000], //可供选择的每页的行数（*）
+                search: false, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: false,
+                showColumns: true, //是否显示所有的列
+                showRefresh: true, //是否显示刷新按钮
+                minimumCountColumns: 2, //最少允许的列数
+                clickToSelect: true, //是否启用点击选中行
+                // height: $(window).height() - 30,
+                uniqueId: "ID", //每一行的唯一标识，一般为主键列
+                showToggle: false, //是否显示详细视图和列表视图的切换按钮
+                cardView: false, //是否显示详细视图
+                detailView: false, //是否显示父子表
+
+                showExport: true,  //是否显示导出按钮
+                buttonsAlign: "right",  //按钮位置
+                exportTypes: ['excel'],  //导出文件类型
+                Icons: 'glyphicon-export',
+                exportOptions: {
+                    ignoreColumn: [0, 1],  //忽略某一列的索引
+                    fileName: '总台帐报表',  //文件名称设置
+                    worksheetName: 'sheet1',  //表格工作区名称
+                    tableName: '总台帐报表',
+                    excelstyles: ['background-color', 'color', 'font-size', 'font-weight'],
+
+                },
+
+                columns: [
+                    {
+                        width: 130,
+                        field: 'TBNO',
+                        title: '理货单号',
+                        formatter: function (value, row, index) {
+                            return '<a  onclick="chakan_lh(\'' + row.ID + '\')">' + row.TBNO + '</a>';
+                        }
+
+                    }
+                    ,
+                    {
+                        field: 'CODE_OPSTYPE',
+                        title: '进出库类别',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        },
+                        formatter: tdShowAll
+                    }
+                    , {
+                        field: 'CODE_SECTION',
+                        title: '位',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        },
+                        formatter: tdShowAll
+                    }
+                    ,
+                    {
+                        field: 'HuoDai',
+                        title: '货代',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        },
+                        formatter: tdShowAll
+                    },
+                    {
+                        field: 'ChuanMing',
+                        title: '船名',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        },
+                        formatter: tdShowAll
+                    },
+                    {
+                        field: 'HangCi',
+                        title: '航次',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        },
+                        formatter: tdShowAll
+                    },
+                    {
+                        field: 'GoodsName',
+                        title: '货物',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        },
+                        formatter: tdShowAll
+                    }
+                    ,
+                    {
+                        field: 'PIECEWEIGHT',
+                        title: '实际件重',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        },
+                        formatter: tdShowAll
+                    }
+                    ,
+                    {
+                        field: 'AMOUNT',
+                        title: '实际件数',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        },
+                        formatter: tdShowAll
+                    }
+                    ,
+                    {
+                        field: 'WEIGHT',
+                        title: '实际重量/材积',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                    },
+                    {
+                        field: 'XIANGSHU',
+                        title: '实际箱数',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                    },
+                    {
+                        field: 'CODE_QUALITY',
+                        title: '过磅',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                    },
+                    {
+                        field: 'TALLYMAN',
+                        title: '理货员',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                    },
+                    {
+                        field: 'BanCi',
+                        title: '班次',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                    },
+                    {
+                        field: 'SIGNDATE',
+                        title: '理货时间',
+                        formatter: function (value, row, index) {
+                            return ShrotDateFormat(value)
+                        },
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                    },
+                    {
+                        width: 110,
+                        field: 'REMARK',
+                        title: '备注',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                    },
+                    {
+                        width: 80,
+                        field: 'State',
+                        title: '状态',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }, formatter: function (value, row, index) {
+                            if (row.State == "进行中") {
+
+                                return '<span class="label label-danger ">' + value + '</span>';
+
+                            }
+                            else if (row.State == "已完成") {
+                                return '<span class="label label-primary ">' + value + '</span>';
+                            }
+
+                        }
+                    }
+                ]
+
+            });
+        };
+        //得到查询的参数
+        oTableInit.queryParams = function (params) {
+            var temp = {
+                limit: params.limit, //页面大小
+                offset: params.offset, //页码
+                TBNO: $("#TBNO").val(),
+                CGNO: $("#CGNO").val(),
+                BEGINTIME: $("#BEGINTIME").val(),
+                ENDTIME: $("#ENDTIME").val(),
+                huodai: $("#huodai").val(),
+                banci: $("#banci").val(),
+                chuanming: $("#chuanming").val(),
+                hangci: $("#hangci").val(),
+
+            };
+            return temp;
+        };
+        return oTableInit;
+    };
+
+
+
+    function chakan_lh(id) {
+        layer.open({
+            type: 2,
+            title: "查看",
+            shadeClose: true,
+            shade: 0.8,
+            area: ['80%', '80%'],
+            content: "/ck/TallyBll/TallyBll_ck?id=" + id,
+            btn: ['关闭'],
+            yes: function (index) {
+                layer.close(index);
+            },
+            end: function () {
+             
+            }
+        });
+    }
+    function chakan_fy(id) {
+        layer.open({
+            type: 2,
+            title: "查看理货单",
+            shadeClose: true,
+            shade: 0.8,
+            area: ['80%', '80%'],
+            content: "/ck/Money/TallyBll_fy?id=" + id,
+            btn: ['关闭'],
+            yes: function (index) {
+                layer.close(index);
+            },
+            end: function () {
+             
+            }
+        });
+    }
+
+    function chakan_CONSIGN(id_GoodsBill, id) {
+        layer.open({
+            type: 2,
+            title: "查看委托单",
+            shadeClose: true,
+            shade: 0.8,
+            area: ['80%', '80%'],
+            content: "/ck/Entrust/CONSIGN_ck?id_GoodsBill=" + id_GoodsBill + "&&id=" + id,
+            btn: ['关闭'],
+            yes: function (index) {
+                layer.close(index);
+            },
+            end: function () {
+                Serach();
+            }
+        });
+    }
+
+</script>
+
+<script>
+    $(function () {
+        parent.layer.closeAll();
+    });
+</script>

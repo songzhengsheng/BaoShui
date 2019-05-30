@@ -1,0 +1,123 @@
+﻿
+@{
+    ViewBag.Title = "编辑位信息";
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
+}
+<script type="text/javascript">
+    $(function () {
+        $("#CODE_SECTION").change(function () {
+            var v = $(this).val();
+            $("#STORAG").empty();
+            $("#BOOTH").empty();
+            $.ajax({
+                type: "GET",
+                url: "/Section/GetSTORAGEBySECTIONId?id=" + v,
+                success: function (data) {
+                    data = eval('(' + data + ')');
+                    $.each(data, function (idx, obj) {
+                        $("#STORAG").append("<option value=" + obj.ID + ">" + obj.StorageName + "</option>");
+                    });
+
+                }
+            });
+        });
+        $("#STORAG").change(function () {
+            var v = $(this).val();
+            $("#BOOTH").empty();
+            $.ajax({
+                type: "GET",
+                url: "/Section/GetBoothByChangId?id=" + v,
+                success: function (data) {
+                    data = eval('(' + data + ')');
+                    $.each(data, function (idx, obj) {
+                        $("#BOOTH").append("<option value=" + obj.ID + ">" + obj.BoothName + "</option>");
+                    });
+
+                }
+            });
+        });
+
+        var v = $("#CODE_SECTION").val();
+        $("#STORAG").empty();
+        $("#BOOTH").empty();
+        $.ajax({
+            type: "GET",
+            url: "/Section/GetSTORAGEBySECTIONId?id=" + v,
+            success: function (data) {
+                data = eval('(' + data + ')');
+                $.each(data, function (idx, obj) {
+                    $("#STORAG").append("<option value=" + obj.ID + ">" + obj.StorageName + "</option>");
+                    if (idx == 0) {
+                        var v = obj.ID;
+                        $("#BOOTH").empty();
+                        $.ajax({
+                            type: "GET",
+                            url: "/Section/GetBoothByChangId?id=" + v,
+                            success: function (data) {
+                                data = eval('(' + data + ')');
+                                $.each(data, function (idx, obj) {
+                                    $("#BOOTH").append("<option value=" + obj.ID + ">" + obj.BoothName + "</option>");
+                                });
+
+                            }
+                        });
+                    }
+
+                });
+
+            }
+        });
+
+        //var v = $("#STORAG").val();
+        //$("#BOOTH").empty();
+        //$.ajax({
+        //    type: "GET",
+        //    url: "/Section/GetBoothByChangId?id=" + v,
+        //    success: function (data) {
+        //        data = eval('(' + data + ')');
+        //        $.each(data, function (idx, obj) {
+        //            $("#BOOTH").append("<option value=" + obj.ID + ">" + obj.BoothName + "</option>");
+        //        });
+
+        //    }
+        //});
+    });
+
+    var callbackdata = function () {
+        var v = $("#BOOTH").val();
+        var thisname = $("#BOOTH").find("option:selected").text();  //获取Select选择的Text
+    
+        var data = {
+            id: v,
+            name: thisname
+        };
+        return data;
+    }
+</script>
+
+    <form class="form-horizontal" id="form1">
+        <div class="container" style="margin-top: 50px">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">区：</label>
+                <div class="col-sm-10">
+                    @Html.DropDownList("CODE_SECTION", ViewBag.qu as SelectList, new { @class = "form-control required" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">场：</label>
+                <div class="col-sm-10">
+
+                    <select id="STORAG" name="STORAG" class="form-control"></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">位：</label>
+                <div class="col-sm-10">
+                    <select id="BOOTH" name="BOOTH" class="form-control"></select>
+                </div>
+            </div>
+        </div>
+
+
+    </form>
+

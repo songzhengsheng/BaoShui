@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d6f9a1de4d5546d2903d3561c9f68c7b" Name="Diagram1" ZoomLevel="57">
+        <EntityTypeShape EntityType="Model.C_GOODSAGENT" Width="2.125" PointX="1.875" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.Sys_Menu" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.Sys_Role" Width="1.5" PointX="4.75" PointY="3.75" />
+        <EntityTypeShape EntityType="Model.Sys_User" Width="1.5" PointX="0.75" PointY="5.75" />
+        <EntityTypeShape EntityType="Model.C_DIC_JILIANG" Width="1.5" PointX="3.375" PointY="6.75" />
+        <EntityTypeShape EntityType="Model.C_GOODS" Width="1.5" PointX="5.375" PointY="6.75" />
+        <EntityTypeShape EntityType="Model.C_TB_CODE_INOUT" Width="1.5" PointX="7.375" PointY="5.75" />
+        <EntityTypeShape EntityType="Model.C_TB_CODE_TRADE" Width="1.5" PointX="5.375" PointY="9.75" />
+        <EntityTypeShape EntityType="Model.C_Dic_YuanQu" Width="1.5" PointX="0.75" PointY="9.75" />
+        <EntityTypeShape EntityType="Model.C_TB_CODE_PACK" Width="1.5" PointX="9.75" PointY="9.75" />
+        <EntityTypeShape EntityType="Model.C_TB_CODE_SECTION" Width="1.5" PointX="2.75" PointY="10.75" />
+        <EntityTypeShape EntityType="Model.C_TB_CODE_VOYAGE" Width="1.5" PointX="11.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.C_TB_CODE_STORAGE" Width="1.5" PointX="12.375" PointY="4.75" />
+        <EntityTypeShape EntityType="Model.C_TB_CODE_CAOZUO" Width="1.5" PointX="9.375" PointY="4.75" />
+        <EntityTypeShape EntityType="Model.C_TB_CODE_CUSTOMER" Width="1.5" PointX="11.375" PointY="13.75" />
+        <EntityTypeShape EntityType="Model.C_TB_HS_STOCKDORMANT" Width="1.5" PointX="13.375" PointY="13.75" />
+        <EntityTypeShape EntityType="Model.C_TB_HS_TALLYBILL" Width="1.5" PointX="14.375" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.C_TB_CODE_BOOTH" Width="1.5" PointX="0.75" PointY="14.75" />
+        <EntityTypeShape EntityType="Model.C_CARTEAM" Width="1.5" PointX="7.375" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.C_TB_HC_CONTRACT_DETAILED" Width="1.5" PointX="16.375" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.C_GOODSTYPE" Width="1.5" PointX="14.375" PointY="9.75" />
+        <EntityTypeShape EntityType="Model.C_TB_HC_CONTRACT_FILES" Width="1.5" PointX="16.375" PointY="5.75" />
+        <EntityTypeShape EntityType="Model.C_TB_SHOUFEI" Width="1.5" PointX="16.375" PointY="8.75" />
+        <EntityTypeShape EntityType="Model.SYS_LOGINLOG" Width="1.5" PointX="15.375" PointY="16.75" />
+        <EntityTypeShape EntityType="Model.C_TB_HC_CONSIGN_FILES" Width="1.5" PointX="9.375" PointY="17.75" />
+        <EntityTypeShape EntityType="Model.SYS_OperateLogs" Width="1.5" PointX="17.375" PointY="11.75" />
+        <EntityTypeShape EntityType="Model.C_TB_CHENGBEN" Width="1.5" PointX="18.375" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.C_TB_JIESUAN" Width="1.5" PointX="17.375" PointY="15.75" />
+        <EntityTypeShape EntityType="Model.B_TB_ZhuanYiInfo" Width="1.5" PointX="11.375" PointY="18.75" />
+        <EntityTypeShape EntityType="Model.C_APPVERSION" Width="1.5" PointX="0.75" PointY="19.75" />
+        <EntityTypeShape EntityType="Model.B_TB_ChuKuShenQing" Width="1.5" PointX="19.375" PointY="10.75" />
+        <EntityTypeShape EntityType="Model.C_DIC_GUIZE" Width="1.5" PointX="13.375" PointY="19.75" />
+        <EntityTypeShape EntityType="Model.C_TB_ZHIXINGFEILV" Width="1.5" PointX="19.375" PointY="19.75" />
+        <EntityTypeShape EntityType="Model.C_Charge" Width="1.5" PointX="0.75" PointY="22.75" />
+        <EntityTypeShape EntityType="Model.C_TB_HC_CONTRACT" Width="1.5" PointX="5.375" PointY="22.75" />
+        <EntityTypeShape EntityType="Model.B_TB_KAIPIAO" Width="1.5" PointX="8.875" PointY="24" />
+        <EntityTypeShape EntityType="Model.B_TB_KAIPIAO_XIANGXI" Width="1.5" PointX="20.375" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.B_TB_SUREST" Width="1.5" PointX="20.375" PointY="5.75" />
+        <EntityTypeShape EntityType="Model.B_TB_KAIPIAOJILU" Width="1.5" PointX="21.375" PointY="9.75" />
+        <EntityTypeShape EntityType="Model.BS_YEWUWEITUO" Width="1.5" PointX="22.375" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.B_TB_Sure" Width="1.5" PointX="15.375" PointY="20.75" />
+        <EntityTypeShape EntityType="Model.C_TB_HC_GOODSBILL" Width="1.5" PointX="23.375" PointY="12.75" />
+        <EntityTypeShape EntityType="Model.BS_FangHuoNeiBuShenPi" Width="1.5" PointX="5.375" PointY="17.75" />
+        <EntityTypeShape EntityType="Model.BS_C_TAITOUREN" Width="1.5" PointX="8" PointY="10.625" />
+        <EntityTypeShape EntityType="Model.BS_C_PINGMING" Width="1.5" PointX="7.375" PointY="20.75" />
+        <EntityTypeShape EntityType="Model.BS_BAOGUAN" Width="1.5" PointX="17.375" PointY="22.75" />
+        <EntityTypeShape EntityType="Model.BS_BAOJIAN" Width="1.5" PointX="19.375" PointY="22.75" />
+        <EntityTypeShape EntityType="Model.BS_CANGDAN" Width="1.5" PointX="24.375" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.BS_FANGHUOZHILING" Width="1.5" PointX="5.375" PointY="13.75" />
+        <EntityTypeShape EntityType="Model.BS_WEITUO" Width="1.5" PointX="23.375" PointY="7.75" />
+        <EntityTypeShape EntityType="Model.C_TB_HC_CONSIGN" Width="1.5" PointX="25.375" PointY="7.75" />
+        <EntityTypeShape EntityType="Model.BS_LAOWUZUOYELEIBIE" Width="1.5" PointX="7.375" PointY="13.75" />
+        <EntityTypeShape EntityType="Model.Sys_appMenu" Width="1.5" PointX="25.375" PointY="19.75" />
+        <EntityTypeShape EntityType="Model.BS_ZYLB_TBLL" Width="1.5" PointX="25.375" PointY="22.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

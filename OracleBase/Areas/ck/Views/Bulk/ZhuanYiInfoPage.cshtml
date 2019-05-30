@@ -1,0 +1,81 @@
+﻿
+@{
+    ViewBag.Title = "SureInfoPage";
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
+}
+@using OracleBase.Models
+@model B_TB_ZhuanYiInfo
+@using (Html.BeginForm("", "", @FormMethod.Post, new { id = "form1", @class = "form-horizontal" }))
+{
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">交收单号：</label>
+        <div class="col-sm-4">
+            <input id="HETONGHAO" name="HETONGHAO" value="@Model.HETONGHAO" maxlength="50" type="text" class="form-control" required="" aria-required="true">
+        </div>
+        <label class="col-sm-2 control-label">仓单编号：</label>
+        <div class="col-sm-4">
+            <input id="CangDanNumber" name="CangDanNumber" value="@Model.CangDanNumber" maxlength="50" type="text" class="form-control" required="" aria-required="true">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">买方货代：</label>
+        <div class="col-sm-4">
+            <input id="HUODAI" name="HUODAI" value="@Model.HUODAI" maxlength="50" type="text" class="form-control" required="" aria-required="true">
+        </div>
+        <label class="col-sm-2 control-label">卖方货代：</label>
+        <div class="col-sm-4">
+            <input id="SELLHUODAI" type="text" class="form-control" value="@Model.SELLHUODAI" maxlength="50" name="SELLHUODAI" required="" aria-required="true">
+        </div>
+
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">货物名称：</label>
+        <div class="col-sm-4">
+            <input id="GoodsName" type="text" class="form-control" value="@Model.GoodsName" maxlength="50" name="GoodsName" required="" aria-required="true">
+        </div>
+        <label class="col-sm-2 control-label">货主：</label>
+        <div class="col-sm-4">
+            <input id="HuoZhu" name="HuoZhu" value="@Model.HuoZhu" maxlength="50" type="text" class="form-control" required="" aria-required="true">
+        </div>
+        
+
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">货物类型：</label>
+        <div class="col-sm-4">
+            <input id="GoodsType" type="text" class="form-control" value="@Model.GoodsType" maxlength="50" name="GoodsType" required="" aria-required="true">
+        </div>
+
+        <label class="col-sm-2 control-label">数量（挂牌数量）</label>
+        <div class="col-sm-4">
+            <input id="ShuLiang" type="text" class="form-control" value="@Model.ShuLiang" maxlength="50" name="ShuLiang" required="" aria-required="true">
+        </div>
+    </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">单位：</label>
+            <div class="col-sm-4">
+                <input id="DanWei" name="DanWei" value="@Model.DanWei" maxlength="50" type="text" class="form-control" required="" aria-required="true">
+            </div>
+            <label class="col-sm-2 control-label">园区名称：</label>
+            <div class="col-sm-4">
+                <input id="YuanQuName" type="text" class="form-control" value="@Model.YuanQuName" maxlength="50" name="YuanQuName" required="" aria-required="true">
+            </div>
+
+        </div>
+
+
+
+
+        <div class="form-group">
+
+
+
+            <label class="col-sm-2 control-label">生成日期：</label>
+            <div class="col-sm-4">
+                <input id="CreatTime" type="text" class="form-control" value="@Model.CreatTime" maxlength="50" name="CreatTime" required="" aria-required="true">
+            </div>
+        </div>
+        }
+
+

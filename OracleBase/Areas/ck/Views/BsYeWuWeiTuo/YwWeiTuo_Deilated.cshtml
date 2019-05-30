@@ -1,0 +1,248 @@
+﻿@using OracleBase.Models
+@{
+    ViewBag.Title = "业务信息详情";
+    Layout = "~/Views/Shared/_LayoutBase.cshtml";
+    C_TB_HC_GOODSBILL model_goodsbill = ViewBag.model_goodsbill;
+    List<BS_BAOGUAN> bgList= ViewBag.bgList;
+    List<BS_BAOJIAN> bjList= ViewBag.bjList;
+    List<BS_CANGDAN> cdList= ViewBag.cdList;
+}
+
+<div class="col-sm-12">
+    <div class="tabs-container">
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#tab-4" aria-expanded="true"> 基本信息</a>
+            </li>
+            <li class=""><a data-toggle="tab" href="#tab-1" aria-expanded="false"> 报关信息</a>
+            </li>
+            <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">报检信息</a>
+            </li>
+            <li class=""><a data-toggle="tab" href="#tab-3" aria-expanded="false">仓单信息</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="tab-1" class="tab-pane ">
+                <div class="panel-body">
+                    @{
+                        foreach (var b in bgList)
+                        {
+                            <strong>@b.Guid</strong>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td class="text-right text-muted">报关申请人</td>
+                                    <td class="text-left">@b.BaoGuanShenQingRen</td>
+                                    <td class="text-right text-muted">报关类别</td>
+                                    <td>@b.BaoGuanLeiBie</td>
+                                    <td class="text-right text-muted">流向</td>
+                                    <td>@b.LiuXiang</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right text-muted">船公司</td>
+                                    <td>@b.ChuanGongSi</td>
+                                    <td class="text-right text-muted">审批开始日期</td>
+                                    <td>@b.ShenPiKaiShiRiQi</td>
+                                    <td class="text-right text-muted">审批结束日期</td>
+                                    <td>@b.ShenPiJieShuRiQi</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right text-muted">免使期</td>
+                                    <td>@b.MianShiQi</td>
+                                    <td class="text-right text-muted">毛重（吨）</td>
+                                    <td>@b.MaoZhong</td>
+                                    <td class="text-right text-muted">净重</td>
+                                    <td>@b.JingZhong</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right text-muted">单价(USD)</td>
+                                    <td>@b.DanJia</td>
+                                    <td class="text-right text-muted">件数</td>
+                                    <td>@b.JianShu</td>
+                                    <td class="text-right text-muted">货值(USD)</td>
+                                    <td>@b.HuoZhi</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right text-muted">批次</td>
+                                    <td>@b.PiCi</td>
+                                    <td class="text-right text-muted">中心作业单号</td>
+                                    <td>@b.ZhongXinZuoYeDanHao</td>
+                                    <td class="text-right text-muted">保证金</td>
+                                    <td>@b.BaoZhengJin</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right text-muted">关税</td>
+                                    <td>@b.GuanShui</td>
+                                    <td class="text-right text-muted">增值税</td>
+                                    <td>@b.ZengZhiShui</td>
+                                    <td class="text-right text-muted">报关描述</td>
+                                    <td>@b.BaoGuanMiaoShu</td>
+                                </tr>
+                      
+                            </table>
+                          
+                        }
+
+                    }
+
+
+                </div>
+            </div>
+            <div id="tab-2" class="tab-pane">
+                <div class="panel-body">
+                    @{
+                        foreach (var b in bjList)
+                        {
+                            <strong>@b.Guid</strong>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td class="text-right text-muted">报检申请人</td>
+                                    <td class="text-left">@b.BaoJianShenQingRen</td>
+                                    <td class="text-right text-muted">报检类别</td>
+                                    <td>@b.BaoJianLeiBie</td>
+                                    <td class="text-right text-muted">报检日期</td>
+                                    <td>@b.BaoJianRiQi</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right text-muted">报关描述</td>
+                                    <td colspan="5">@b.BaoJianMiaoShu</td>
+                              
+                                </tr>
+                           
+                            </table>
+                        }
+                    }
+                </div>
+            </div>
+            <div id="tab-3" class="tab-pane">
+                <div class="panel-body">
+                    <div class="panel-body">
+                        @{
+                            foreach (var b in cdList)
+                            {
+                                <strong>@b.Guid</strong>
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td class="text-right text-muted">仓单号</td>
+                                        <td class="text-left">@b.CangDanHao</td>
+                                        <td class="text-right text-muted">抬头人</td>
+                                        <td>@b.TaiTouRen</td>
+                                        <td class="text-right text-muted">唛头</td>
+                                        <td>@b.MaiTou</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right text-muted">品名</td>
+                                        <td class="text-left">@b.PingMing</td>
+                                        <td class="text-right text-muted">毛重</td>
+                                        <td>@b.MaoZhong</td>
+                                        <td class="text-right text-muted">净重</td>
+                                        <td>@b.JingZhong</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right text-muted">提单号</td>
+                                        <td class="text-left">@b.TiDanHao</td>
+                                        <td class="text-right text-muted">件数</td>
+                                        <td>@b.JianShu</td>
+                                        <td class="text-right text-muted">件数单位</td>
+                                        <td>@b.JianShuDanWei</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right text-muted">仓储日期</td>
+                                        <td class="text-left">@b.CangChuRiQi</td>
+                                        <td class="text-right text-muted">签发日期</td>
+                                        <td>@b.QianFaRiQi</td>
+                                        <td class="text-right text-muted">英文船名</td>
+                                        <td>@b.YingWenChuanMing</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right text-muted">创建日期</td>
+                                        <td class="text-left">@b.CreatTime</td>
+                                        <td class="text-right text-muted">创建人</td>
+                                        <td>@b.CreatPeople</td>
+                                        <td class="text-right text-muted">回收人</td>
+                                        <td>@b.HuiShouRen</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right text-muted">回收日期</td>
+                                        <td class="text-left">@b.HuiShouRiQi</td>
+                                        <td class="text-right text-muted">回收标志</td>
+                                        <td>@b.BoolHuiShou</td>
+                                        <td class="text-right text-muted">仓单备注</td>
+                                        <td>@b.CangDanBeiZhu</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right text-muted">备注</td>
+                                        <td colspan="5">@b.BeiZhu</td>
+                                  
+                                    </tr>
+                                </table>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            <div id="tab-4" class="tab-pane active">
+                <div class="panel-body">
+                
+                    <table class="table table-bordered">
+                        <tr><td class="text-right text-muted">合同号</td>
+                            <td class="text-left">@model_goodsbill.ContoractNumber</td>
+                            <td class="text-right text-muted">保税类型</td>
+                            <td>@model_goodsbill.BaoShuiLeiXing</td>
+                            <td class="text-right text-muted">货名</td>
+                            <td>@model_goodsbill.C_GOODS</td></tr>
+                        <tr>
+                            <td class="text-right text-muted">货主</td>
+                            <td>@model_goodsbill.HuoZhu</td>
+                            <td class="text-right text-muted">船名</td>
+                            <td>@model_goodsbill.ShipName</td>
+                            <td class="text-right text-muted">英文船名</td>
+                            <td>@model_goodsbill.YingWenChuanMing</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right text-muted">航次</td>
+                            <td>@model_goodsbill.VGNO</td>
+                            <td class="text-right text-muted">提单号</td>
+                            <td>@model_goodsbill.BLNO</td>
+                            <td class="text-right text-muted">提单数</td>
+                            <td>@model_goodsbill.PLANWEIGHT</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right text-muted">净重</td>
+                            <td>@model_goodsbill.jccj</td>
+                            <td class="text-right text-muted">接单日期</td>
+                            <td>@model_goodsbill.JieDanRiQi</td>
+                            <td class="text-right text-muted">计划到港日期</td>
+                            <td>@model_goodsbill.JiHuaDaoGangRiQi</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right text-muted">单价(USD)</td>
+                            <td>@model_goodsbill.DanJia</td>
+                            <td class="text-right text-muted">货值(USD)</td>
+                            <td>@model_goodsbill.HuoZhi</td>
+                            <td class="text-right text-muted">原产地</td>
+                            <td>@model_goodsbill.YuanChanDi</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right text-muted">料号</td>
+                            <td>@model_goodsbill.LiaoHao</td>
+                            <td class="text-right text-muted">箱数</td>
+                            <td>@model_goodsbill.XiangShu</td>
+                            <td class="text-right text-muted">箱型</td>
+                            <td>@model_goodsbill.XiangXing</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right text-muted">单证是否齐全</td>
+                            <td>@model_goodsbill.BoolDanZheng</td>
+                            <td class="text-right text-muted">业务类型</td>
+                            <td>@model_goodsbill.YeWuLeiXing</td>
+                            <td class="text-right text-muted">备注</td>
+                            <td>@model_goodsbill.MARK</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+

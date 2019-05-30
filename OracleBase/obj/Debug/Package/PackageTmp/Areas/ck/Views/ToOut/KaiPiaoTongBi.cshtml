@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="~/Content/hplus/js/jquery.min.js"></script>
+    <script src="~/Content/hplus/js/plugins/echarts/echarts.common.min.js"></script>
+    <script src="~/Content/layer/layer.js"></script>
+    <script src="~/Content/My97DatePicker/WdatePicker.js"></script>
+</head>
+<body>
+    <div id="main" style="height: 600px; width: 100%"></div>
+    <script type="text/javascript">
+
+        $(function(){
+        $.ajax({
+            type: "GET",
+            url: "/ToOut/GetKaiPiaoTongBi",
+            datatype: "json",
+            data: { },
+            beforeSend: function () {
+                layer.load("请等待。。。");
+            },
+            success: function (res) {
+                var date = [];
+                var NowYear = [];
+                var LastYear = [];
+                var TongBi = [];
+               
+                for (var i = 0; i < res.data.length; i++) {
+                    date[i] = res.data[i].date;
+                    NowYear[i] = res.data[i].NowYear;
+                    LastYear[i] = res.data[i].LastYear;
+                    TongBi[i] = res.data[i].TongBi;
+                   
+                }
+                var myChart = echarts.init(document.getElementById('main'));
+                var dateYear = new Date;
+                var year = dateYear.getFullYear(); 
+               var option = {
+                    title: {
+                        text: '开票同期比',
+                        subtext: ''
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data: [year - 1 + '开票数', year + '开票数', year +'同比增长率(%)']
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            dataView: { show: true, readOnly: false },
+                            magicType: { show: true, type: ['line', 'bar'] },
+                            restore: { show: true },
+                            saveAsImage: { show: true }
+                        }
+                    },
+                    calculable: true,
+                    xAxis: [
+                        {
+                            type: 'category',
+                            data: date
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value'
+                        }
+                    ],
+                    series: [
+                        {
+                            name: year - 1 + '开票数',
+                            type: 'bar',
+                            data: LastYear,
+
+                        },
+                        {
+                            name: year+'开票数',
+                            type: 'bar',
+                            data: NowYear,
+
+                        },
+                        {
+                            name: year + '同比增长率(%)',
+                            type: 'bar',
+                            data: TongBi,
+
+                        }
+                        
+
+                    ]
+                };
+
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
+
+            },
+            complete: function (XMLHttpRequest, textStatus) {
+                layer.closeAll();
+            },
+        });
+    })
+
+
+    </script>
+</body>
+
+<!-- Mirrored from www.zi-han.net/theme/hplus/graph_echarts.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:18:59 GMT -->
+</html>
+
+

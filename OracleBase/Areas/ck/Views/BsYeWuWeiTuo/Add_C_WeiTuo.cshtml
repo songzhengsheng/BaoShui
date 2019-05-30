@@ -1,0 +1,235 @@
+﻿
+@{
+    ViewBag.Title = "GOODSBILL";
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
+}
+@using OracleBase.Models
+@model C_TB_HC_CONSIGN
+
+<script src="~/Content/My97DatePicker/WdatePicker.js"></script>
+<script>
+
+    function TiJiao() {
+        if ($("#form1").valid()) {
+            $.ajax({
+                //提交数据的类型 POST GET
+                type: "POST",
+                //提交的网址
+                url: $('#form1').attr('action'),
+                //提交的数据
+                data: $('#form1').serialize(),
+                //返回数据的格式
+                datatype: "json",//"xml", "html", "script", "json", "jsonp", "text".
+                //在请求之前调用的函数
+                beforeSend: function () {
+                    //$("#msg").html("logining");
+                },
+                //成功返回之后调用的函数
+                success: function (data) {
+                    layer.msg(data,{
+                        icon: 6,
+                        time: 1000 //1秒关闭（如果不配置，默认是3秒）
+                    },function(){
+                        var index = parent.layer.getFrameIndex(window.name);
+                        if (data == "成功") {
+                            parent.layer.close(index);
+                        }
+                    });
+
+
+                },
+                //调用执行后调用的函数
+                complete: function (XMLHttpRequest, textStatus) {
+
+                    //HideLoading();
+                },
+                //调用出错执行的函数
+                error: function () {
+                    //请求出错处理
+                }
+            });
+        }
+
+
+    }
+      $(function () {
+          var ZhiLingXiangMu = '@Model.ZhiLingXiangMu';
+          $("#ZhiLingXiangMu").find("option[value=" + ZhiLingXiangMu + "]").attr("selected", true);
+
+    });
+</script>
+@using (Html.BeginForm("Add_C_WeiTuo", "BsYeWuWeiTuo", @FormMethod.Post, new { id = "form1", @class = "form-horizontal" }))
+{
+
+
+    @Html.HiddenFor(n => Model.CREATETIME)
+    @Html.HiddenFor(n => Model.AUDITTIME)
+    @Html.HiddenFor(n => Model.State)
+    @Html.HiddenFor(n => Model.GOODSBILL_ID)
+    <input type="hidden" name="ID" value="@Model.ID" />
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="form-group">
+                        <label class="col-sm-1 control-label">船名：</label>
+                        <div class="col-sm-2">
+                            <input id="ShipName" name="ShipName" type="text" class="form-control" value="@ViewBag.ShipName" maxlength="50" readonly="readonly" aria-required="true">
+                        </div>
+                        <label class="col-sm-1 control-label">航次：</label>
+                        <div class="col-sm-2">
+                            <input id="VGNO" name="VGNO" type="text" class="form-control" value="@ViewBag.VGNO" maxlength="50" readonly="readonly" aria-required="true">
+                        </div>
+                        <label class="col-sm-1 control-label">提单号：</label>
+                        <div class="col-sm-2">
+                            <input id="BLNO" name="BLNO" type="text" class="form-control" value="@ViewBag.BLNO" maxlength="50" readonly="readonly" aria-required="true">
+                        </div>
+                        <label class="col-sm-1 control-label">提单数：</label>
+                        <div class="col-sm-2">
+                            <input id="PLANWEIGHT" name="PLANWEIGHT" type="text" class="form-control" value="@ViewBag.PLANWEIGHT" maxlength="50" readonly="readonly" required="" aria-required="true">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-1 control-label">货名：</label>
+                        <div class="col-sm-2">
+                            <input id="C_GOODS" name="C_GOODS" type="text" class="form-control" value="@ViewBag.C_GOODS" maxlength="50" readonly="readonly" aria-required="true">
+                        </div>
+                        <label class="col-sm-1 control-label">到港日期：</label>
+                        <div class="col-sm-2">
+                            <input id="JiHuaDaoGangRiQi" name="JiHuaDaoGangRiQi" type="text" class="form-control" value="@ViewBag.JiHuaDaoGangRiQi" maxlength="50" readonly="readonly" aria-required="true">
+                        </div>
+                        <label class="col-sm-1 control-label">初始货主：</label>
+                        <div class="col-sm-2">
+                            <input id="HuoZhu" name="HuoZhu" type="text" class="form-control" value="@ViewBag.HuoZhu" maxlength="50" readonly="readonly" aria-required="true">
+                        </div>
+                        <label class="col-sm-1 control-label">保税类型：</label>
+                        <div class="col-sm-2">
+                            <input id="BaoShuiLeiXing" name="BaoShuiLeiXing" type="text" class="form-control" value="@ViewBag.BaoShuiLeiXing" maxlength="50" readonly="readonly" required="" aria-required="true">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-1 control-label">标箱数：</label>
+                        <div class="col-sm-2">
+                            <input id="XiangShu" name="XiangShu" type="text" class="form-control" value="@ViewBag.XiangShu" maxlength="50" readonly="readonly" aria-required="true">
+                        </div>
+                        <label class="col-sm-1 control-label">业务进度：</label>
+                        <div class="col-sm-2">
+                            <input id="State" name="State" type="text" class="form-control" value="@ViewBag.State" maxlength="50" readonly="readonly" aria-required="true">
+                        </div>
+                        <label class="col-sm-1 control-label">录入人：</label>
+                        <div class="col-sm-2">
+                            <input id="CreatPeople" name="CreatPeople" type="text" class="form-control" value="@ViewBag.CreatPeople" maxlength="50" readonly="readonly" aria-required="true">
+                        </div>
+                        <label class="col-sm-1 control-label">录入日期：</label>
+                        <div class="col-sm-2">
+                            <input id="CreatTime" name="CreatTime" type="text" class="form-control" value="@ViewBag.CreatTime" maxlength="50" readonly="readonly" required="" aria-required="true">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-1 control-label">接单日期：</label>
+                        <div class="col-sm-2">
+                            <input id="JieDanRiQi" name="JieDanRiQi" type="text" class="form-control" value="@ViewBag.JieDanRiQi" maxlength="50" readonly="readonly" aria-required="true">
+                        </div>
+                        <label class="col-sm-1 control-label">合同编号：</label>
+                        <div class="col-sm-2">
+                            <input id="ContoractNumber" name="ContoractNumber" type="text" class="form-control" value="@ViewBag.ContoractNumber" maxlength="50" readonly="readonly" aria-required="true">
+                        </div>
+                        <label class="col-sm-1 control-label">单证是否齐全：</label>
+                        <div class="col-sm-2">
+                            <input id="BoolDanZheng" name="BoolDanZheng" type="text" class="form-control" value="@ViewBag.BoolDanZheng" maxlength="50" readonly="readonly" aria-required="true">
+                        </div>
+                        <label class="col-sm-1 control-label">备注：</label>
+                        <div class="col-sm-2">
+                            <input id="MARK" name="MARK" type="text" class="form-control" value="@ViewBag.MARK" maxlength="50" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">委托编号：</label>
+                        <div class="col-sm-4">
+                            <input id="WeiTuoBianHao" type="text" class="form-control" value="@Model.WeiTuoBianHao" maxlength="50" name="WeiTuoBianHao">
+                        </div>
+                        <label class="col-sm-2  control-label">指令项目：</label>
+                        <div class="col-sm-4">
+                            <select id="ZhiLingXiangMu" name="ZhiLingXiangMu" class="form-control">
+                                <option value="混矿">混矿</option>
+                                <option value="割包">割包</option>
+                                <option value="出库">出库</option>
+                                <option value="出库过磅">出库过磅</option>
+                                <option value="入库">入库</option>
+                                <option value="入库过磅">入库过磅</option>
+                                <option value="灌包">灌包</option>
+                                <option value="入库运输">入库运输</option>
+                                <option value="出库运输">出库运输</option>
+                                <option value="货物移垛">货物移垛</option>
+                                <option value="翻垛">翻垛</option>
+                                <option value="割包灌袋">割包灌袋</option>
+                                <option value="出库过磅">出库过磅</option>
+                                <option value="出库过磅">出库过磅</option>
+                                <option value="20GP上下车">20GP上下车</option>
+                                <option value="取样">取样</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">申请人：</label>
+                        <div class="col-sm-4">
+                            @Html.DropDownList("ShenQingRen", (SelectList)ViewData["CUSTOMER_List"], new { @class = "form-control" })
+                        </div>
+                        <label class="col-sm-2  control-label">下达时间：</label>
+                        <div class="col-sm-4">
+                            <input id="XiaDaShiJian" name="XiaDaShiJian" type="text" class="form-control" value="@Model.XiaDaShiJian" maxlength="50" required="" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">指令数量：</label>
+                        <div class="col-sm-4">
+                            <input id="ZhiLingShuLiang" type="text" class="form-control number" value="@ViewBag.PLANWEIGHT" maxlength="50" name="ZhiLingShuLiang">
+                        </div>
+                        <label class="col-sm-2  control-label">分票船名航次：</label>
+                        <div class="col-sm-4">
+                            <input id="FengPiaoChuanMingHangCi" type="text" class="form-control" value="@ViewBag.FengPiaoChuanMingHangCi" maxlength="50" name="FengPiaoChuanMingHangCi">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">作业单号：</label>
+                        <div class="col-sm-4">
+                            <input id="ZuiYeDanHao" type="text" class="form-control" value="@Model.ZuiYeDanHao" maxlength="50" name="ZuiYeDanHao">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">备注：</label>
+                        <div class="col-sm-10">
+                            @Html.TextAreaFor(model => model.BeiZhu, new { @class = "form-control", @width = "70%", @style = "height:140px;" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-3" style=" padding-left: 200px;">
+                            <button class="btn btn-primary" type="button" onclick="TiJiao()">保存</button>
+                            <button class="btn btn-primary" type="button" onclick="Print(@Model.GOODSBILL_ID)">打印</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script>
+    function Print(id) {
+            parent.layer.open({
+                type: 2,
+                title: "打印出门证",
+                shadeClose: true,
+                shade: 0.8,
+                area: ['100%', '100%'],
+                content: "/ck/BsYeWuWeiTuo/PrintCangChuZuoYe?id="+ id,
+                btn: ['关闭'],
+
+            });
+
+
+    }
+
+</script>
+
+

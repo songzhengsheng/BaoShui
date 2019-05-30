@@ -1,0 +1,543 @@
+﻿
+@{
+    ViewBag.Title = "票货列表";
+    Layout = "~/Views/Shared/_LayoutBootstrapTable.cshtml";
+}
+<h2 class="text-center">新路带货物信息收入汇总表</h2>
+<script src="~/Content/layer/layer.js"></script>
+<script src="~/Content/My97DatePicker/WdatePicker.js"></script>
+<script src="~/Content/bootstraptableedu/bootstrap-table-export.js"></script>
+<script src="~/Content/bootstraptableedu/tableExport.js"></script>
+
+<div class="panel-body">
+    <div id="toolbar" class="btn-group">
+
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">
+            <span class="glyphicon glyphicon-search" aria-hidden="true">  </span>查询
+        </button>
+    </div>
+    <table id="table"></table>
+</div>
+<input type="hidden" class="form-control" id="roleId" name="roleId" value="@ViewBag.roleId">
+<div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">关闭</span>
+                </button>
+
+                <h4 class="modal-title">请输入查询条件</h4>
+
+            </div>
+            <div class="modal-body">
+                <form id="formSearch" class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="GBNO" placeholder="编码">
+                        </div>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="C_GOODSAGENT_NAME" placeholder="货代">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <input type="text" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" class="form-control" id="CreatTime" placeholder="创建时间从">
+                        </div>
+                        <div class="col-sm-5">
+                            <input type="text" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" class="form-control" id="CreatTime1" placeholder="创建时间至">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="BLNO" placeholder="提单">
+                        </div>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="C_GOODS" placeholder="货物">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="HuoZhu" placeholder="货主">
+                        </div>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="ShipName" placeholder="船名">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="VGNO" placeholder="航次">
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                <button type="button" id="btn_query" class="btn btn-sm btn-primary" onclick="Serach()">查询</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function changeDateFormat(cellval) {
+        var dateVal = cellval + "";
+        if (cellval != null) {
+            var date = new Date(parseInt(dateVal.replace("/Date(", "").replace(")/", ""), 10));
+            var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+            var currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+            return date.getFullYear() + "-" + month + "-" + currentDate;
+        }
+    }
+    var TableInit = function () {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $('#table').bootstrapTable({
+                url: '/DataTable/GetShouRuList', //请求后台的URL（*）
+                method: 'get', //请求方式（*）
+                toolbar: '#toolbar', //工具按钮用哪个容器
+                striped: true, //是否显示行间隔色
+                cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true, //是否显示分页（*）
+                sortable: true, //是否启用排序
+                sortOrder: "asc", //排序方式
+                queryParams: oTableInit.queryParams, //传递参数（*）
+                sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1, //初始化加载第一页，默认第一页
+                pageSize: 10, //每页的记录行数（*）
+                pageList: [10, 25, 50, 100], //可供选择的每页的行数（*）
+                search: false, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: false,
+                showColumns: true, //是否显示所有的列
+                showRefresh: true, //是否显示刷新按钮
+                minimumCountColumns: 2, //最少允许的列数
+                clickToSelect: true, //是否启用点击选中行
+                // height: $(window).height() - 30,
+                uniqueId: "ID", //每一行的唯一标识，一般为主键列
+                showToggle: false, //是否显示详细视图和列表视图的切换按钮
+                cardView: false, //是否显示详细视图
+                detailView: false, //是否显示父子表
+                exportOptions: {
+
+                    fileName: '总台帐报表',  //文件名称设置
+                    worksheetName: 'sheet1',  //表格工作区名称
+                    tableName: '总台帐报表',
+                    excelstyles: ['background-color', 'color', 'font-size', 'font-weight'],
+
+                },
+                onLoadSuccess: function (data) {
+                    var ShiJiJinKuLiang1 = 0.0;
+                    var ShiJiChuKuLiang1 = 0.0;
+                    var KuCunN1 = 0.0;
+                    var KuCunW1 = 0.0;
+                    var JianGuanFei1 = 0.0;
+                    var BaoGanFei1 = 0.0;
+                    var DuiCunFei1 = 0.0;
+                    var GuoBangFei1 = 0.0;
+                    var YunFei1 = 0.0;
+                    var FeiYongHeJi1 = 0.0;
+                    var QiYaFeiYong1 = 0.0;
+                    var YearKaiPiaoShu1 = 0.0;
+                    var LeiJiKaiPiaoShu1 = 0.0;
+                    var LeiJiWeiKaiPiaoShu1 = 0.0;
+                    var LaiKuanJinE1 = 0.0;
+                    var YinShouZhangKuanYuE1 = 0.0;
+                    var ChengBenJinE1 = 0.0;
+                    var LiRun1 = 0.0;
+                    for (var o in data.rows) {
+                        if (data.rows.hasOwnProperty(o)) {
+                            var ShiJiJinKuLiang = parseFloat(data.rows[o].ShiJiJinKuLiang);
+                            var ShiJiChuKuLiang = parseFloat(data.rows[o].ShiJiChuKuLiang);
+                            var KuCunN = parseFloat(data.rows[o].KuCunN);
+                            var KuCunW = parseFloat(data.rows[o].KuCunW);
+                            var JianGuanFei = parseFloat(data.rows[o].JianGuanFei);
+                            var BaoGanFei = parseFloat(data.rows[o].BaoGanFei);
+                            var DuiCunFei = parseFloat(data.rows[o].DuiCunFei);
+                            var GuoBangFei = parseFloat(data.rows[o].GuoBangFei);
+                            var YunFei = parseFloat(data.rows[o].YunFei);
+                            var FeiYongHeJi = parseFloat(data.rows[o].FeiYongHeJi);
+                            var QiYaFeiYong = parseFloat(data.rows[o].QiYaFeiYong);
+                            var YearKaiPiaoShu = parseFloat(data.rows[o].YearKaiPiaoShu);
+                            var LeiJiKaiPiaoShu = parseFloat(data.rows[o].LeiJiKaiPiaoShu);
+                            var LeiJiWeiKaiPiaoShu = parseFloat(data.rows[o].LeiJiWeiKaiPiaoShu);
+                            var LaiKuanJinE = parseFloat(data.rows[o].LaiKuanJinE);
+                            var YinShouZhangKuanYuE = parseFloat(data.rows[o].YinShouZhangKuanYuE);
+                            var ChengBenJinE = parseFloat(data.rows[o].ChengBenJinE);
+                            var LiRun = parseFloat(data.rows[o].LiRun);
+                            if (ShiJiJinKuLiang < 0) {
+                                ShiJiJinKuLiang = 0;
+                            }
+                            if (ShiJiChuKuLiang < 0) {
+                                ShiJiChuKuLiang = 0;
+                            }
+                            if (KuCunN < 0) {
+                                KuCunN = 0;
+                            }
+                            if (KuCunW < 0) {
+                                KuCunW = 0;
+                            }
+                            if (JianGuanFei < 0) {
+                                JianGuanFei = 0;
+                            }
+                            if (BaoGanFei < 0) {
+                                BaoGanFei = 0;
+                            }
+                            if (DuiCunFei < 0) {
+                                DuiCunFei = 0;
+                            }
+                            if (GuoBangFei < 0) {
+                                GuoBangFei = 0;
+                            }
+                            if (YunFei < 0) {
+                                YunFei = 0;
+                            }
+                            if (FeiYongHeJi < 0) {
+                                FeiYongHeJi = 0;
+                            }
+                            if (QiYaFeiYong < 0) {
+                                QiYaFeiYong = 0;
+                            }
+                            if (YearKaiPiaoShu < 0) {
+                                YearKaiPiaoShu = 0;
+                            }
+                            if (LeiJiKaiPiaoShu < 0) {
+                                LeiJiKaiPiaoShu = 0;
+                            }
+                            if (LeiJiWeiKaiPiaoShu < 0) {
+                                LeiJiWeiKaiPiaoShu = 0;
+                            }
+                            if (LaiKuanJinE < 0) {
+                                LaiKuanJinE = 0;
+                            }
+                            if (YinShouZhangKuanYuE < 0) {
+                                YinShouZhangKuanYuE = 0;
+                            }
+                            if (ChengBenJinE < 0) {
+                                ChengBenJinE = 0;
+                            }
+                            if (LiRun < 0) {
+                                LiRun = 0;
+                            }
+                            ShiJiJinKuLiang1 += parseFloat(ShiJiJinKuLiang);
+                            ShiJiChuKuLiang1 += parseFloat(ShiJiChuKuLiang);
+                            KuCunN1 += parseFloat(KuCunN);
+                            KuCunW1 += parseFloat(KuCunW);
+                            JianGuanFei1 += parseFloat(JianGuanFei);
+                            BaoGanFei1 += parseFloat(BaoGanFei);
+                            DuiCunFei1 += parseFloat(DuiCunFei);
+                            GuoBangFei1 += parseFloat(GuoBangFei);
+                            YunFei1 += parseFloat(YunFei);
+                            FeiYongHeJi1 += parseFloat(FeiYongHeJi);
+                            QiYaFeiYong1 += parseFloat(QiYaFeiYong);
+                            YearKaiPiaoShu1 += parseFloat(YearKaiPiaoShu);
+                            LeiJiKaiPiaoShu1 += parseFloat(LeiJiKaiPiaoShu);
+                            LeiJiWeiKaiPiaoShu1 += parseFloat(LeiJiWeiKaiPiaoShu);
+                            LaiKuanJinE1 += parseFloat(LaiKuanJinE);
+                            YinShouZhangKuanYuE1 += parseFloat(YinShouZhangKuanYuE);
+                            ChengBenJinE1 += parseFloat(ChengBenJinE);
+                            LiRun1 += parseFloat(LiRun);
+                        }
+                    }
+                    var rows = [];
+                    rows.push({
+                        HuoDai: "合计",
+                        HuoWu: "",
+                        ChuanMing: "",
+                        JianPiaoRiQi: null,
+                        ShiJiJinKuLiang: ShiJiJinKuLiang1.toFixed(3),
+                        ShiJiChuKuLiang: ShiJiChuKuLiang1.toFixed(3),
+                        KuCunN: KuCunN1.toFixed(3),
+                        KuCunW: KuCunW1.toFixed(3),
+                        JianGuanFei: JianGuanFei1.toFixed(3),
+                        BaoGanFei: BaoGanFei1.toFixed(3),
+                        DuiCunFei: DuiCunFei1.toFixed(3),
+                        GuoBangFei: GuoBangFei1.toFixed(3),
+                        YunFei: YunFei1.toFixed(3),
+                        FeiYongHeJi: FeiYongHeJi1.toFixed(3),
+                        QiYaFeiYong: QiYaFeiYong1.toFixed(3),
+                        YearKaiPiaoShu: YearKaiPiaoShu1.toFixed(3),
+                        LeiJiKaiPiaoShu: LeiJiKaiPiaoShu1.toFixed(3),
+                        LeiJiWeiKaiPiaoShu: LeiJiWeiKaiPiaoShu1.toFixed(3),
+                        LaiKuanJinE: LaiKuanJinE1.toFixed(3),
+                        YinShouZhangKuanYuE: YinShouZhangKuanYuE1.toFixed(3),
+                        ChengBenJinE: ChengBenJinE1.toFixed(3),
+                        LiRun: LiRun1.toFixed(3),
+
+                    });
+                    $('#table').bootstrapTable('append', rows);
+                },
+                columns: [
+
+                    {
+                        field: 'HuoDai',
+                        title: '货代',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                        , formatter: tdShowAll
+
+                    },
+                    {
+                        field: 'HuoWu',
+                        title: '货物',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                    },
+                    {
+                        field: 'ChuanMing',
+                        title: '船名',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                        , formatter: tdShowAll
+                    },
+                    {
+                        width: 110,
+                        field: 'JianPiaoRiQi',
+                        title: '建票日期',
+                        formatter: function (value, row, index) {
+                            return changeDateFormat(value)
+                        },
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                    },
+                    {
+                        field: 'ShiJiJinKuLiang',
+                        title: '实际进库量',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                        , formatter: tdShowAll
+                    },
+                    {
+                        field: 'ShiJiChuKuLiang',
+                        title: '实际出库量',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                        , formatter: tdShowAll
+                    },
+                    {
+                        field: 'KuCunN',
+                        title: '支/件/箱',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                        , formatter: tdShowAll
+                    },
+                    {
+                        field: 'KuCunW',
+                        title: '重量/材积',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                        , formatter: tdShowAll
+                    },
+                    {
+                        field: 'JianGuanFei',
+                        title: '监管费',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                        , formatter: tdShowAll
+                    },
+                    {
+                        field: 'BaoGanFei',
+                        title: '包干费',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                        , formatter: tdShowAll
+                    },
+                    {
+                        field: 'DuiCunFei',
+                        title: '堆存费',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                        , formatter: tdShowAll
+                    },
+                    {
+                        field: 'GuoBangFei',
+                        title: '过磅费',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                        , formatter: tdShowAll
+                    },
+                    {
+                        field: 'YunFei',
+                        title: '运输费',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                        , formatter: tdShowAll
+                    },
+                    {
+                        field: 'QiYaFeiYong',
+                        title: '其他费用',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                        , formatter: tdShowAll
+                    },
+                    {
+                        field: 'FeiYongHeJi',
+                        title: '费用合计',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                        , formatter: tdShowAll
+                    },
+                    {
+                        field: 'YearKaiPiaoShu',
+                        title: '2019年开票数',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                        , formatter: tdShowAll
+                    },
+                    {
+                        field: 'LeiJiKaiPiaoShu',
+                        title: '累计开票数',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                        , formatter: tdShowAll
+                    },
+                    {
+                        field: 'LeiJiWeiKaiPiaoShu',
+                        title: '累计未开票数',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                        , formatter: tdShowAll
+                    },
+                    {
+                        field: 'LaiKuanJinE',
+                        title: '来款金额',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                        , formatter: tdShowAll
+                    },
+                    {
+                        field: 'YinShouZhangKuanYuE',
+                        title: '应收账款余额',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                        , formatter: tdShowAll
+                    },
+                    {
+                        field: 'ChengBenJinE',
+                        title: '成本金额',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                        , formatter: tdShowAll
+                    },
+                    {
+                        field: 'LiRun',
+                        title: '利润',
+                        cellStyle: {
+                            css: { "text-overflow": "ellipsis", "-moz-text-overflow": "ellipsis", "overflow": "hidden", "white-space": "nowrap" }
+                        }
+                        , formatter: tdShowAll
+                    },
+
+
+
+                ],
+
+                formatLoadingMessage: function () {
+                    return "请稍等，正在加载中。。。";
+                }
+            });
+        };
+
+        //得到查询的参数
+        oTableInit.queryParams = function (params) {
+            var temp = {
+                limit: params.limit, //页面大小
+                offset: params.offset, //页码
+                GBNO: $("#GBNO").val(),
+                C_GOODSAGENT_NAME: $("#C_GOODSAGENT_NAME").val(),
+                CreatTime: $("#CreatTime").val(),
+                CreatTime1: $("#CreatTime1").val(),
+                BLNO: $("#BLNO").val(),
+                C_GOODS: $("#C_GOODS").val(),
+                HuoZhu: $("#HuoZhu").val(),
+                ShipName: $("#ShipName").val(),
+                VGNO: $("#VGNO").val()
+            };
+            return temp;
+        };
+        return oTableInit;
+    };
+
+
+
+    function chakan(id) {
+        layer.open({
+            type: 2,
+            title: "查看票货",
+            shadeClose: true,
+            shade: 0.8,
+            area: ['80%', '80%'],
+            content: "/ck/GoodsBill/GOODSBILL_xq?id=" + id,
+            btn: ['关闭'],
+            yes: function (index) {
+                layer.close(index);
+            },
+            end: function () {
+            }
+        });
+    }
+    function chakan_ht(CONTRACT_Guid) {
+        layer.open({
+            type: 2,
+            title: "查看合同",
+            shadeClose: true,
+            shade: 0.8,
+            area: ['80%', '80%'],
+            content: "/ck/GoodsBill/HeTong_xq?CONTRACT_Guid=" + CONTRACT_Guid,
+            btn: ['关闭'],
+            yes: function (index) {
+                layer.close(index);
+            },
+            end: function () {
+            }
+        });
+    }
+
+
+    function chakan_goodsBill(id) {
+        layer.open({
+            type: 2,
+            title: "查看票货",
+            shadeClose: true,
+            shade: 0.8,
+            area: ['80%', '80%'],
+            content: "/ck/GoodsBill/GOODSBILL_xq?id=" + id,
+            btn: ['关闭'],
+            yes: function (index) {
+                layer.close(index);
+            },
+            end: function () {
+            }
+        });
+    }
+
+</script>
+<script>
+    $(function () {
+        parent.layer.closeAll();
+    });
+</script>
+
+

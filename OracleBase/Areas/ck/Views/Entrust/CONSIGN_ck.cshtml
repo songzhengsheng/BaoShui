@@ -1,0 +1,137 @@
+﻿@{
+    ViewBag.Title = "CONSIGN";
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
+}
+@using OracleBase.Models
+@model C_TB_HC_CONSIGN
+
+
+@using (Html.BeginForm("Add_C_CONSIGN", "Entrust", @FormMethod.Post, new { id = "form1", @class = "form-horizontal" }))
+{
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="form-group">
+
+                        <label class="col-sm-2  control-label">电子委托号：</label>
+                        <div class="col-sm-4">
+                            <input id="CGNO" type="text" class="form-control" value="@Model.CGNO" maxlength="50" name="CGNO" readonly="readonly">
+                        </div>
+                        <label class="col-sm-2  control-label">提单号：</label>
+                        <div class="col-sm-4">
+                            <input id="BLNO" type="text" class="form-control" value="@Model.BLNO" maxlength="50" name="BLNO" readonly="readonly">
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">委托人：</label>
+                        <div class="col-sm-4">
+                            <input id="WeiTuoRen" type="text" class="form-control" value="@Model.WeiTuoRen" maxlength="50" name="WeiTuoRen" readonly="readonly">
+                        </div>
+                        <label class="col-sm-2  control-label">货物：</label>
+                        <div class="col-sm-4">
+                            <input id="GoodsName" type="text" class="form-control" value="@Model.GoodsName" maxlength="50" name="GoodsName" readonly="readonly">
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">船名：</label>
+                        <div class="col-sm-4">
+                            <input id="ShipName" type="text" class="form-control" value="@Model.ShipName" maxlength="50" name="ShipName" readonly="readonly">
+                        </div>
+                        <label class="col-sm-2  control-label">航次：</label>
+                        <div class="col-sm-4">
+                            <input id="VGNO" type="text" class="form-control" value="@Model.VGNO" maxlength="50" name="VGNO" readonly="readonly">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">委托日期：</label>
+                        <div class="col-sm-4">
+                            <input type="text" id="WeiTuoTime" name="WeiTuoTime" class="form-control required" value="@Model.WeiTuoTime" readonly="readonly">
+                        </div>
+                        <label class="col-sm-2  control-label">纸质委托号：</label>
+                        <div class="col-sm-4">
+                            <input id="PAPERYNO" type="text" class="form-control required" value="@Model.PAPERYNO" maxlength="50" name="PAPERYNO" required="" aria-required="true" readonly="readonly">
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+
+                        <label class="col-sm-2  control-label">作业过程：</label>
+                        <div class="col-sm-4">
+                            <input id="CODE_OPERATION" type="text" class="form-control required" value="@Model.CODE_OPERATION" maxlength="50" name="CODE_OPERATION" required="" aria-required="true" readonly="readonly">
+                        </div>
+                        <label class="col-sm-2  control-label">衡重：</label>
+                        <div class="col-sm-4">
+                            <input id="HengZhong" type="text" class="form-control required" value="@Model.HengZhong" maxlength="50" name="HengZhong" required="" aria-required="true" readonly="readonly">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">计划件数：</label>
+                        <div class="col-sm-4">
+                            <input id="PLANAMOUNT" type="text" class="form-control number" value="@Model.PLANAMOUNT" maxlength="50" name="PLANAMOUNT" readonly="readonly">
+                        </div>
+                        <label class="col-sm-2  control-label">计划重量/材积：</label>
+                        <div class="col-sm-4">
+                            <input id="PLANWEIGHT" type="text" class="form-control number" value="@Model.PLANWEIGHT" maxlength="50" name="PLANWEIGHT" readonly="readonly">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+
+                        <label class="col-sm-2  control-label">箱型：</label>
+                        <div class="col-sm-4">
+                            <input id="CONTAINERTYPE" type="text" class="form-control number" value="@Model.CONTAINERTYPE" maxlength="50" name="CONTAINERTYPE" readonly="readonly">
+                        </div>
+                        <label class="col-sm-2  control-label">箱数量：</label>
+                        <div class="col-sm-4">
+                            <input id="CONTAINERNUM" type="text" class="form-control number" value="@Model.CONTAINERNUM" maxlength="50" name="CONTAINERNUM" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">经办人：</label>
+                        <div class="col-sm-4">
+                            <input id="jbr" type="text" class="form-control" value="@Model.jbr" maxlength="50" name="jbr" readonly="readonly">
+                        </div>
+                        <label class="col-sm-2  control-label">电话号码：</label>
+                        <div class="col-sm-4">
+                            <input id="Phone" type="text" class="form-control number" value="@Model.Phone" maxlength="50" name="Phone" required="" aria-required="true" readonly="readonly">
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">货物类型：</label>
+                        <div class="col-sm-4">
+                            <input id="GoodsType" type="text" class="form-control" value="@Model.GoodsType" maxlength="50" name="GoodsType" readonly="readonly">
+                        </div>
+                        <label class="col-sm-2  control-label">委托备注：</label>
+                        <div class="col-sm-4">
+                            <input id="BeiZhu" type="text" class="form-control" value="@Model.BeiZhu" maxlength="50" name="BeiZhu" readonly="readonly">
+                        </div>
+
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2  control-label">买方名称：</label>
+                        <div class="col-sm-4">
+                            <input id="GoodsType" type="text" class="form-control" value="@Model.MaiFangName" maxlength="50" name="GoodsType" readonly="readonly">
+                        </div>
+                        <label class="col-sm-2  control-label">卖方名称：</label>
+                        <div class="col-sm-4">
+                            <input id="BeiZhu" type="text" class="form-control" value="@Model.MaiFangName2" maxlength="50" name="BeiZhu" readonly="readonly">
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+
+}

@@ -1,0 +1,225 @@
+﻿
+@{
+    ViewBag.Title = "连云港新路带物流有限公司年度开票明细";
+    Layout = "~/Views/Shared/_LayoutBootstrapTable.cshtml";
+}
+<script src="~/Content/layer/layer.js"></script>
+<script src="~/Content/My97DatePicker/WdatePicker.js"></script>
+<h2 class="text-center">连云港新路带物流有限公司年度开票明细</h2>
+<div class="panel-body">
+    <div id="toolbar" class="btn-group">
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">
+            <span class="glyphicon glyphicon-search" aria-hidden="true">  </span>查询
+        </button>
+    </div>
+    <table id="table"></table>
+</div>
+
+<div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">关闭</span>
+                </button>
+
+                <h4 class="modal-title">请输入查询条件</h4>
+
+            </div>
+            <div class="modal-body">
+                <form id="formSearch" class="form-horizontal">
+
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <input type="text" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" class="form-control" id="CreatTime" placeholder="开始日期">
+                        </div>
+                        <div class="col-sm-5">
+                            <input type="text" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" class="form-control" id="EndTime" placeholder="结束日期">
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                <button type="button" id="btn_query" class="btn btn-sm btn-primary" onclick="Serach()">查询</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function changeDateFormat(cellval) {
+        var dateVal = cellval + "";
+        if (cellval != null) {
+            var date = new Date(parseInt(dateVal.replace("/Date(", "").replace(")/", ""), 10));
+            var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+            var currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+            return date.getFullYear() + "-" + month + "-" + currentDate;
+        }
+    }
+    var TableInit = function () {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $('#table').bootstrapTable({
+                url: '/ToOut/GetKaiPiaoMingXi', //请求后台的URL（*）
+                method: 'get', //请求方式（*）
+                toolbar: '#toolbar', //工具按钮用哪个容器
+                striped: true, //是否显示行间隔色
+                cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true, //是否显示分页（*）
+                sortable: true, //是否启用排序
+                sortOrder: "asc", //排序方式
+                queryParams: oTableInit.queryParams, //传递参数（*）
+                sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1, //初始化加载第一页，默认第一页
+                pageSize: 10, //每页的记录行数（*）
+                pageList: [10, 25, 50, 100], //可供选择的每页的行数（*）
+                search: false, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: false,
+                showColumns: true, //是否显示所有的列
+                showRefresh: true, //是否显示刷新按钮
+                minimumCountColumns: 2, //最少允许的列数
+                clickToSelect: true, //是否启用点击选中行
+                // height: $(window).height() - 30,
+                uniqueId: "ID", //每一行的唯一标识，一般为主键列
+                showToggle: false, //是否显示详细视图和列表视图的切换按钮
+                cardView: false, //是否显示详细视图
+                detailView: false, //是否显示父子表
+                onLoadSuccess: function (data) {
+                    var KaiPiaoJinE1 = 0.0;
+                    var ChengBenJinE1 = 0.0;
+                    var LiRun1 = 0.0;
+                    for (var o in data.rows) {
+                        if (data.rows.hasOwnProperty(o)) {
+                            var KaiPiaoJinE = parseFloat(data.rows[o].KaiPiaoJinE);
+                            var ChengBenJinE = parseFloat(data.rows[o].ChengBenJinE);
+                            var LiRun = parseFloat(data.rows[o].LiRun);
+                            if (KaiPiaoJinE < 0) {
+                                KaiPiaoJinE = 0;
+                            }
+                            if (ChengBenJinE < 0) {
+                                ChengBenJinE = 0;
+                            }
+                            if (LiRun < 0) {
+                                LiRun = 0;
+                            }
+                            KaiPiaoJinE1 += parseFloat(KaiPiaoJinE);
+                            ChengBenJinE1 += parseFloat(ChengBenJinE);
+                            LiRun1 += parseFloat(LiRun);
+                        }
+                    }
+                    var rows = [];
+                    rows.push({
+                        YueFen: "",
+                        ChuanMing: "",                   
+                        HuoZhong: "",
+                        FeiYongLeiXing: "",
+                        FeiLv: "",
+                        FuKuanDanWei: "",
+                        LaiKuanJinE: "",
+                        ShuLiang: "合计",
+                        KaiPiaoJinE: KaiPiaoJinE1.toFixed(3),
+                        ChengBenJinE: ChengBenJinE1.toFixed(3),
+                        LiRun: LiRun1.toFixed(3),
+                    });
+                    $('#table').bootstrapTable('append', rows);
+                },
+                columns: [
+
+                    {
+                        field: 'KaiPiaoDanWei',
+                        title: '开票单位',
+
+                    },
+                    {
+                        field: 'ChuanMing',
+                        title: '船名',
+      
+                    },
+                    {
+                        field: 'VGNO',
+                        title: '航次',
+
+                    },
+                    {
+                        field: 'BLNO',
+                        title: '提单号',
+
+                    },
+                    {
+                        field: 'RiQi',
+                        title: '开票日期',
+                        formatter: function (value, row, index) {
+                            return changeDateFormat(value)
+                        },
+                    },
+                    {
+                        field: 'HuoZhong',
+                        title: '货种',
+             
+                    },
+                    {
+                        field: 'FeiYongLeiXing',
+                        title: '费用类型',
+            
+                    },
+                    {
+                        field: 'FeiLv',
+                        title: '费率',
+        
+                    },
+                    {
+                        field: 'ShuLiang',
+                        title: '计费数量',
+               
+                    },
+                    {
+                        field: 'KaiPiaoJinE',
+                        title: '开票金额(税后)',
+
+                    },
+                    {
+                        field: 'ChengBenJinE',
+                        title: '成本金额（税后）',
+
+                    },
+
+                    {
+                        field: 'LiRun',
+                        title: '利润（税后）',
+
+                    },
+
+                ],
+                formatLoadingMessage: function () {
+                    return "请稍等，正在加载中。。。";
+                }
+            });
+        };
+
+        //得到查询的参数
+        oTableInit.queryParams = function (params) {
+            var temp = {
+                limit: params.limit, //页面大小
+                offset: params.offset, //页码
+                CreatTime: $("#CreatTime").val(),
+                EndTime: $("#EndTime").val(),
+
+            };
+            return temp;
+        };
+        return oTableInit;
+    };
+</script>
+<script>
+    $(function () {
+        parent.layer.closeAll();
+    });
+</script>
+
+
+
+
+

@@ -1,0 +1,115 @@
+﻿
+@{
+    ViewBag.Title = "PrintChuMenZheng";
+    Layout = "~/Views/Shared/_LayoutBase.cshtml";
+
+}
+@using OracleBase.Models
+@model C_TB_HC_GOODSBILL
+
+<script src="~/Content/Lodop6.226_Clodop3.083/LodopFuncs.js"></script>
+<object id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0>
+
+    <embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0 pluginspage="~/Content/Lodop6.226_Clodop3.083/install_lodop64.exe"></embed>
+</object>
+<script language="javascript" type="text/javascript">
+    function CreatePrintPage() {
+        var hm1 = $("#hm1").val();
+
+        LODOP.PRINT_INIT("套打EMS的模板");
+        LODOP.ADD_PRINT_TEXT(61, 42, 80, 19, hm1);
+        LODOP.ADD_PRINT_TEXT(58, 140, 95, 20, $("#ShipName").val());
+        LODOP.ADD_PRINT_TEXT(58, 259, 100, 20, $("#C_GOODS").val());
+        LODOP.ADD_PRINT_TEXT(35, 474, 100, 20, $("#Biaozhi").val());
+        LODOP.ADD_PRINT_TEXT(57, 378, 100, 20, $("#baozhuang").val());
+        LODOP.ADD_PRINT_TEXT(57, 484, 100, 20, $("#JianZhong").val());
+        LODOP.ADD_PRINT_TEXT(55, 592, 100, 20, $("#DanWei").val());
+        LODOP.ADD_PRINT_TEXT(58, 702, 100, 20, $("#ShuLiang").val());
+
+        LODOP.ADD_PRINT_TEXT(130, 46, 100, 20, $("#ZuoYeShiJian").val());
+        LODOP.ADD_PRINT_TEXT(127, 197, 100, 20, $("#ZuoYeBie").val());
+        LODOP.ADD_PRINT_TEXT(126, 355, 100, 20, $("#BanZu").val());
+        LODOP.ADD_PRINT_TEXT(127, 483, 100, 20, $("#ShuLiang").val());
+        LODOP.ADD_PRINT_TEXT(179, 46, 131, 21, $("#YuE").val());
+
+        LODOP.ADD_PRINT_TEXT(130, 46, 100, 20, $("#ZuoYeShiJian1").val());
+        LODOP.ADD_PRINT_TEXT(127, 197, 100, 20, $("#ZuoYeBie1").val());
+        LODOP.ADD_PRINT_TEXT(126, 355, 100, 20, $("#BanZu1").val());
+        LODOP.ADD_PRINT_TEXT(127, 483, 100, 20, $("#ShuLiang1").val());
+        LODOP.ADD_PRINT_TEXT(179, 46, 131, 21, $("#YuE1").val());
+
+        LODOP.ADD_PRINT_TEXT(130, 46, 100, 20, $("#ZuoYeShiJian2").val());
+        LODOP.ADD_PRINT_TEXT(127, 197, 100, 20, $("#ZuoYeBie2").val());
+        LODOP.ADD_PRINT_TEXT(126, 355, 100, 20, $("#BanZu2").val());
+        LODOP.ADD_PRINT_TEXT(127, 483, 100, 20, $("#ShuLiang2").val());
+        LODOP.ADD_PRINT_TEXT(179, 46, 131, 21, $("#YuE2").val());
+
+        LODOP.ADD_PRINT_TEXT(179, 46, 131, 21, $("#QingKong").val());
+        LODOP.ADD_PRINT_TEXT(179, 46, 131, 21, $("#BeiZhu").val());
+    };
+</script>
+<h1 class="text-center">连云港陆桥保税服务有限公司</h1>
+
+<table class="table">
+    <thead>
+        <tr><th>船名</th><th>货名</th><th>标志</th><th>包装</th><th>件重</th><th>单位</th><th>数量</th></tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><input type="text" name="ShipName" id="ShipName" value="@Model.ShipName" /></td>
+            <td><input type="text" name="C_GOODS" id="C_GOODS" value="@Model.C_GOODS" /></td>
+            <td><input type="text" name="Biaozhi" id="Biaozhi" /></td>
+            <td>
+                <select id="baozhuang" name="baozhuang" class="form-control">
+                    <option value="散">散</option>
+                    <option value="袋">袋</option>
+                    <option value="件">件</option>
+                    <option value="包">包</option>
+                </select>
+            </td>
+            <td><input type="text" name="JianZhong" id="JianZhong" /></td>
+            <td><input type="text" name="DanWei" id="DanWei" /></td>
+            <td><input type="text" name="ShuLiang" id="ShuLiang" /></td>
+        </tr>
+    </tbody>
+    <tbody>
+        <tr><th>作业时间</th><th>作业别</th><th>班组</th><th>数量</th><th>余额</th></tr>
+        <tr>
+
+            <td><input type="text" name="ZuoYeShiJian" id="ZuoYeShiJian" /></td>
+            <td><input type="text" name="ZuoYeBie" id="ZuoYeBie" /></td>
+            <td><input type="text" name="BanZu" id="BanZu" /></td>
+            <td><input type="text" name="ShuLiang" id="ShuLiang" /></td>
+            <td><input type="text" name="YuE" id="YuE" /></td>
+        </tr>
+        <tr>
+
+            <td><input type="text" name="ZuoYeShiJian1" id="ZuoYeShiJian1" /></td>
+            <td><input type="text" name="ZuoYeBie1" id="ZuoYeBie1" /></td>
+            <td><input type="text" name="BanZu1" id="BanZu1" /></td>
+            <td><input type="text" name="ShuLiang1" id="ShuLiang1" /></td>
+            <td><input type="text" name="YuE1" id="YuE1" /></td>
+        </tr>
+        <tr>
+
+            <td><input type="text" name="ZuoYeShiJian2" id="ZuoYeShiJian2" /></td>
+            <td><input type="text" name="ZuoYeBie2" id="ZuoYeBie2" /></td>
+            <td><input type="text" name="BanZu2" id="BanZu2" /></td>
+            <td><input type="text" name="ShuLiang2" id="ShuLiang2" /></td>
+            <td><input type="text" name="YuE2" id="YuE2" /></td>
+        </tr>
+        <tr>
+            <td>是否清空
+                <select id="QingKong" name="QingKong" class="form-control">
+                    <option value="是">是</option>
+                    <option value="否">否</option>
+                </select>
+            </td>
+            
+            <td>备注<input type="text" name="BeiZhu" id="BeiZhu" /></td>
+        </tr>
+    </tbody>
+
+</table>
+进入<a href="javascript:;" onclick="javascript:CreatePrintPage();LODOP.PRINT_DESIGN();">模板设计</a><br><br>
+进入<a href="javascript:;" onclick="javascript:CreatePrintPage();LODOP.PREVIEW();">模板的打印预览</a>

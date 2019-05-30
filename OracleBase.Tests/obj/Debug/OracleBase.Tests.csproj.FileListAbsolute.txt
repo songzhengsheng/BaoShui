@@ -1,0 +1,2 @@
+D:\项目文件\Oracle基础框架\OracleBase.Tests\obj\Debug\OracleBase.Tests.csprojAssemblyReference.cache
+D:\项目文件\Oracle基础框架\OracleBase.Tests\obj\Debug\OracleBase.Tests.csproj.CoreCompileInputs.cache

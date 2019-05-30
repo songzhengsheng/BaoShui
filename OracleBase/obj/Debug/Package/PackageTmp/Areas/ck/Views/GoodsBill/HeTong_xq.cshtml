@@ -1,0 +1,103 @@
+﻿
+@{
+    ViewBag.Title = "编辑合同详细";
+    Layout = "~/Views/Shared/_LayoutBase.cshtml";
+}
+@using OracleBase.Models
+@model C_TB_HC_CONTRACT
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="form-group">
+                        <label class="col-sm-1  control-label">合同号：</label>
+                        <div class="col-sm-4">
+                            <input id="ContoractNumber" type="text" class="form-control required" value="@Model.ContoractNumber" maxlength="50" name="ContoractNumber" readonly="readonly">
+                        </div>
+                        <label class="col-sm-1  control-label">委托人：</label>
+                        <div class="col-sm-4">
+                            <input id="EntrustPeople" type="text" class="form-control" value="@Model.EntrustPeople" maxlength="50" name="EntrustPeople" readonly="readonly">
+
+                        </div>
+                    </div>
+                </div>
+                <hr/>
+             
+                <table id="exampleTablePagination" data-toggle="table" >
+                    <thead>
+                        <tr>
+
+                            <th>名称</th>
+                            <th>费目种类</th>
+                            <th>计量单位</th>
+                            <th>收入计费依据</th>
+                            <th>单价</th>
+                            <th>免堆存天数</th>
+                            <th>成本费率</th>
+                            <th>成本计费依据</th>
+                            <th>备注</th>
+                            <th>最后修改时间</th>
+                            <th>创建时间</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @{
+                        List<C_TB_HC_CONTRACT_DETAILED> List_DETAILED = ViewBag.list;
+                        foreach (var item in List_DETAILED)
+                        {
+                        <tr>
+
+                            <td>@item.HuoMing</td>
+                            <td>@item.FeiMuZhongLei</td>
+                            <td>@item.JiLiangDanWei</td>
+                            <td>@item.Type</td>
+                            <td>@item.DanJia</td>
+                            <td>@item.MianDuiCunTianShu</td>
+                            <td>@item.ChengBenFeiLv</td>
+                            <td>@item.ChengBenJiFeiYiJu</td>
+                            <td>@item.BeiZhu</td>
+                            <td>@item.LastEdiTime</td>
+                            <td>@item.CreatTime</td>
+                        </tr>
+                        }
+                    }
+                    </tbody>
+                </table>
+                
+                <table id="" data-toggle="table" data-query-params="queryParams" data-mobile-responsive="true" >
+                    <thead>
+                    <tr>
+                        <th data-field="roleId">ID</th>
+                        <th data-field="roleName">文件名</th>
+                     
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @{
+                        List<C_TB_HC_CONTRACT_FILES> filelist = ViewBag.filelist;
+                        int i = 1;
+                        foreach (var item in filelist)
+                        {
+                            <tr>
+                                <td>@i</td>
+                                <td>
+                                    <a href="../../@item.path" download="@item.FileName">@item.FileName</a>
+
+                                </td>
+                         
+
+                            </tr>
+                            i++;
+                        }
+                    }
+                    </tbody>
+                </table>
+
+            </div>
+             
+            </div>
+        </div>
+    </div>
+

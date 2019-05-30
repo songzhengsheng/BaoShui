@@ -1,0 +1,464 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="C_GOODSAGENT" EntityType="Model.C_GOODSAGENT" />
+    <EntitySet Name="Sys_Menu" EntityType="Model.Sys_Menu" />
+    <EntitySet Name="Sys_Role" EntityType="Model.Sys_Role" />
+    <EntitySet Name="Sys_User" EntityType="Model.Sys_User" />
+    <EntitySet Name="C_DIC_JILIANG" EntityType="Model.C_DIC_JILIANG" />
+    <EntitySet Name="C_GOODS" EntityType="Model.C_GOODS" />
+    <EntitySet Name="C_TB_CODE_INOUT" EntityType="Model.C_TB_CODE_INOUT" />
+    <EntitySet Name="C_TB_CODE_TRADE" EntityType="Model.C_TB_CODE_TRADE" />
+    <EntitySet Name="C_TB_HC_GOODSBILL" EntityType="Model.C_TB_HC_GOODSBILL" />
+    <EntitySet Name="C_Dic_YuanQu" EntityType="Model.C_Dic_YuanQu" />
+    <EntitySet Name="C_TB_CODE_PACK" EntityType="Model.C_TB_CODE_PACK" />
+    <EntitySet Name="C_TB_CODE_SECTION" EntityType="Model.C_TB_CODE_SECTION" />
+    <EntitySet Name="C_TB_CODE_VOYAGE" EntityType="Model.C_TB_CODE_VOYAGE" />
+    <EntitySet Name="C_TB_CODE_STORAGE" EntityType="Model.C_TB_CODE_STORAGE" />
+    <EntitySet Name="C_TB_CODE_CAOZUO" EntityType="Model.C_TB_CODE_CAOZUO" />
+    <EntitySet Name="C_TB_CODE_CUSTOMER" EntityType="Model.C_TB_CODE_CUSTOMER" />
+    <EntitySet Name="C_TB_HS_STOCKDORMANT" EntityType="Model.C_TB_HS_STOCKDORMANT" />
+    <EntitySet Name="C_TB_HS_TALLYBILL" EntityType="Model.C_TB_HS_TALLYBILL" />
+    <EntitySet Name="C_TB_CODE_BOOTH" EntityType="Model.C_TB_CODE_BOOTH" />
+    <EntitySet Name="C_TB_HC_CONSIGN" EntityType="Model.C_TB_HC_CONSIGN" />
+    <EntitySet Name="C_CARTEAM" EntityType="Model.C_CARTEAM" />
+    <EntitySet Name="C_TB_HC_CONTRACT" EntityType="Model.C_TB_HC_CONTRACT" />
+    <EntitySet Name="C_TB_HC_CONTRACT_DETAILED" EntityType="Model.C_TB_HC_CONTRACT_DETAILED" />
+    <EntitySet Name="C_GOODSTYPE" EntityType="Model.C_GOODSTYPE" />
+    <EntitySet Name="C_TB_HC_CONTRACT_FILES" EntityType="Model.C_TB_HC_CONTRACT_FILES" />
+  </EntityContainer>
+  <EntityType Name="C_GOODSAGENT">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Sjm" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="FullName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Remak" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="creater" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="creatTime" Type="DateTime" />
+    <Property Name="ModifyUserName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="ModifyTime" Type="DateTime" />
+    <Property Name="ExamineUserName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="ExamineTime" Type="DateTime" />
+    <Property Name="State" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Sys_Menu">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="menuName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="fatherId" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+    <Property Name="url" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="sort" Type="Decimal" Precision="38" Scale="0" />
+  </EntityType>
+  <EntityType Name="Sys_Role">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="roleId" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+    <Property Name="roleName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="menuId" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Sys_User">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="userName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="passWord" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="roleId" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="roleName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="state" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="YuanQuId" Type="Decimal" Precision="38" Scale="0" />
+  </EntityType>
+  <EntityType Name="C_DIC_JILIANG">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Sjm" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="ReMark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="creater" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="creatTime" Type="DateTime" />
+  </EntityType>
+  <EntityType Name="C_GOODS">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="GoodsName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Code" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Sjm" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="FullName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="C_TB_CODE_INOUT">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="ReMark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Sjm" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="creater" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="creatTime" Type="DateTime" />
+  </EntityType>
+  <EntityType Name="C_TB_CODE_TRADE">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="ReMark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Sjm" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="creater" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="creatTime" Type="DateTime" />
+  </EntityType>
+  <EntityType Name="C_TB_HC_GOODSBILL">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="GBNO" Type="String" MaxLength="24" FixedLength="false" Unicode="false" />
+    <Property Name="CODE_INOUT" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="NWM" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="C_GOODSAGENT_ID" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="C_GOODSAGENT_NAME" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CODE_PACK_ID" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="CODE_PACK_NAME" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="PIECEWEIGHT" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="VGNO" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="MAITOU" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="BLNO" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="PLANAMOUNT" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="PLANWEIGHT" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="MARK_GOOGSBILLTYPE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="MARK" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CHANGCUNLIANG" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="KEBANLIWEITUOLIANG" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="JINXIANGZONGSHU" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="ZAICHANGXIANGSHU" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="HETONGHAO" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="HETONGBIANMA" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CreatTime" Type="DateTime" />
+    <Property Name="CreatPeople" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="State" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="C_GOODS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="YuanQuID" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="CONTRACT_Guid" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="ContoractNumber" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="ShipName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="KunCun" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="jcjs" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="jccj" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="GoodsType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="KunCunW" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="C_Dic_YuanQu">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="YuanQuName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="PicPach" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="C_TB_CODE_PACK">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Sjm" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="ReMark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="creater" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="creatTime" Type="DateTime" />
+  </EntityType>
+  <EntityType Name="C_TB_CODE_SECTION">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CODE_COMPANY" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+    <Property Name="CODE_COMPANY_Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CODE_SECTION" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="SECTION" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="LOGOGRAM" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="REMARK" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="MARK_FORBID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="C_TB_CODE_VOYAGE">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Sjm" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="ReMark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="creater" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="creatTime" Type="DateTime" />
+  </EntityType>
+  <EntityType Name="C_TB_CODE_STORAGE">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SECTION_ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+    <Property Name="CODE_STORAGE" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="STORAGEName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="LOGOGRAM" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="REMARK" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="THISTYPE" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="OUT_TYPE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="FULLNAME" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="ENGINE" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="UNITCAPACITY" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="TRANS_DISTANCE" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="INOUTTYPE" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="NUM_VBOOTH" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="NUM_BOOTH" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="AREA" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CUBAGE" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="EFFECT_AREA" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="AREA_USERATE" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="UNIT_LOAD_TECH_FIXED" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="UNIT_LOAD_USE_FIXED" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="WAREHOUSE_CAPACITY" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="AVG_WAREHOUSE_CAPACITY" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="THROUGH_ABILITY" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="VOLUME" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="IPORT_CODE_COMPANY" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CODE_SCHEME" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CODE_SCHEMEITEM" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="LAT" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="LOT" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CODE_CLIENT" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="ISTC" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="MARK_FORBID" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="STORAGETYPE" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CODE_WORKINGAREA" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="C_TB_CODE_CAOZUO">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CODE" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="NAME" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="DISPLAYNAME" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CODE_OPBTYPE" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CODE_CARRIER_S" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CODE_CARRIER_E" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="C_TB_CODE_CUSTOMER">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Sjm" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="ReMark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="creater" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="creatTime" Type="DateTime" />
+  </EntityType>
+  <EntityType Name="C_TB_HS_STOCKDORMANT">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CODE_STORAGE" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CODE_BOOTH" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="GBNO" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="AMOUNT" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="WEIGHT" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="VOLUME" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="FIRST_INDATE" Type="DateTime" />
+    <Property Name="BOOTH_INDATE" Type="DateTime" />
+    <Property Name="REMARK" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="LastEidTime" Type="DateTime" />
+    <Property Name="TALLYBILL_ID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="HuoDai" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="GoodsName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="YuanQuID" Type="Decimal" Precision="38" Scale="0" />
+  </EntityType>
+  <EntityType Name="C_TB_HS_TALLYBILL">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TBNO" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CONSIGN_ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+    <Property Name="CGNO" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CODE_SECTION" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="SIGNDATE" Type="DateTime" />
+    <Property Name="CODE_OPSTYPE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="PIECEWEIGHT" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="AMOUNT" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="WEIGHT" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="VOLUME" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="CODE_QUALITY" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="CODE_WORKTEAM" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="BEGINTIME" Type="DateTime" />
+    <Property Name="ENDTIME" Type="DateTime" />
+    <Property Name="REMARK" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="USERNAME" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CODE_TALLYMAN" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="TALLYMAN" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="MARK_CLEARBOOTH" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="TRAINNUM" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="CODE_LOADPLACE" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="TALLYNUMRIGHT" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CONTAINERNUM" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="State" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="CAOZUO" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="FANGSHI" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CHANGORCAR" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="GOODSBILL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="XIANGSHU" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="GONGBAN" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="STORAG" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CleraNum" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="GoodsName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="YuanQuID" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="HangCi" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="HuoDai" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="ChuanMing" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="C_TB_CODE_BOOTH">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Storage_ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+    <Property Name="TB_CODE_BOOTH" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CODE_BOOTH" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="BOOTH" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="LOGOGRAM" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="REMARK" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="MARK_FORBID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="color" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="height" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="width" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="pageX" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="pageY" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="CompanyId" Type="Decimal" Precision="38" Scale="0" />
+  </EntityType>
+  <EntityType Name="C_TB_HC_CONSIGN">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="GOODSBILL_ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+    <Property Name="CGNO" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CODE_OPERATION" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="WeiTuoRen" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="ShouHuoRen" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CODE_TRANS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="WeiTuoTime" Type="DateTime" />
+    <Property Name="BLNO" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="PLANAMOUNT" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="PLANWEIGHT" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="PLANVOLUME" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="CONTAINERTYPE" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CONTAINERNUM" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="PAPERYNO" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="BoolQuanLuYun" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="SPONSOR" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="CREATORNAME" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CREATETIME" Type="DateTime" />
+    <Property Name="AUDITTIME" Type="DateTime" />
+    <Property Name="AUDITORNAME" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CaoZuoGuoCheng" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="BeiZhu" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="HengZhong" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="State" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="GoodsBill_Num" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="YuanQuID" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="CarTeam" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="GoodsType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CarMan" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CarManPhone" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="BillBranch" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="BillVolume" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="TestingVolume" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="jccj" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="GoodsName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="ShipName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="VGNO" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="jbr" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="C_CARTEAM">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="GoodsName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Code" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Sjm" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="FullName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="C_TB_HC_CONTRACT">
+    <Key>
+      <PropertyRef Name="Guid" />
+    </Key>
+    <Property Name="Guid" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="ContoractNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="EntrustPeople" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="EntrustID" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="CreatTime" Type="DateTime" />
+    <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="YuanQuID" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+    <Property Name="LastEdiTime" Type="DateTime" />
+  </EntityType>
+  <EntityType Name="C_TB_HC_CONTRACT_DETAILED">
+    <Key>
+      <PropertyRef Name="Guid" />
+    </Key>
+    <Property Name="Guid" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CONTRACT_Guid" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="HuoZhong" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="HuoMing" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="FeiMuZhongLei" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="JiLiangDanWei" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="DanJia" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="MianDuiCunTianShu" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="BiaoZhi" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="BeiZhu" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CreatTime" Type="DateTime" />
+    <Property Name="LastEdiTime" Type="DateTime" />
+    <Property Name="State" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="C_GOODSTYPE">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="GoodsName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Code" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Sjm" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="FullName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="C_TB_HC_CONTRACT_FILES">
+    <Key>
+      <PropertyRef Name="Guid" />
+    </Key>
+    <Property Name="CONTRACT_Guid" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="path" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="FileName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Guid" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+</Schema>

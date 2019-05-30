@@ -1,0 +1,80 @@
+﻿
+@{
+    ViewBag.Title = "PrintChuMenZheng";
+    Layout = "~/Views/Shared/_LayoutBase.cshtml";
+ 
+}
+@using OracleBase.Models
+@model C_TB_HC_GOODSBILL
+
+<script src="~/Content/Lodop6.226_Clodop3.083/LodopFuncs.js"></script>
+<object id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0>
+
+    <embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0 pluginspage="~/Content/Lodop6.226_Clodop3.083/install_lodop64.exe"></embed>
+</object>
+<script language="javascript" type="text/javascript">
+    function CreatePrintPage() {
+        var hm1 = $("#hm1").val();
+     
+        LODOP.PRINT_INIT("套打EMS的模板");
+        LODOP.ADD_PRINT_TEXT(33, 46, 100, 20, hm1);
+        LODOP.ADD_PRINT_TEXT(34, 197, 100, 20, $("#bz1").val());
+        LODOP.ADD_PRINT_TEXT(36, 355, 100, 20, $("#js11").val());
+        LODOP.ADD_PRINT_TEXT(35, 474, 100, 20, $("#ds1").val());
+        LODOP.ADD_PRINT_TEXT(83, 47, 100, 20, $("#hm2").val());
+        LODOP.ADD_PRINT_TEXT(81, 200, 100, 20, $("#bz2").val());
+        LODOP.ADD_PRINT_TEXT(79, 359, 100, 20, $("#js12").val());
+        LODOP.ADD_PRINT_TEXT(77, 476, 100, 20, $("#ds2").val());
+        LODOP.ADD_PRINT_TEXT(130, 46, 100, 20, $("#qyd").val());
+        LODOP.ADD_PRINT_TEXT(127, 197, 100, 20, $("#ddd").val());
+        LODOP.ADD_PRINT_TEXT(126, 355, 100, 20, $("#wzdw").val());
+
+
+        LODOP.ADD_PRINT_TEXT(127, 483, 100, 20, $("#jbr").val());
+        LODOP.ADD_PRINT_TEXT(179, 46, 131, 21, $("#ch").val());
+        LODOP.ADD_PRINT_TEXT(178, 199, 100, 20, $("#bz").val());
+        LODOP.ADD_PRINT_TEXT(173, 355, 100, 20, $("#rq").val());
+    };
+</script>
+<h1 class="text-center">连云港陆桥保税服务有限公司</h1>
+
+<table class="table">
+    <thead>
+    <tr><th>货名</th><th>包装</th><th>件数</th><th>吨数</th></tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><input type="text" name="hm1" id="hm1" value="@Model.C_GOODS"/></td>
+        <td><input type="text" name="bz1" id="bz1"/></td>
+        <td><input type="text" name="js1" id="js11"/></td>
+        <td><input type="text" name="ds1" id="ds1"/></td>    
+    </tr>
+    <tr>
+        <td><input type="text" name="hm2" id="hm2"/></td>
+        <td><input type="text" name="bz2" id="bz2"/></td>
+        <td><input type="text" name="js2" id="js12"/></td>
+        <td><input type="text" name="ds2" id="ds2"/></td>
+       
+    </tr>
+
+    <tr>
+
+        <td><input type="text" name="qyd" id="qyd" placeholder="起运地" /></td>
+
+        <td><input type="text" name="ddd" id="ddd" placeholder="到达地"/></td>
+        <td><input type="text" name="wzdw" id="wzdw" placeholder="物资单位"/></td>
+        <td><input type="text" name="jbr" id="jbr" placeholder="经办人"/></td>
+
+    </tr>
+    <tr>
+
+        <td><input type="text" name="ch" id="ch" placeholder="车号" /></td>
+
+        <td><input type="text" name="bz" id="bz" placeholder="备注" /></td>
+        <td><input type="text" name="rq" id="rq" placeholder="填证日期" value="@DateTime.Today" /></td>
+    </tr>
+    </tbody>
+
+</table>
+进入<a href="javascript:;" onclick="javascript:CreatePrintPage();LODOP.PRINT_DESIGN();">模板设计</a><br><br>
+进入<a href="javascript:;" onclick="javascript:CreatePrintPage();LODOP.PREVIEW();">模板的打印预览</a>

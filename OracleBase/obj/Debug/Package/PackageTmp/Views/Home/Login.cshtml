@@ -1,0 +1,139 @@
+﻿@{
+    ViewBag.Title = "登录页";
+}
+
+<!DOCTYPE html>
+<html>
+
+
+<!-- Mirrored from www.zi-han.net/theme/hplus/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:18:23 GMT -->
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>保税仓储管理系统 - 登录</title>
+    <meta name="keywords" content="保税仓储管理系统">
+    <meta name="description" content="保税仓储管理系统">
+
+
+    <link href="~/Content/hplus/css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="~/Content/hplus/css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+
+    <link href="~/Content/hplus/css/animate.min.css" rel="stylesheet">
+    <link href="~/Content/hplus/css/style.min862f.css?v=4.1.0" rel="stylesheet">
+
+    <script src="~/Content/hplus/js/jquery.min.js?v=2.1.4"></script>
+    <script src="~/Content/hplus/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="/Content/hplus/js/plugins/validate/jquery.validate.min.js"></script>
+    <script src="/Content/hplus/js/plugins/validate/messages_zh.min.js"></script>
+
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+    <script>if (window.top !== window.self) { window.top.location = window.location; }</script>
+    <script type="text/javascript">
+
+        function Login() {
+            var $code = $("#txt_code");
+            var $username = $("#userName");
+            var $password = $("#passWord");
+            if ($("#form1").valid()) {
+                $.ajax({
+                    //提交数据的类型 POST GET
+                    type: "POST",
+                    //提交的网址
+                    url: "/Home/Login",
+                    //提交的数据
+                    //data: $('#form1').serialize(), code: $.trim($code.val())
+                    data: { username: $.trim($username.val()), password: $.trim($password.val()), code: $.trim($code.val()) },
+                    //返回数据的格式
+                    datatype: "json",//"xml", "html", "script", "json", "jsonp", "text".
+                    //在请求之前调用的函数
+                    beforeSend: function () {
+                        $("#login_button").html("登录中...");
+                    },
+                    //成功返回之后调用的函数
+                    success: function (data) {
+                         data = eval('(' + data + ')'); 
+                        if (data.state == "success") {
+                            $("#login_button").html("登录成功，正在跳转...");
+                            window.setTimeout(function () {
+                                window.location.href = "/Home/Index";
+                            }, 500);
+                        } else {
+                            alert(data.message);
+                            $("#login_button").html("登录");
+                            $("#switchCode").trigger("click");
+                            $code.val('');
+                        }
+                    },
+                    //调用执行后调用的函数
+                    complete: function (XMLHttpRequest, textStatus) {
+
+                    },
+                    //调用出错执行的函数
+                    error: function () {
+
+                    }
+                });
+            }
+        }
+        $(function () {
+            $("#switchCode").click(function () {
+                $("#imgcode").attr("src", "/Home/GetAuthCode?time=" + Math.random());
+            });
+            document.onkeydown = function (e) {
+                if (!e) e = window.event;
+                if ((e.keyCode || e.which) == 13) {
+                    document.getElementById("login_button").focus();
+                    document.getElementById("login_button").click();
+                }
+            }
+        })
+  
+    </script>
+</head>
+
+<body class="gray-bg">
+
+    <div class="middle-box text-center loginscreen  animated fadeInDown">
+        <div>
+            <div>
+
+                <h1 class="logo-name">BS</h1>
+
+            </div>
+            <h3>欢迎使用 保税仓储管理系统</h3>
+            @using (Html.BeginForm("Login", "Home", @FormMethod.Post, new { areas = "Default", id = "form1", @class = "m-t" }))
+            {
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="用户名" required="" name="userName" id="userName"/>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="密码" required="" name="passWord" id="passWord"/>
+                </div>
+                <div class="form-group">
+                    <input id="txt_code" maxlength="4" class="form-control"  type="text" placeholder="验证码" style="width: 190px; float: left;">
+                    <div style="width: 110px; float: right; padding-top: 14px; padding-left: 14px;">
+                        看不清？<a id="switchCode" href="javascript:void();" style="text-decoration: none;">换一张</a>
+                        <img id="imgcode" class="authcode" src="~/Home/GetAuthCode" width="80" height="25" />
+                    </div>
+                </div>
+                <button id="login_button" type="button" class="btn btn-primary block full-width m-b" onclick="Login()">登 录</button>
+                <p class="text-muted text-center">
+                    <a href="/Home/FindPassword"><small>忘记密码了？</small></a>
+                </p>
+
+            }
+        </div>
+    </div>
+
+
+</body>
+
+
+<!-- Mirrored from www.zi-han.net/theme/hplus/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:18:23 GMT -->
+</html>
+

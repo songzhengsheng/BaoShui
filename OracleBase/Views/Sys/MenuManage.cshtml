@@ -1,0 +1,326 @@
+﻿@{
+    ViewBag.Title = "MenuManage";
+    Layout = "~/Views/Shared/_LayoutBootstrapTable_edit.cshtml";
+}
+@using OracleBase.Models
+
+
+
+<div class="ibox-content">
+    <div class="row row-lg">
+        <div class="col-sm-12">
+            <div class="example-wrap">
+         
+                <div id="modal-form" class="modal fade" aria-hidden="true">
+
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="ibox-content">
+                                        <form class="form-horizontal m-t" id="commentForm" action="AddMenu">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">名称：</label>
+                                                <div class="col-sm-8">
+                                                    <input id="rsnemuName" name="menuName" type="text" class="form-control" required="" aria-required="true">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">url：</label>
+                                                <div class="col-sm-8">
+                                                    <input id="rsurl" name="ur" type="text" class="form-control" required="" aria-required="true">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">序号：</label>
+                                                <div class="col-sm-8">
+                                                    <input id="rssort" name="sort" type="number" min="1" class="form-control" required="" aria-required="true">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-sm-4 col-sm-offset-3">
+                                                    <button class="btn btn-primary" type="submit">提交</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script src="~/Content/layer/layer.js"></script>
+<script type="text/javascript">
+
+    function Del(id) {
+        if (confirm("确认删除") == true) {
+            var postData = {
+                id: id
+            };
+            $.ajax({
+                type: 'POST',
+                url: '/Sys/DelMenu',
+                data: postData,
+                dataType: 'json',
+                success: function(data, textStatus) {
+                    alert(data);
+                    location.replace(location);
+                },
+                error: function(xmlHttpRequest, textStatus, errorThrown) {
+                }
+            });
+        }
+
+    }
+
+    function AddSon(id) {
+        layer.open({
+            type: 2,
+            title: "编辑子菜单",
+            shadeClose: true,
+            shade: 0.8,
+            area: ['80%', '80%'],
+            content: "/Sys/AddSonMenu?id="+id
+
+        });
+    }
+</script>
+
+
+
+<div class="panel-body">
+    <div class="panel-body" style="padding-bottom:0px;">
+        <div id="toolbar" class="btn-group">
+            <a data-toggle="modal" class="btn pull-left btn-primary" href="form_basic.html#modal-form">增加一级菜单</a>
+
+
+        </div>
+        <table class="table" id="report"></table>
+    </div>
+</div>
+<script type="text/javascript">
+
+
+    var TableInit = function() {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function() {
+            $('#report').bootstrapTable({
+                url: '/Sys/MenuManageList', //请求后台的URL（*）
+                method: 'get', //请求方式（*）
+                toolbar: '#toolbar', //工具按钮用哪个容器
+                striped: true, //是否显示行间隔色
+                cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true, //是否显示分页（*）
+                sortable: false, //是否启用排序
+                sortOrder: "asc", //排序方式
+                queryParams: oTableInit.queryParams, //传递参数（*）
+                sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1, //初始化加载第一页，默认第一页
+                pageSize: 100, //每页的记录行数（*）
+                pageList: [10, 25, 50, 100], //可供选择的每页的行数（*）
+                search: false, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: false,
+                showColumns: false, //是否显示所有的列
+                showRefresh: false, //是否显示刷新按钮
+                minimumCountColumns: 2, //最少允许的列数
+                clickToSelect: true, //是否启用点击选中行
+                height: $(window).height() - 60,
+                uniqueId: "ID", //每一行的唯一标识，一般为主键列
+                showToggle: false, //是否显示详细视图和列表视图的切换按钮
+                cardView: false, //是否显示详细视图
+                detailView: true, //是否显示父子表
+
+                columns: [
+                    {
+                        field: 'ID',
+                        title: '编号',
+                        formatter: function (value, row, index) {
+                            return index+1;
+                        }
+                    },
+
+                    {
+                        field: 'menuName',
+                        title: '菜单名称',
+                        editable: {
+                            type: 'text',
+                            title: '菜单名称',
+                            validate: function(v) {
+                                if (!v) return '不能为空';
+                            }
+                        }
+                    },
+                     {
+                         field: 'sort',
+                         title: '菜单排序',
+                         editable: {
+                             type: 'text',
+                             title: '菜单排序',
+                             validate: function (v) {
+                                 if (!v) return '不能为空';
+                             }
+                         }
+                     },
+                 
+                    {
+                        title: '操作',
+
+                        formatter: function(value, row, index) {
+                            return '<button class="btn btn-danger btn-sm" onclick="Del(\'' + row.ID + '\')">删除</button>' + ' <button class="btn btn-info btn-sm" onclick="AddSon(\'' + row.ID + '\')">添加子菜单</button>';
+                        }
+
+                    }
+                ],
+                //注册加载子表的事件。注意下这里的三个参数！
+                onExpandRow: function(index, row, $detail) {
+
+                    InitSubTable(index, row, $detail);
+                },
+                onEditableSave: function (field, row, oldValue, $el) {
+                    $.ajax({
+                        type: "post",
+                        url: "/Sys/EditMenu",
+                        data: row,
+                        dataType: 'JSON',
+                        success: function (data, status) {
+                            alert(data);
+                        },
+                        error: function () {
+                            alert('编辑失败');
+                        },
+                        complete: function () {
+
+                        }
+
+                    });
+                }
+            });
+            //初始化子表格(无线循环)
+
+        };
+        InitSubTable = function(index, row, $detail) {
+            var fatherId = row.ID;
+            var cur_table = $detail.html('<table></table>').find('table');
+            $(cur_table).bootstrapTable({
+                url: '/Sys/GetSonMenuManageList',
+                method: 'get',
+                queryParams: { fatherId: fatherId },
+                ajaxOptions: { fatherId: fatherId },
+                striped: true, //是否显示行间隔色
+                cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: false, //是否显示分页（*）
+                sortable: false, //是否启用排序
+                sortOrder: "asc", //排序方式             
+                sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1, //初始化加载第一页，默认第一页              
+                search: false, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: false,
+                showColumns: false, //是否显示所有的列
+                showRefresh: false, //是否显示刷新按钮
+                minimumCountColumns: 2, //最少允许的列数
+                clickToSelect: true, //是否启用点击选中行           
+                uniqueId: "ID", //每一行的唯一标识，一般为主键列
+                showToggle: false, //是否显示详细视图和列表视图的切换按钮
+                cardView: false, //是否显示详细视图
+                detailView: true, //是否显示父子表
+                pageSize: 100,
+                pageList: [10, 25],
+                columns: [
+                       {
+                           field: 'ID',
+                           title: '编号',
+                           formatter: function (value, row, index) {
+                               return index + 1;
+                           }
+                       },
+                    {
+                        field: 'menuName',
+                        title: '菜单名称',
+                        editable: {
+                            type: 'text',
+                            title: '菜单URL',
+                            validate: function (v) {
+                                if (!v) return '不能为空';
+                            }
+                        }
+                    }, {
+                        field: 'url',
+                        title: '菜单URL',
+                        editable: {
+                            type: 'text',
+                            title: '菜单URL',
+                            validate: function (v) {
+                                if (!v) return '不能为空';
+                            }
+                        }
+                    },
+                    {
+                        field: 'sort',
+                        title: '菜单排序',
+                        editable: {
+                            type: 'text',
+                            title: '菜单排序',
+                            validate: function (v) {
+                                if (!v) return '不能为空';
+                            }
+                        }
+                    },
+                     {
+                         title: '操作',
+
+                         formatter: function (value, row, index) {
+                             return '<button class="btn btn-danger btn-sm" onclick="Del(\'' + row.ID + '\')">删除</button>' + ' <button class="btn btn-info btn-sm" onclick="AddSon(\'' + row.ID + '\')">添加子菜单</button>';
+                         }
+
+                     }
+                ],
+                //无线循环取子表，直到子表里面没有记录
+                onExpandRow: function(index, row, $Subdetail) {
+                    InitSubTable(index, row, $Subdetail);
+                },
+                onEditableSave: function (field, row, oldValue, $el) {
+                    $.ajax({
+                        type: "post",
+                        url: "/Sys/EditMenu",
+                        data: row,
+                        dataType: 'JSON',
+                        success: function (data, status) {
+                            alert(data);
+                        },
+                        error: function () {
+                            alert('编辑失败');
+                        },
+                        complete: function () {
+
+                        }
+
+                    });
+                }
+            });
+        };
+        //得到查询的参数
+        oTableInit.queryParams = function(params) {
+            var temp = {
+                limit: params.limit, //页面大小
+                offset: params.offset //页码
+
+            };
+            return temp;
+        };
+        return oTableInit;
+
+
+    };
+ 
+</script>
+
